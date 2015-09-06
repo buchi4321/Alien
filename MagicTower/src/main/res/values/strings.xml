@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">魔塔</string>
+
+    <!-- 主菜单 -->
+    <string name="new_game">新的游戏</string>
+    <string name="read_memory">读取存档</string>
+    <string name="setting">设置</string>
+    <string name="help">帮助</string>
+    <string name="exit">退出</string>
+
 </resources>
