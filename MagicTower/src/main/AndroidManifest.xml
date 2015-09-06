@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="com.github.cyanflxy.alien"
+    package="com.github.cyanflxy.magictower"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
@@ -11,8 +11,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
-            >
+            android:name="com.github.cyanflxy.magictower.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
