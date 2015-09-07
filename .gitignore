@@ -9,3 +9,5 @@
 */*.iml
 gradle/*
 *.keystore
+demo/
+demo/*
