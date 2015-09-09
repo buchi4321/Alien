@@ -1,11 +1,14 @@
 package com.github.cyanflxy.magictower;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Toast;
 
 import com.cyanflxy.common.CommDialog;
+import com.cyanflxy.game.activity.GameActivity;
 import com.cyanflxy.game.record.GameHistory;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -45,7 +48,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         if (newGameDialog != null && newGameDialog.isShowing()) {
             newGameDialog.dismiss();
             outState.putBoolean(ARG_NEW_GAME_DIALOG_SHOWING, true);
@@ -95,6 +98,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void startGame() {
-
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(GameActivity.GAME_FILE, GameHistory.AUTO_SAVE);
+        startActivity(intent);
     }
 }

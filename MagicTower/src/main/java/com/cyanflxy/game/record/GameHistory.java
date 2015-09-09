@@ -1,12 +1,15 @@
 package com.cyanflxy.game.record;
 
+import com.cyanflxy.game.driver.GameContext;
+
 import java.io.File;
 
 import static com.github.cyanflxy.magictower.AppApplication.baseContext;
 
 public class GameHistory {
     private static String DATA_PATH;
-    private static final String AUTO_SAVE = "auto";
+    public static final String AUTO_SAVE = "auto";
+    public static final String SAVE_RECORD = "record_";//带编号
 
     static {
         DATA_PATH = baseContext.getFilesDir().getAbsolutePath();
@@ -19,5 +22,9 @@ public class GameHistory {
 
     public static void deleteAutoSave() {
         // TODO STUB
+    }
+
+    public static GameContext getGame(String record) {
+        return new GameContext();
     }
 }
