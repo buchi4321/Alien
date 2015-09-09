@@ -3,21 +3,55 @@ package com.github.cyanflxy.magictower;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.cyanflxy.common.CommDialog;
 import com.cyanflxy.game.record.GameHistory;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
+    private static final long BACK_TIME = 1000;
+    private static final String ARG_NEW_GAME_DIALOG_SHOWING = "new_game_dialog";
+
+    private long lastBackPressed;
+    private CommDialog newGameDialog;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         setContentView(R.layout.activity_main);
+
         findViewById(R.id.new_game).setOnClickListener(this);
         findViewById(R.id.read_memory).setOnClickListener(this);
         findViewById(R.id.setting).setOnClickListener(this);
         findViewById(R.id.help).setOnClickListener(this);
         findViewById(R.id.exit).setOnClickListener(this);
+
+        if (bundle != null) {
+            if (bundle.getBoolean(ARG_NEW_GAME_DIALOG_SHOWING)) {
+                newGame();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - lastBackPressed < BACK_TIME) {
+            super.onBackPressed();
+        } else {
+            lastBackPressed = System.currentTimeMillis();
+            Toast.makeText(this, R.string.press_again_exit, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (newGameDialog != null && newGameDialog.isShowing()) {
+            newGameDialog.dismiss();
+            outState.putBoolean(ARG_NEW_GAME_DIALOG_SHOWING, true);
+        }
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -40,16 +74,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void newGame() {
         if (GameHistory.haveAutoSave()) {
-            CommDialog dialog = new CommDialog(this);
-            dialog.setText(R.string.new_game_tip);
-            dialog.setOnOkClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    GameHistory.deleteAutoSave();
-                    startGame();
-                }
-            });
-            dialog.show();
+
+            if (newGameDialog == null) {
+                newGameDialog = new CommDialog(this);
+                newGameDialog.setText(R.string.new_game_tip);
+                newGameDialog.setOnOkClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        GameHistory.deleteAutoSave();
+                        startGame();
+                        newGameDialog.dismiss();
+                    }
+                });
+            }
+
+            newGameDialog.show();
         } else {
             startGame();
         }

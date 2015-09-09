@@ -2,7 +2,6 @@ package com.cyanflxy.common;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,11 +16,7 @@ public class CommDialog extends Dialog implements View.OnClickListener {
 
     public CommDialog(Context context) {
         super(context, R.style.common_dialog_style);
-    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_comm);
         contentText = (TextView) findViewById(R.id.content);
         findViewById(R.id.ok).setOnClickListener(this);
