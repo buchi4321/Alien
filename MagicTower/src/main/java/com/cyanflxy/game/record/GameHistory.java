@@ -1,6 +1,6 @@
 package com.cyanflxy.game.record;
 
-import com.cyanflxy.game.driver.GameContext;
+import com.cyanflxy.game.bean.GameBean;
 
 import java.io.File;
 
@@ -24,7 +24,7 @@ public class GameHistory {
         // TODO STUB
     }
 
-    public static GameContext getGame(String record) {
-        return new GameContext();
+    public static GameBean getGame(String record) {
+        return new GameBean();
     }
 }

@@ -1,1 +1,1 @@
-include ':MagicTower'
+include ':MagicTower', ':ImageComposer'

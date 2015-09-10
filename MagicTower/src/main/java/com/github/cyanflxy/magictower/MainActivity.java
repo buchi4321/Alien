@@ -101,5 +101,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GameActivity.GAME_FILE, GameHistory.AUTO_SAVE);
         startActivity(intent);
+
+        finish();
     }
 }
