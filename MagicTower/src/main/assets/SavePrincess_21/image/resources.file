@@ -1,0 +1,21 @@
+{
+    source:"image/resource.png",
+    pieceWidth:32,
+    pieceHeight:32,
+
+    image:[
+        {name:"down", id:[0,1,2,3], type="hero"},
+        {name:"left", id:[4,5,6,7], type="hero"},
+        {name:"right", id:[8,9,10,11], type="hero"},
+        {name:"up", id:[12,13,14,15], type="hero"},
+
+        {name:"enemy_1", id:[16,17,18,19], type="enemy", property:{name:"骷髅人", hp:1000, damage:30, defence:20, money:3, exp:5 extra:"hero.hp*=0.67"}},
+
+
+        {name:"npc_1", id:[16,17,18,19], type="npc"},//对话应该在地图中体现，对话不应该属于资源文件，只有固定属性才在这里写
+        {name:"shop_1", id:[16,17,18,19], type="npc"},//商店的价格属性也应该在地图中体现
+
+        {name:"wall",id:123},
+    ]
+
+}

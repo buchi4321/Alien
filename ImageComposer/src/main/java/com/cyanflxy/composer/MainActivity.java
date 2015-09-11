@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        drawPicture();
 
     }
 
@@ -39,12 +40,12 @@ public class MainActivity extends Activity {
 
             drawEnemy();
 
-            drawDoor("door_1.png");
-            drawDoor("door_2.png");
-
             drawFlow("npc_1.png");
             drawFlow("npc_2.png");
             drawFlow("npc_3.png");
+
+            drawDoor("door_1.png");
+            drawDoor("door_2.png");
 
             drawBackground();
             nextLine();
@@ -134,13 +135,9 @@ public class MainActivity extends Activity {
 
         Bitmap allBitmap = BitmapFactory.decodeStream(getAssets().open("all.png"));
 
-        Bitmap wall = Bitmap.createBitmap(allBitmap, 6 * 32, 0, 32, 32);
+        Bitmap wall = Bitmap.createBitmap(allBitmap, 5 * 32, 0, 32 * 3, 32);
         canvas.drawBitmap(wall, left, top, null);
-        addLeft(32);
-
-        Bitmap floor = Bitmap.createBitmap(allBitmap, 7 * 32, 0, 32, 32);
-        canvas.drawBitmap(floor, left, top, null);
-        addLeft(32);
+        addLeft(32 * 3);
 
         Bitmap stairs = Bitmap.createBitmap(allBitmap, 0, 31 * 32, 64, 32);
         canvas.drawBitmap(stairs, left, top, null);
