@@ -3,6 +3,8 @@
     package="com.github.cyanflxy.magictower"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
