@@ -6,10 +6,19 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Xml;
+
+import com.google.gson.Gson;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -24,7 +33,200 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawPicture();
+        String fileName = getFile("enemy.file");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(fileName);
+
+            writeEnemy(fos);
+            writeNPC(fos);
+
+            fos.flush();
+
+        } catch (IOException | XmlPullParserException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private class Enemy {
+        public String name;
+        public int id;
+        public int hp;
+        public int damage;
+        public int defence;
+        public int exp;
+        public int money;
+    }
+
+    private static final int ENEMY_BASE = 16;
+
+    private class MyEnemy {
+        public MyEnemy(Enemy enemy) {
+            name = enemy.name;
+
+            id[0] = enemy.id + ENEMY_BASE;
+            id[1] = enemy.id + ENEMY_BASE + 1;
+            id[2] = enemy.id + ENEMY_BASE + 2;
+            id[3] = enemy.id + ENEMY_BASE + 3;
+
+            property.name = enemy.name;
+            property.hp = enemy.hp;
+            property.damage = enemy.damage;
+            property.defence = enemy.defence;
+            property.exp = enemy.exp;
+            property.money = enemy.money;
+
+        }
+
+        public String name;
+        public int[] id = new int[4];
+        public String type = "enemy";
+        public Property property = new Property();
+    }
+
+    private class Property {
+        public String name;
+        public int hp;
+        public int damage;
+        public int defence;
+        public int exp;
+        public int money;
+        public String extra = "";
+    }
+
+
+    private void writeEnemy(OutputStream os) throws IOException, XmlPullParserException {
+        List<Enemy> list = readXml();
+        List<Object> myEnemyList = new ArrayList<>(list.size());
+
+        for (Enemy enemy : list) {
+            myEnemyList.add(new MyEnemy(enemy));
+        }
+
+        writeJson(os, myEnemyList);
+    }
+
+    private List<Enemy> readXml() throws IOException, XmlPullParserException {
+        XmlPullParser parser = Xml.newPullParser();
+        parser.setInput(getAssets().open("enemy.tsx"), "UTF-8");
+
+        List<Enemy> enemyList = new ArrayList<>();
+        Enemy enemy = null;
+
+        int eventType = parser.getEventType();
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            switch (eventType) {
+                case XmlPullParser.START_DOCUMENT:
+                    break;
+                case XmlPullParser.START_TAG:
+                    String tagName = parser.getName();
+
+                    if ("tile".equals(tagName)) {
+                        enemy = new Enemy();
+                        enemy.id = Integer.parseInt(parser.getAttributeValue(0));
+                    } else if (enemy != null && "property".equals(tagName)) {
+                        String name = parser.getAttributeValue("", "name");
+                        String value = parser.getAttributeValue("", "value");
+
+                        if ("att".equals(name)) {
+                            enemy.damage = Integer.parseInt(value);
+                        } else if ("def".equals(name)) {
+                            enemy.defence = Integer.parseInt(value);
+                        } else if ("exp".equals(name)) {
+                            enemy.exp = Integer.parseInt(value);
+                        } else if ("gold".equals(name)) {
+                            enemy.money = Integer.parseInt(value);
+                        } else if ("hp".equals(name)) {
+                            enemy.hp = Integer.parseInt(value);
+                        } else if ("name".equals(name)) {
+                            enemy.name = value;
+                        }
+
+                    }
+                    break;
+                case XmlPullParser.END_TAG:
+                    if ("tile".equals(parser.getName())) {
+                        enemyList.add(enemy);
+                        enemy = null;
+                    }
+                    break;
+            }
+
+            eventType = parser.next();
+        }
+
+        return enemyList;
+    }
+
+    private class NPC {
+
+        public NPC(String name, int id, String type) {
+            this.name = name;
+
+            this.id[0] = id;
+            this.id[1] = id + 1;
+            this.id[2] = id + 2;
+            this.id[3] = id + 3;
+
+            this.type = type;
+        }
+
+        public String name;
+        public int[] id = new int[4];
+        public String type;
+    }
+
+    private void writeNPC(OutputStream os) throws IOException {
+        List<NPC> list = new ArrayList<>(12);
+        // npc
+        list.add(new NPC("blue_old", 256, "npc"));
+        list.add(new NPC("red_old", 260, "npc"));
+        list.add(new NPC("thief", 264, "npc"));
+        list.add(new NPC("angel", 268, "npc"));
+        list.add(new NPC("ghost", 272, "npc"));
+        list.add(new NPC("red_shop", 276, "npc"));
+        list.add(new NPC("blue_shop", 280, "npc"));
+        list.add(new NPC("princess", 284, "npc"));
+        list.add(new NPC("blue_wizard", 288, "npc"));
+        list.add(new NPC("red_wizard", 292, "npc"));
+        list.add(new NPC("kine", 296, "npc"));
+        list.add(new NPC("warrior", 300, "npc"));
+
+        //door
+        list.add(new NPC("yellow_door", 304, "door"));
+        list.add(new NPC("blue_door", 308, "door"));
+        list.add(new NPC("red_door", 312, "door"));
+        list.add(new NPC("iron_door", 316, "door"));
+        list.add(new NPC("blue_fake_wall", 320, "door"));
+        list.add(new NPC("brown_fake_wall", 324, "door"));
+        list.add(new NPC("gray_fake_wall", 328, "door"));
+        list.add(new NPC("prison", 332, "door"));
+
+        //wall
+        list.add(new NPC("lava", 336, "wall"));
+        list.add(new NPC("star", 340, "wall"));
+
+        writeJson(os, list);
+    }
+
+    private void writeJson(OutputStream os, List<?> list) throws IOException {
+        Gson gson = new Gson();
+
+        for (Object o : list) {
+            String str = gson.toJson(o);
+            os.write(str.getBytes());
+            os.write(',');
+            os.write('\n');
+        }
 
     }
 
@@ -207,7 +409,25 @@ public class MainActivity extends Activity {
         }
     }
 
-    private static void saveBitmap(Bitmap bitmap) throws IOException {
+    private void saveBitmap(Bitmap bitmap) throws IOException {
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(getFile("alien_resource.png"));
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private String getFile(String fileName) {
 
         File parent = new File(Environment.getExternalStorageDirectory(), "CyanFlxy");
         if (!parent.exists()) {
@@ -223,20 +443,6 @@ public class MainActivity extends Activity {
             }
         }
 
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(new File(parent, "alien_resource.png"));
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
+        return new File(parent, fileName).getAbsolutePath();
     }
 }
