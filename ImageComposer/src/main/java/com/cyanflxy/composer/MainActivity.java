@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +118,8 @@ public class MainActivity extends Activity {
 
     private List<Enemy> readXml() throws IOException, XmlPullParserException {
         XmlPullParser parser = Xml.newPullParser();
-        parser.setInput(getAssets().open("enemy.tsx"), "UTF-8");
+        InputStream is = getAssets().open("enemy.tsx");
+        parser.setInput(is, "UTF-8");
 
         List<Enemy> enemyList = new ArrayList<>();
         Enemy enemy = null;
@@ -164,6 +166,7 @@ public class MainActivity extends Activity {
             eventType = parser.next();
         }
 
+        is.close();
         return enemyList;
     }
 
@@ -311,6 +314,8 @@ public class MainActivity extends Activity {
             addLeft(128);
         }
 
+        bitmap.recycle();
+
     }
 
     private void drawDoor(String doorFile) throws IOException {
@@ -323,6 +328,7 @@ public class MainActivity extends Activity {
                 addLeft(32);
             }
         }
+        doorBitmap.recycle();
     }
 
 
@@ -330,10 +336,12 @@ public class MainActivity extends Activity {
         Bitmap lavaBitmap = BitmapFactory.decodeStream(getAssets().open("lava.png"));
         canvas.drawBitmap(lavaBitmap, this.left, this.top, null);
         addLeft(128);
+        lavaBitmap.recycle();
 
         Bitmap starBitmap = BitmapFactory.decodeStream(getAssets().open("star.png"));
         canvas.drawBitmap(starBitmap, this.left, this.top, null);
         addLeft(128);
+        starBitmap.recycle();
 
         Bitmap allBitmap = BitmapFactory.decodeStream(getAssets().open("all.png"));
 
@@ -353,6 +361,7 @@ public class MainActivity extends Activity {
         Bitmap shopRight = Bitmap.createBitmap(allBitmap, 5 * 32, 31 * 32, 32, 32);
         canvas.drawBitmap(shopRight, left, top, null);
         addLeft(32);
+        allBitmap.recycle();
     }
 
     private void drawItem1() throws IOException {
@@ -371,6 +380,7 @@ public class MainActivity extends Activity {
                 addLeft(32);
             }
         }
+        itemBitmap.recycle();
     }
 
     private void drawItem3() throws IOException {
@@ -389,6 +399,7 @@ public class MainActivity extends Activity {
                 addLeft(32);
             }
         }
+        itemBitmap.recycle();
     }
 
     private void drawItem4() throws IOException {
@@ -407,6 +418,7 @@ public class MainActivity extends Activity {
                 addLeft(32);
             }
         }
+        itemBitmap.recycle();
     }
 
     private void saveBitmap(Bitmap bitmap) throws IOException {
