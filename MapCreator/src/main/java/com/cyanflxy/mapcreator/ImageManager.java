@@ -72,7 +72,9 @@ public class ImageManager {
             }
 
             nameSet.add(name);
-            allImages.add(image);
+            if(!"hero".equals(image.type)){
+                allImages.add(image);
+            }
         }
     }
 

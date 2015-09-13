@@ -9,6 +9,8 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.cyanflxy.mapcreator.bean.ImageInfoBean;
+
 public class MapCreateView extends View {
 
     private int widthPiece = 11;
@@ -20,6 +22,8 @@ public class MapCreateView extends View {
 
     private Path outBorder;
     private Path dotPath;
+
+    private ImageInfoBean currentImage;
 
     public MapCreateView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -89,6 +93,14 @@ public class MapCreateView extends View {
         heightPiece = h;
 
         requestLayout();
+    }
+
+    public void setCurrentImage(ImageInfoBean imageInfo) {
+        currentImage = imageInfo;
+    }
+
+    public String getMapString(){
+        return "";
     }
 
     @Override
