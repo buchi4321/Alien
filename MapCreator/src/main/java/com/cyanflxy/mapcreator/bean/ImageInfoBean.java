@@ -12,11 +12,7 @@ public class ImageInfoBean {
         if (ids == null || ids.length == 0) {
             return id;
         } else {
-            if ("door".equals(type)) {
-                return ids[1];
-            } else {
-                return ids[0];
-            }
+            return ids[0];
         }
     }
 

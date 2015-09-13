@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">魔塔地图编辑器</string>
+    <string name="floor_level">第%d层</string>
 </resources>

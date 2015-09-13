@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cyanflxy.mapcreator.bean.EnemyPropertyBean;
 import com.cyanflxy.mapcreator.bean.ImageInfoBean;
+import com.cyanflxy.mapcreator.bean.SharePref;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,9 +19,7 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
 
     private MapCreateView mapCreateView;
 
-    private EditText floorView;
-//    private EditText widthView;
-//    private EditText heightView;
+    private TextView floorView;
 
     private TextView nameView;
     private TextView typeView;
@@ -33,21 +31,30 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
     private TextView enemyExpView;
     private TextView enemyMoneyView;
 
+    private int currentFloor;
+
+    private ImageManager imageManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        mapCreateView = (MapCreateView) findViewById(R.id.map_create_view);
-        MapElementView mapElementView = (MapElementView) findViewById(R.id.map_element_view);
-        mapElementView.setOnImageSelectListener(this);
+        imageManager = new ImageManager(this);
 
+        floorView = (TextView) findViewById(R.id.stair_level);
+        findViewById(R.id.up_floor).setOnClickListener(this);
+        findViewById(R.id.down_floor).setOnClickListener(this);
         findViewById(R.id.save).setOnClickListener(this);
 
-        floorView = (EditText) findViewById(R.id.floor);
-//        widthView = (EditText) findViewById(R.id.width);
-//        heightView = (EditText) findViewById(R.id.height);
+
+        mapCreateView = (MapCreateView) findViewById(R.id.map_create_view);
+        mapCreateView.setImageManager(imageManager);
+
+        MapElementView mapElementView = (MapElementView) findViewById(R.id.map_element_view);
+        mapElementView.setOnImageSelectListener(this);
+        mapElementView.setImageManager(imageManager);
 
         nameView = (TextView) findViewById(R.id.element_name);
         typeView = (TextView) findViewById(R.id.element_type);
@@ -59,10 +66,15 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
         enemyExpView = (TextView) findViewById(R.id.enemy_exp);
         enemyMoneyView = (TextView) findViewById(R.id.enemy_money);
 
-        ImageManager imageManager = ImageManager.getInstance();
-        imageManager.init(this);
-
+        currentFloor = SharePref.getCurrentFloor();
+        setFloorView();
         clearInfo();
+    }
+
+    @Override
+    protected void onDestroy() {
+        imageManager.destroy();
+        super.onDestroy();
     }
 
     @Override
@@ -71,7 +83,23 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
             case R.id.save:
                 save();
                 break;
+            case R.id.down_floor:
+                save();
+                currentFloor--;
+                setFloorView();
+                break;
+            case R.id.up_floor:
+                save();
+                currentFloor++;
+                setFloorView();
+                break;
         }
+    }
+
+    private void setFloorView() {
+        SharePref.setCurrentFloor(currentFloor);
+        String str = getString(R.string.floor_level, currentFloor);
+        floorView.setText(str);
     }
 
     @Override

@@ -33,6 +33,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        drawPicture();
+
+    }
+
+    private void writeJson() {
 
         String fileName = getFile("enemy.file");
         FileOutputStream fos = null;
@@ -55,7 +60,6 @@ public class MainActivity extends Activity {
                 }
             }
         }
-
     }
 
     private class Enemy {
@@ -345,9 +349,14 @@ public class MainActivity extends Activity {
 
         Bitmap allBitmap = BitmapFactory.decodeStream(getAssets().open("all.png"));
 
-        Bitmap wall = Bitmap.createBitmap(allBitmap, 5 * 32, 0, 32 * 3, 32);
+        Bitmap wall = Bitmap.createBitmap(allBitmap, 5 * 32, 0, 32 * 2, 32);
         canvas.drawBitmap(wall, left, top, null);
-        addLeft(32 * 3);
+        addLeft(32 * 2);
+
+
+        Bitmap floor = Bitmap.createBitmap(allBitmap, 3 * 32, 32, 32, 32);
+        canvas.drawBitmap(floor, left, top, null);
+        addLeft(32);
 
         Bitmap stairs = Bitmap.createBitmap(allBitmap, 0, 31 * 32, 64, 32);
         canvas.drawBitmap(stairs, left, top, null);

@@ -49,8 +49,6 @@ public class MapElementView extends View {
     public MapElementView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        imageManager = ImageManager.getInstance();
-        allImages = imageManager.getAllImages();
 
         startY = 0;
         drawRect = new RectF();
@@ -63,6 +61,10 @@ public class MapElementView extends View {
         focusRect = new RectF();
     }
 
+    public void setImageManager(ImageManager imageManager) {
+        this.imageManager = imageManager;
+        allImages = imageManager.getAllImages();
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -92,6 +94,10 @@ public class MapElementView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        if (imageManager == null) {
+            return;
+        }
+
         int imageIndex = 0;
 
         for (float y = ELEMENT_PADDING; y < startY + height + ELEMENT_SIZE; y += ELEMENT) {
@@ -108,6 +114,9 @@ public class MapElementView extends View {
 
                 ImageInfoBean info = allImages.get(imageIndex);
                 int id = info.getFirstId();
+                if (info.type.equals("door")) {
+                    id = info.ids[1];
+                }
                 Bitmap bitmap = imageManager.getBitmap(id);
                 drawRect.set(x, y - startY, x + ELEMENT_SIZE, y + ELEMENT_SIZE - startY);
                 canvas.drawBitmap(bitmap, null, drawRect, null);

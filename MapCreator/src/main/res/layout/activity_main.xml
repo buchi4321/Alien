@@ -11,53 +11,26 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/down_floor"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="楼层"
-            android:textSize="18sp"/>
-
-        <EditText
-            android:id="@+id/floor"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="right|center_vertical"
-            android:inputType="number"
-            android:text="0"/>
+            android:layout_weight="1"
+            android:text="上一层"/>
 
         <TextView
+            android:id="@+id/stair_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="宽"
+            android:text="@string/floor_level"
             android:textSize="18sp"/>
 
-        <EditText
-            android:id="@+id/width"
-            android:layout_width="40dp"
+        <Button
+            android:id="@+id/up_floor"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="right|center_vertical"
-            android:inputType="number"
-            android:text="11"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="高"
-            android:textSize="18sp"/>
-
-        <EditText
-            android:id="@+id/height"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="right|center_vertical"
-            android:inputType="number"
-            android:text="11"/>
+            android:layout_weight="1"
+            android:text="下一层"/>
 
         <Button
             android:id="@+id/save"
@@ -72,7 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"/>
+        android:layout_marginRight="40dp"
+        android:background="@android:color/darker_gray"/>
 
     <View
         android:layout_width="match_parent"

@@ -18,26 +18,20 @@ import java.util.WeakHashMap;
 
 public class ImageManager {
 
-    public static ImageManager getInstance() {
-        return ImageManagerHolder.instance;
-    }
-
-    private static class ImageManagerHolder {
-        private static ImageManager instance = new ImageManager();
-    }
-
     private ResourceBean imageInfo;
     private Bitmap imageBitmap;
 
     private Map<Integer, Bitmap> bitmapCache;
     private List<ImageInfoBean> allImages;
+    private ImageInfoBean floorImageInfo;
 
-    private ImageManager() {
+    public ImageManager(Context context) {
         bitmapCache = new WeakHashMap<>();
         allImages = new ArrayList<>();
+        init(context);
     }
 
-    public void init(Context c) {
+    private void init(Context c) {
         try {
             InputStream is = c.getAssets().open("resources.file");
             int len = is.available();
@@ -72,7 +66,7 @@ public class ImageManager {
             }
 
             nameSet.add(name);
-            if(!"hero".equals(image.type)){
+            if (!"hero".equals(image.type)) {
                 allImages.add(image);
             }
         }
@@ -81,6 +75,19 @@ public class ImageManager {
     public List<ImageInfoBean> getAllImages() {
         return allImages;
     }
+
+    public ImageInfoBean getFloorImageInfo() {
+        if (floorImageInfo == null) {
+            for (ImageInfoBean infoBean : allImages) {
+                if (infoBean.name.equals("floor")) {
+                    floorImageInfo = infoBean;
+                    break;
+                }
+            }
+        }
+        return floorImageInfo;
+    }
+
 
     public Bitmap getBitmap(int id) {
         Bitmap bitmap = bitmapCache.get(id);
@@ -107,5 +114,6 @@ public class ImageManager {
             bitmapCache.get(k).recycle();
         }
         bitmapCache.clear();
+
     }
 }
