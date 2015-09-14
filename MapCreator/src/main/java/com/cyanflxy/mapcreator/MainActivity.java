@@ -3,21 +3,26 @@ package com.cyanflxy.mapcreator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cyanflxy.mapcreator.bean.EnemyPropertyBean;
 import com.cyanflxy.mapcreator.bean.ImageInfoBean;
+import com.cyanflxy.mapcreator.bean.MapBean;
 import com.cyanflxy.mapcreator.bean.SharePref;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends Activity implements View.OnClickListener, MapElementView.OnImageSelectListener {
 
     private MapCreateView mapCreateView;
+    private MapElementView mapElementView;
 
     private TextView floorView;
 
@@ -48,11 +53,10 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
         findViewById(R.id.down_floor).setOnClickListener(this);
         findViewById(R.id.save).setOnClickListener(this);
 
-
         mapCreateView = (MapCreateView) findViewById(R.id.map_create_view);
         mapCreateView.setImageManager(imageManager);
 
-        MapElementView mapElementView = (MapElementView) findViewById(R.id.map_element_view);
+        mapElementView = (MapElementView) findViewById(R.id.map_element_view);
         mapElementView.setOnImageSelectListener(this);
         mapElementView.setImageManager(imageManager);
 
@@ -69,6 +73,14 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
         currentFloor = SharePref.getCurrentFloor();
         setFloorView();
         clearInfo();
+
+        loadMap();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        save();
     }
 
     @Override
@@ -87,11 +99,15 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
                 save();
                 currentFloor--;
                 setFloorView();
+                loadMap();
+                mapElementView.clearFocus();
                 break;
             case R.id.up_floor:
                 save();
                 currentFloor++;
                 setFloorView();
+                loadMap();
+                mapElementView.clearFocus();
                 break;
         }
     }
@@ -145,14 +161,17 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
     }
 
     private void save() {
-        String floorFileName = floorView.getText().toString() + ".file";
-        File floorFile = getFile(floorFileName);
+        if (mapCreateView.getHeroPosition() < 0) {
+            Toast.makeText(this, "没有设置主角位置", Toast.LENGTH_SHORT).show();
+        }
+
+        File floorFile = getFile(currentFloor);
         FileOutputStream fos = null;
         try {
 
             fos = new FileOutputStream(floorFile);
 
-            String map = mapCreateView.getMapString();
+            String map = getMapJson();
             fos.write(map.getBytes());
             fos.flush();
 
@@ -169,7 +188,7 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
         }
     }
 
-    private File getFile(String fileName) {
+    private File getFile(int floor) {
 
         File parent = new File(Environment.getExternalStorageDirectory(), "CyanFlxy");
         if (!parent.exists()) {
@@ -192,6 +211,52 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
             }
         }
 
-        return new File(parent, fileName);
+        String floorFileName = floor + ".file";
+        return new File(parent, floorFileName);
+    }
+
+    private String getMapJson() {
+        MapBean mapBean = new MapBean(currentFloor);
+
+        int p = mapCreateView.getHeroPosition();
+        mapBean.setHeroPosition(p);
+        mapBean.setMapData(mapCreateView.getMapData());
+
+        return mapBean.toJson();
+    }
+
+    private void loadMap() {
+        File mapFile = getFile(currentFloor);
+        if (!mapFile.exists()) {
+            return;
+        }
+
+        FileInputStream fis = null;
+        String result = null;
+        try {
+            fis = new FileInputStream(mapFile);
+            byte[] buffer = new byte[fis.available()];
+            int len = fis.read(buffer);
+            result = new String(buffer, 0, len, "utf-8");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
+        }
+
+        if (TextUtils.isEmpty(result)) {
+            return;
+        }
+
+        MapBean mapBean = MapBean.getInstance(result);
+        mapCreateView.loadMapData(mapBean);
     }
 }

@@ -4,6 +4,7 @@
     "pieceHeight":32,
 
     "image":[
+        {"id":0,"name":"hero", "type":"hero"},
         {"ids":[0,1,2,3],"name":"down", "type":"hero"},
         {"ids":[4,5,6,7], "name":"left", "type":"hero"},
         {"ids":[8,9,10,11],"name":"right",  "type":"hero"},

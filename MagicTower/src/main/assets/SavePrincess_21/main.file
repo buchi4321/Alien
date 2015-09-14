@@ -1,37 +1,39 @@
 {
-    res:"image/resources.file",
+    "res":"image/resources.file",
 
-    hero:{
-             level:1,
-             hp:2000,
-             damage:12,
-             defense:12,
-             money:0,
-             exp:0,
+    "hero":{
+        "position":[0,0],
 
-             keys:[
-                 {name:"yellow",value:0},
-                 {name:"blue",value:0},
-                 {name:"red",value:0}
-             ],
+        "level":1,
+        "hp":2000,
+        "damage":12,
+        "defense":12,
+        "money":0,
+        "exp":0,
 
-             lookUp:false,
-             fly:false,
-             cross:false,
+        "keys":[
+            {"name":"yellow","value":0},
+            {"name":"blue","value":0},
+            {"name":"red","value":0}
+        ],
 
-             thumb:"res/0",
+        "lookUp":false,
+        "fly":false,
+        "cross":false,
 
-             moveImage:{
-                    {name:"down", value:"res/down"},
-                    {name:"left", value:"res/left"},
-                    {name:"right", value:"res/right"},
-                    {name:"up", value:"res/up"}
-                 }
+        "thumb":"res/0",
+
+        "moveImage":[
+            {"name":"down", "value":"res/down"},
+            {"name":"left", "value":"res/left"},
+            {"name":"right", "value":"res/right"},
+            {"name":"up", "value":"res/up"}
+         ]
     },
 
-    introduce:"这是一个很古老的故事。在很久很久以前，在遥远的西方大地上，有着这样一个王国，王国虽小但全国的人都生活的非常幸福和快乐。\n突然有一天，从天空飞来一群可怕的怪物，它们来到皇宫，抢走了国王唯一的女儿。第二天，国王便向全国下达了紧急令，只要谁能将公主找回来，他便将王位让给他。于是，全国的勇士们都出发了。他们的足迹走遍了全国的各个角落，可一点线索都没有找到，很快时间就过去了一个月。直到他们在海边的一座小岛上，遇到了一群怪物。\n而我们的故事，就是从这里开始......",
-    finish:"大魔王被杀死了，公主也被救出了塔，蝶仙的精力也恢复了。当勇士和公主一起走出塔来的时候，国王也带着军队来到了岛外。一切都是那么的平常。回国后，国王为勇士和公主举行了隆重而且胜大的婚礼，并且宣布勇士继承国王的位置。从此之后，勇士和公主就幸福的生活在一起了。",
+    "introduce":"这是一个很古老的故事。在很久很久以前，在遥远的西方大地上，有着这样一个王国，王国虽小但全国的人都生活的非常幸福和快乐。\n突然有一天，从天空飞来一群可怕的怪物，它们来到皇宫，抢走了国王唯一的女儿。第二天，国王便向全国下达了紧急令，只要谁能将公主找回来，他便将王位让给他。于是，全国的勇士们都出发了。他们的足迹走遍了全国的各个角落，可一点线索都没有找到，很快时间就过去了一个月。直到他们在海边的一座小岛上，遇到了一群怪物。\n而我们的故事，就是从这里开始......",
+    "finish":"大魔王被杀死了，公主也被救出了塔，蝶仙的精力也恢复了。当勇士和公主一起走出塔来的时候，国王也带着军队来到了岛外。一切都是那么的平常。回国后，国王为勇士和公主举行了隆重而且胜大的婚礼，并且宣布勇士继承国王的位置。从此之后，勇士和公主就幸福的生活在一起了。",
 
-    maps:[  "map/0.file","map/1.file","map/2.file","map/3.file","map/4.file","map/5.file","map/6.file","map/7.file","map/8.file","map/9.file","map/10.file",
+    "maps":[  "map/0.file","map/1.file","map/2.file","map/3.file","map/4.file","map/5.file","map/6.file","map/7.file","map/8.file","map/9.file","map/10.file",
             "map/11.file","map/12.file","map/13.file","map/14.file","map/15.file","map/16.file","map/17.file","map/18.file","map/19.file","map/20.file","map/21.file"]
 }

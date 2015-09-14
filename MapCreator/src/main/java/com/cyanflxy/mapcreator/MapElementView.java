@@ -90,6 +90,11 @@ public class MapElementView extends View {
         this.onImageSelectListener = onImageSelectListener;
     }
 
+    public void clearFocus(){
+        focusId = -1;
+        invalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -197,4 +202,5 @@ public class MapElementView extends View {
             }
         }
     }
+
 }

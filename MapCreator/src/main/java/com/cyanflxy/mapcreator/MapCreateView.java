@@ -9,11 +9,13 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.cyanflxy.mapcreator.bean.ImageInfoBean;
+import com.cyanflxy.mapcreator.bean.MapBean;
 
 import java.util.Arrays;
 
@@ -39,6 +41,8 @@ public class MapCreateView extends View {
     private float touchY;
     private ImageInfoBean currentImage;
 
+    private int heroPosition;
+
     public MapCreateView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -61,6 +65,9 @@ public class MapCreateView extends View {
         imageRect = new RectF();
         touchX = -1;
         touchY = -1;
+
+        heroPosition = -1;
+        mapData = new ImageInfoBean[WIDTH_PIECE * HEIGHT_PIECE];
     }
 
     @Override
@@ -115,17 +122,35 @@ public class MapCreateView extends View {
 
     public void setImageManager(ImageManager imageManager) {
         this.imageManager = imageManager;
-        currentImage = imageManager.getFloorImageInfo();
-        mapData = new ImageInfoBean[WIDTH_PIECE * HEIGHT_PIECE];
-        Arrays.fill(mapData, currentImage);
     }
 
     public void setCurrentImage(ImageInfoBean imageInfo) {
         currentImage = imageInfo;
     }
 
-    public String getMapString() {
-        return "";
+    public ImageInfoBean[] getMapData() {
+        return mapData;
+    }
+
+    public int getHeroPosition() {
+        return heroPosition;
+    }
+
+    public void loadMapData(MapBean mapBean) {
+        currentImage = null;
+        Arrays.fill(mapData, null);
+
+        for (int i = 0; i < mapBean.mapData.length; i++) {
+            String name = mapBean.mapData[i].element;
+            if (!TextUtils.isEmpty(name)) {
+                mapData[i] = imageManager.getImage(name);
+            }
+        }
+
+        heroPosition = mapBean.heroPosition;
+        mapData[heroPosition] = imageManager.getImage("hero");
+
+        invalidate();
     }
 
     @Override
@@ -143,6 +168,9 @@ public class MapCreateView extends View {
         for (int row = 0; row < HEIGHT_PIECE; row++) {
             for (int col = 0; col < WIDTH_PIECE; col++) {
                 ImageInfoBean info = mapData[imageIndex];
+                if (info == null) {
+                    info = imageManager.getFloorImageInfo();
+                }
                 imageIndex++;
 
                 Bitmap bitmap = imageManager.getBitmap(info.getFirstId());
@@ -183,7 +211,10 @@ public class MapCreateView extends View {
             case MotionEvent.ACTION_UP:
                 if (currentImage != null) {
                     int focusId = calculateTouchId(touchX, touchY);
-                    mapData[focusId] = currentImage;
+                    if (focusId >= 0 && focusId < mapData.length) {
+                        checkHero(focusId);
+                        mapData[focusId] = currentImage;
+                    }
                 }
                 touchX = -1;
                 touchY = -1;
@@ -197,5 +228,12 @@ public class MapCreateView extends View {
         int row = (int) (y / pieceSize);
         int col = (int) (x / pieceSize);
         return row * WIDTH_PIECE + col;
+    }
+
+    private void checkHero(int id) {
+        if ("hero".equals(currentImage.name)) {
+            heroPosition = id;
+        }
+
     }
 }

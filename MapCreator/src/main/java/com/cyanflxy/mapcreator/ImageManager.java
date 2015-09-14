@@ -10,6 +10,7 @@ import com.cyanflxy.mapcreator.bean.ResourceBean;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +24,12 @@ public class ImageManager {
 
     private Map<Integer, Bitmap> bitmapCache;
     private List<ImageInfoBean> allImages;
-    private ImageInfoBean floorImageInfo;
+    private Map<String, ImageInfoBean> imageInfoMap;
 
     public ImageManager(Context context) {
         bitmapCache = new WeakHashMap<>();
         allImages = new ArrayList<>();
+        imageInfoMap = new HashMap<>();
         init(context);
     }
 
@@ -66,8 +68,13 @@ public class ImageManager {
             }
 
             nameSet.add(name);
+            if ("hero".equals(image.name)) {
+                allImages.add(image);
+                imageInfoMap.put(image.name, image);
+            }
             if (!"hero".equals(image.type)) {
                 allImages.add(image);
+                imageInfoMap.put(image.name, image);
             }
         }
     }
@@ -77,15 +84,11 @@ public class ImageManager {
     }
 
     public ImageInfoBean getFloorImageInfo() {
-        if (floorImageInfo == null) {
-            for (ImageInfoBean infoBean : allImages) {
-                if (infoBean.name.equals("floor")) {
-                    floorImageInfo = infoBean;
-                    break;
-                }
-            }
-        }
-        return floorImageInfo;
+        return getImage("floor");
+    }
+
+    public ImageInfoBean getImage(String name) {
+        return imageInfoMap.get(name);
     }
 
 
