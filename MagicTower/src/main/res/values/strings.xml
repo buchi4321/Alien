@@ -11,4 +11,7 @@
 
     <string name="new_game_tip">新游戏将会覆盖自动存档，确定吗？</string>
 
+    <string name="continue_game">继续</string>
+    <string name="finish_game">结束</string>
+
 </resources>

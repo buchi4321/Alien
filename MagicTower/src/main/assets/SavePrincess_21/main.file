@@ -2,7 +2,8 @@
     "res":"image/resources.file",
 
     "hero":{
-        "position":[0,0],
+        "position":-1,
+        "floor":0,
 
         "level":1,
         "hp":2000,
@@ -21,13 +22,13 @@
         "fly":false,
         "cross":false,
 
-        "thumb":"res/0",
+        "thumb":"res/hero",
 
         "moveImage":[
-            {"name":"down", "value":"res/down"},
-            {"name":"left", "value":"res/left"},
-            {"name":"right", "value":"res/right"},
-            {"name":"up", "value":"res/up"}
+            {"name":"down", "value":"down"},
+            {"name":"left", "value":"left"},
+            {"name":"right", "value":"right"},
+            {"name":"up", "value":"up"}
          ]
     },
 
