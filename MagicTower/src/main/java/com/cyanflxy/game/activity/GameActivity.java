@@ -35,7 +35,7 @@ public class GameActivity extends FragmentActivity implements OnGameProgressList
 
         if (!TextUtils.isEmpty(gameContext.getIntroduce())) {
             String btnString = getString(R.string.continue_game);
-            showIntroduceFragment(gameContext.getIntroduce(),btnString);
+            showIntroduceFragment(gameContext.getIntroduce(), btnString);
         }
 
     }
@@ -48,15 +48,10 @@ public class GameActivity extends FragmentActivity implements OnGameProgressList
 
         if (fragment == null) {
             FragmentTransaction ft = fm.beginTransaction();
-            fragment = IntroduceFragment.newInstance(info,btnString);
+            fragment = IntroduceFragment.newInstance(info, btnString);
             ft.add(R.id.full_fragment_content, fragment, introduceTag);
             ft.addToBackStack(null);
             ft.commit();
-        } else {
-            Bundle bundle = new Bundle();
-            bundle.putString(IntroduceFragment.ARG_INFO_STRING, info);
-            bundle.putString(IntroduceFragment.ARG_BTN_STRING, btnString);
-            fragment.setArguments(bundle);
         }
     }
 

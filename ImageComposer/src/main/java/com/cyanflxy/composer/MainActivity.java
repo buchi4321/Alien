@@ -33,8 +33,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        drawPicture();
-
+        drawSword();
     }
 
     private void writeJson() {
@@ -237,6 +236,28 @@ public class MainActivity extends Activity {
 
     }
 
+    private void drawSword() {
+        Bitmap bitmap = Bitmap.createBitmap(32, 32, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        try {
+
+            Bitmap itemBitmap = BitmapFactory.decodeStream(getAssets().open("item_4.png"));
+
+            Bitmap clip = Bitmap.createBitmap(itemBitmap, 0, 32, 32, 32);
+            canvas.drawBitmap(clip, 0, 0, null);
+
+            canvas.rotate(270);
+            canvas.save();
+
+            saveBitmap(bitmap, "sword.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            bitmap.recycle();
+        }
+    }
+
     private void drawPicture() {
 
         Bitmap bitmap = Bitmap.createBitmap(width, 832, Bitmap.Config.ARGB_8888);
@@ -271,9 +292,11 @@ public class MainActivity extends Activity {
             drawItem4();
             nextLine();
 
-            saveBitmap(bitmap);
+            saveBitmap(bitmap, "alien_resource.png");
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            bitmap.recycle();
         }
 
     }
@@ -430,10 +453,10 @@ public class MainActivity extends Activity {
         itemBitmap.recycle();
     }
 
-    private void saveBitmap(Bitmap bitmap) throws IOException {
+    private void saveBitmap(Bitmap bitmap, String fileName) throws IOException {
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(getFile("alien_resource.png"));
+            out = new FileOutputStream(getFile(fileName));
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.flush();
         } finally {

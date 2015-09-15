@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/introduce_bg"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <com.cyanflxy.game.widget.AnimateTextView
         android:id="@+id/animate_text"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
@@ -19,7 +19,7 @@
     <Button
         android:id="@+id/continue_button"
         style="@style/Button"
-        android:layout_gravity="right"
+        android:layout_gravity="bottom"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"

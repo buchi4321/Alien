@@ -11,11 +11,12 @@ import android.widget.Button;
 import com.cyanflxy.game.widget.AnimateTextView;
 import com.github.cyanflxy.magictower.R;
 
-public class IntroduceFragment extends Fragment implements View.OnClickListener {
-
+public class IntroduceFragment extends Fragment implements View.OnClickListener, AnimateTextView.OnTextAnimationListener {
 
     public static final String ARG_INFO_STRING = "info_string";
     public static final String ARG_BTN_STRING = "btn_string";
+
+    private static final String SAVE_TEXT_PROGRESS = "text_progress";
 
     public static Fragment newInstance(String infoString, String btnString) {
         Bundle bundle = new Bundle();
@@ -29,9 +30,10 @@ public class IntroduceFragment extends Fragment implements View.OnClickListener 
 
     private String infoString;
     private String btnString;
+    private int textProgress;
 
     private AnimateTextView animateTextView;
-
+    private Button continueButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +43,11 @@ public class IntroduceFragment extends Fragment implements View.OnClickListener 
         if (bundle != null) {
             infoString = bundle.getString(ARG_INFO_STRING);
             btnString = bundle.getString(ARG_BTN_STRING);
+        }
+
+        textProgress = 0;
+        if (savedInstanceState != null) {
+            textProgress = savedInstanceState.getInt(SAVE_TEXT_PROGRESS);
         }
     }
 
@@ -55,18 +62,26 @@ public class IntroduceFragment extends Fragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
 
         animateTextView = (AnimateTextView) view.findViewById(R.id.animate_text);
+        animateTextView.setOnTextAnimationEndListener(this);
         animateTextView.setString(infoString);
 
-        Button button = (Button) view.findViewById(R.id.continue_button);
-        button.setOnClickListener(this);
-        button.setText(btnString);
+        continueButton = (Button) view.findViewById(R.id.continue_button);
+        continueButton.setOnClickListener(this);
+        continueButton.setText(btnString);
+        continueButton.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        animateTextView.startAnimation(textProgress);
+    }
 
-        animateTextView.startAnimation();
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SAVE_TEXT_PROGRESS, animateTextView.getProgress());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -82,5 +97,10 @@ public class IntroduceFragment extends Fragment implements View.OnClickListener 
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onAnimationEnd() {
+        continueButton.setVisibility(View.VISIBLE);
     }
 }
