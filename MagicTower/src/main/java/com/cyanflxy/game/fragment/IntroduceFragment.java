@@ -11,7 +11,8 @@ import android.widget.Button;
 import com.cyanflxy.game.widget.AnimateTextView;
 import com.github.cyanflxy.magictower.R;
 
-public class IntroduceFragment extends Fragment implements View.OnClickListener, AnimateTextView.OnTextAnimationListener {
+public class IntroduceFragment extends BaseFragment implements
+        View.OnClickListener, AnimateTextView.OnTextAnimationListener {
 
     public static final String ARG_INFO_STRING = "info_string";
     public static final String ARG_BTN_STRING = "btn_string";
@@ -61,6 +62,8 @@ public class IntroduceFragment extends Fragment implements View.OnClickListener,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        view.setOnClickListener(this);
+
         animateTextView = (AnimateTextView) view.findViewById(R.id.animate_text);
         animateTextView.setOnTextAnimationEndListener(this);
         animateTextView.setString(infoString);
@@ -68,7 +71,7 @@ public class IntroduceFragment extends Fragment implements View.OnClickListener,
         continueButton = (Button) view.findViewById(R.id.continue_button);
         continueButton.setOnClickListener(this);
         continueButton.setText(btnString);
-        continueButton.setVisibility(View.GONE);
+        continueButton.setVisibility(View.INVISIBLE);
 
     }
 
@@ -87,12 +90,13 @@ public class IntroduceFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.continue_button:
+            case R.id.introduce_content:
                 if (!animateTextView.isAnimationEnd()) {
                     animateTextView.endAnimation();
-                } else {
-                    // TODO 结束展示
                 }
+                break;
+            case R.id.continue_button:
+                ((OnFragmentCloseListener) getActivity()).closeFragment(this);
                 break;
             default:
                 break;
@@ -103,4 +107,14 @@ public class IntroduceFragment extends Fragment implements View.OnClickListener,
     public void onAnimationEnd() {
         continueButton.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public boolean onBackPress() {
+        if (!animateTextView.isAnimationEnd()) {
+            animateTextView.endAnimation();
+            return true;
+        }
+        return false;
+    }
+
 }

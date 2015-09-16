@@ -10,6 +10,7 @@
     <string name="press_again_exit">再按一次退出</string>
 
     <string name="new_game_tip">新游戏将会覆盖自动存档，确定吗？</string>
+    <string name="delete_fail">删除存档失败</string>
 
     <string name="continue_game">继续</string>
     <string name="finish_game">结束</string>

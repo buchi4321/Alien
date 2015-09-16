@@ -1,20 +1,25 @@
 package com.cyanflxy.game.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 
 import com.cyanflxy.game.driver.GameContext;
+import com.cyanflxy.game.fragment.BaseFragment;
 import com.cyanflxy.game.fragment.IntroduceFragment;
+import com.cyanflxy.game.fragment.OnFragmentCloseListener;
+import com.github.cyanflxy.magictower.MainActivity;
 import com.github.cyanflxy.magictower.R;
 
-public class GameActivity extends FragmentActivity {
+import java.util.List;
 
-    public static final String GAME_FILE = "game_file";
+public class GameActivity extends FragmentActivity
+        implements FragmentManager.OnBackStackChangedListener,
+        OnFragmentCloseListener {
 
     private GameContext gameContext;
 
@@ -23,18 +28,83 @@ public class GameActivity extends FragmentActivity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_game);
 
-        String gameRecord = getIntent().getStringExtra(GAME_FILE);
-        gameContext = GameContext.getInstance(gameRecord);
+        gameContext = GameContext.getInstance();
+
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         if (!TextUtils.isEmpty(gameContext.getIntroduce())) {
             String btnString = getString(R.string.continue_game);
             showIntroduceFragment(gameContext.getIntroduce(), btnString);
+            gameContext.setIntroduceShown();
         }
 
     }
 
+    @Override
+    protected void onDestroy() {
+        getSupportFragmentManager().removeOnBackStackChangedListener(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        BaseFragment f = getCurrentTopFragment();
+        if (f != null) {
+            if (!f.onBackPress()) {
+                closeFragment(f);
+            }
+            return;
+        }
+
+        // TODO 显示菜单
+
+        super.onBackPressed();
+    }
+
+    @Override
+    public void closeFragment(Fragment f) {
+        getSupportFragmentManager().popBackStackImmediate();
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        if (gameContext.isFinish() && getCurrentTopFragment() == null) {
+            endGame();
+        }
+    }
+
+    private BaseFragment getCurrentTopFragment() {
+
+        FragmentManager fm = getSupportFragmentManager();
+        List<Fragment> fragments = fm.getFragments();
+
+        if (fragments != null && fragments.size() > 0) {
+            for (int i = fragments.size() - 1; i >= 0; i--) {
+                Fragment f = fragments.get(i);
+                if (f != null && f.isVisible()) {
+                    return (BaseFragment) f;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void showFinishFragment(){
+        if (!TextUtils.isEmpty(gameContext.getFinishString())) {
+            String btnString = getString(R.string.finish_game);
+            showIntroduceFragment(gameContext.getFinishString(), btnString);
+            gameContext.setFinishShown();
+        }
+    }
+
     private void showIntroduceFragment(String info, String btnString) {
-        String introduceTag = IntroduceFragment.class.getSimpleName();
+        String introduceTag = BaseFragment.getFragmentTag(IntroduceFragment.class);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentByTag(introduceTag);
@@ -48,14 +118,10 @@ public class GameActivity extends FragmentActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return super.onKeyDown(keyCode, event);
+    private void endGame() {
+        finish();
+        GameContext.destroyInstance();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
 }

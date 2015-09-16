@@ -9,10 +9,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.cyanflxy.magictower.R;
@@ -70,6 +68,11 @@ public class AnimateTextView extends View {
             return;
         }
 
+        calculateWordPosition();
+
+    }
+
+    private void calculateWordPosition() {
         int w = getWidth();
         int h = getHeight();
         if (w == width && h == height) {
@@ -128,6 +131,8 @@ public class AnimateTextView extends View {
             return;
         }
 
+        calculateWordPosition();
+
         int heightCorrect = 0;
         int maxHeight = (int) infoStringPosition[currentStringLen * 2 - 1];
         int height = getHeight();
@@ -154,14 +159,6 @@ public class AnimateTextView extends View {
         }
     }
 
-    @Override
-    public boolean dispatchTouchEvent(@NonNull MotionEvent event) {
-        if (!isAnimationEnd()) {
-            endAnimation();
-        }
-        return super.dispatchTouchEvent(event);
-    }
-
     public void setOnTextAnimationEndListener(OnTextAnimationListener l) {
         listener = l;
     }
@@ -171,10 +168,6 @@ public class AnimateTextView extends View {
         infoStringPosition = new float[str.length() * 2];
 
         requestLayout();
-    }
-
-    public void startAnimation() {
-        startAnimation(1);
     }
 
     public void startAnimation(int progress) {

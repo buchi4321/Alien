@@ -9,12 +9,11 @@ public class GameContext {
 
     private static GameContext instance;
 
-    public static GameContext getInstance(String recordName) {
-        if (instance != null && instance.recordName.equals(recordName)) {
-            return instance;
+    public static GameContext getInstance() {
+        if (instance == null) {
+            instance = new GameContext();
         }
 
-        instance = new GameContext(recordName);
         return instance;
     }
 
@@ -26,16 +25,12 @@ public class GameContext {
         }
     }
 
-    private String recordName;
     private GameBean gameData;
     private MapBean currentMap;
 
-    private GameContext(String record) {
-        recordName = record;
-        gameData = GameHistory.getGame(record);
-
-        currentMap = GameHistory.getMap(record, gameData.maps[gameData.hero.floor]);
-        // TODO record的记录数据应该复制到自动保存里面去！！
+    private GameContext() {
+        gameData = GameHistory.getGame(GameHistory.AUTO_SAVE);
+        currentMap = GameHistory.getMap(GameHistory.AUTO_SAVE, gameData.maps[gameData.hero.floor]);
     }
 
     public void autoSave() {
@@ -59,6 +54,10 @@ public class GameContext {
 
     public boolean isFinish() {
         return gameData.isFinish;
+    }
+
+    public void setFinish(){
+        gameData.isFinish = true;
     }
 
     public String getFinishString() {

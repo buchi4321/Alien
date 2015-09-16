@@ -31,12 +31,36 @@ public class GameHistory {
 
     public static boolean haveAutoSave() {
         File auto = new File(DATA_PATH, AUTO_SAVE);
-        File mainFile = new File(auto,GAME_START_FILE);
+        File mainFile = new File(auto, GAME_START_FILE);
         return mainFile.exists();
     }
 
-    public static void deleteAutoSave() {
-        // TODO STUB
+    public static boolean deleteAutoSave() {
+        return deleteRecord(AUTO_SAVE);
+    }
+
+    public static boolean deleteRecord(String recordName) {
+        return deleteFolder(new File(DATA_PATH, recordName));
+    }
+
+    private static boolean deleteFolder(File folder) {
+        File[] subFiles = folder.listFiles();
+        if (subFiles != null) {
+            for (File f : subFiles) {
+                if (f.isFile()) {
+                    if (!f.delete()) {
+                        return false;
+                    }
+                } else {
+                    if (!deleteFolder(f)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return folder.delete();
+
     }
 
     public static GameBean getGame(String record) {

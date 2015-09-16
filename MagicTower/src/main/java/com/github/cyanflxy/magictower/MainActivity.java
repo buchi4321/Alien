@@ -84,9 +84,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 newGameDialog.setOnOkClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        GameHistory.deleteAutoSave();
-                        startGame();
-                        newGameDialog.dismiss();
+                        if (GameHistory.deleteAutoSave()) {
+                            startGame();
+                            newGameDialog.dismiss();
+                        } else {
+                            Toast.makeText(MainActivity.this, R.string.delete_fail, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
@@ -98,10 +101,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void startGame() {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GameActivity.GAME_FILE, GameHistory.AUTO_SAVE);
-        startActivity(intent);
-
+        startActivity(new Intent(this, GameActivity.class));
         finish();
     }
 }
