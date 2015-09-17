@@ -1,17 +1,20 @@
 package com.cyanflxy.game.record;
 
+import android.os.Environment;
+
 import com.cyanflxy.game.bean.BeanParent;
 import com.cyanflxy.game.bean.GameBean;
 import com.cyanflxy.game.bean.MapBean;
-import com.github.cyanflxy.magictower.AppApplication;
 import com.google.gson.Gson;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import static com.github.cyanflxy.magictower.AppApplication.baseContext;
 
@@ -26,7 +29,12 @@ public class GameHistory {
     private static Gson gson = new Gson();
 
     static {
-        DATA_PATH = baseContext.getFilesDir().getAbsolutePath() + GAME_NAME;
+        DATA_PATH = Environment.getExternalStorageDirectory()+"/CyanFlxy/Alien/"+GAME_NAME;
+        new File(DATA_PATH).mkdirs();
+    }
+
+    public static String getAssetsFileName(String src) {
+        return GAME_NAME + "/" + src;
     }
 
     public static boolean haveAutoSave() {
@@ -44,6 +52,10 @@ public class GameHistory {
     }
 
     private static boolean deleteFolder(File folder) {
+        if (!folder.exists()) {
+            return true;
+        }
+
         File[] subFiles = folder.listFiles();
         if (subFiles != null) {
             for (File f : subFiles) {
@@ -65,7 +77,7 @@ public class GameHistory {
 
     public static GameBean getGame(String record) {
         String recordFile = DATA_PATH + "/" + record + "/" + GAME_START_FILE;
-        String assetsFile = GAME_NAME + "/" + GAME_START_FILE;
+        String assetsFile = getAssetsFileName(GAME_START_FILE);
 
         String content = getFileContent(recordFile, assetsFile);
         GameBean bean = gson.fromJson(content, GameBean.class);
@@ -75,7 +87,7 @@ public class GameHistory {
 
     public static MapBean getMap(String record, String mapFile) {
         String recordFile = DATA_PATH + "/" + record + "/" + mapFile;
-        String assetsFile = GAME_NAME + "/" + mapFile;
+        String assetsFile = getAssetsFileName(mapFile);
 
         String content = getFileContent(recordFile, assetsFile);
         MapBean bean = gson.fromJson(content, MapBean.class);
@@ -112,11 +124,11 @@ public class GameHistory {
 
     }
 
-    private static InputStream getAssetsFileIS(String fileName) throws IOException {
-        return AppApplication.baseContext.getAssets().open(fileName);
+    public static InputStream getAssetsFileIS(String fileName) throws IOException {
+        return baseContext.getAssets().open(fileName);
     }
 
-    private static String getInputStreamString(InputStream is) throws IOException {
+    public static String getInputStreamString(InputStream is) throws IOException {
         byte[] buffer = new byte[is.available()];
         int len = is.read(buffer);
         return new String(buffer, 0, len, "utf-8");
@@ -162,6 +174,77 @@ public class GameHistory {
     }
 
     public static boolean copyRecord(String source, String dest) {
+        File sourceFolder = new File(DATA_PATH, source);
+        File destFolder = new File(DATA_PATH, dest);
+
+        return copyFolder(sourceFolder, destFolder);
+    }
+
+    private static boolean copyFolder(File source, File dest) {
+        if (!dest.exists()) {
+            if (!dest.mkdir()) {
+                return false;
+            }
+        }
+
+        String[] sourceFiles = source.list();
+        for (String file : sourceFiles) {
+            File src = new File(source, file);
+            File dst = new File(dest, file);
+            if (src.isFile()) {
+                if (!copyFile(src, dst)) {
+                    return false;
+                }
+            } else {
+                if (!copyFolder(src, dst)) {
+                    return false;
+                }
+            }
+        }
+
         return true;
+    }
+
+    private static boolean copyFile(File src, File dst) {
+        InputStream is = null;
+        OutputStream os = null;
+        byte[] buffer = new byte[1024];
+
+        try {
+            is = new FileInputStream(src);
+            os = new FileOutputStream(dst);
+
+            while (true) {
+                int len = is.read(buffer);
+                if (len <= 0) {
+                    break;
+                }
+
+                os.write(buffer, 0, len);
+            }
+
+            os.flush();
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
+        }
+
     }
 }

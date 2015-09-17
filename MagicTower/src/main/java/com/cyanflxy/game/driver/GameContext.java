@@ -20,28 +20,31 @@ public class GameContext {
     // 从游戏界面退出的时候调用该方法
     public static void destroyInstance() {
         if (instance != null) {
-            instance.autoSave();
+            instance.destroy();
             instance = null;
         }
     }
 
     private GameBean gameData;
     private MapBean currentMap;
+    private ImageResourceManager imageResourceManager;
 
     private GameContext() {
         gameData = GameHistory.getGame(GameHistory.AUTO_SAVE);
         currentMap = GameHistory.getMap(GameHistory.AUTO_SAVE, gameData.maps[gameData.hero.floor]);
+        imageResourceManager = new ImageResourceManager(gameData.res);
     }
 
-    public void autoSave() {
-        GameHistory.saveBean(GameHistory.AUTO_SAVE, gameData);
-        GameHistory.saveBean(GameHistory.AUTO_SAVE, currentMap);
+    public boolean autoSave() {
+        return GameHistory.saveBean(GameHistory.AUTO_SAVE, gameData) &&
+                GameHistory.saveBean(GameHistory.AUTO_SAVE, currentMap);
     }
 
-    public void save(String record) {
-        GameHistory.copyRecord(GameHistory.AUTO_SAVE, record);
-        GameHistory.saveBean(record, gameData);
-        GameHistory.saveBean(record, currentMap);
+    public boolean save(String record) {
+        return GameHistory.deleteRecord(record) &&
+                GameHistory.copyRecord(GameHistory.AUTO_SAVE, record) &&
+                GameHistory.saveBean(record, gameData) &&
+                GameHistory.saveBean(record, currentMap);
     }
 
     public String getIntroduce() {
@@ -54,10 +57,6 @@ public class GameContext {
 
     public boolean isFinish() {
         return gameData.isFinish;
-    }
-
-    public void setFinish(){
-        gameData.isFinish = true;
     }
 
     public String getFinishString() {
@@ -76,5 +75,13 @@ public class GameContext {
         return currentMap;
     }
 
+    public ImageResourceManager getImageResourceManager() {
+        return imageResourceManager;
+    }
+
+    public void destroy() {
+        autoSave();
+        imageResourceManager.destroy();
+    }
 
 }

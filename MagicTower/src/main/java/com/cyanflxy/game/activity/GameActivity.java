@@ -47,6 +47,7 @@ public class GameActivity extends FragmentActivity
 
     @Override
     protected void onDestroy() {
+        GameContext.destroyInstance();
         getSupportFragmentManager().removeOnBackStackChangedListener(this);
         super.onDestroy();
     }
@@ -95,7 +96,7 @@ public class GameActivity extends FragmentActivity
         return null;
     }
 
-    private void showFinishFragment(){
+    private void showFinishFragment() {
         if (!TextUtils.isEmpty(gameContext.getFinishString())) {
             String btnString = getString(R.string.finish_game);
             showIntroduceFragment(gameContext.getFinishString(), btnString);
@@ -120,7 +121,6 @@ public class GameActivity extends FragmentActivity
 
     private void endGame() {
         finish();
-        GameContext.destroyInstance();
         startActivity(new Intent(this, MainActivity.class));
     }
 

@@ -64,6 +64,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 newGame();
                 break;
             case R.id.read_memory:
+                startGame();
                 break;
             case R.id.setting:
                 break;
