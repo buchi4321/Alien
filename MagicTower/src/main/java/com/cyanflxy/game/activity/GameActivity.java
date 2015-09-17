@@ -12,6 +12,8 @@ import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.fragment.BaseFragment;
 import com.cyanflxy.game.fragment.IntroduceFragment;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
+import com.cyanflxy.game.widget.GameControllerView;
+import com.cyanflxy.game.widget.MapView;
 import com.github.cyanflxy.magictower.MainActivity;
 import com.github.cyanflxy.magictower.R;
 
@@ -19,18 +21,26 @@ import java.util.List;
 
 public class GameActivity extends FragmentActivity
         implements FragmentManager.OnBackStackChangedListener,
-        OnFragmentCloseListener {
+        OnFragmentCloseListener, GameControllerView.MotionListener {
 
     private GameContext gameContext;
+    private MapView mapView;
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.activity_game);
-
         gameContext = GameContext.getInstance();
 
+        setContentView(R.layout.activity_game);
+
+        mapView = (MapView) findViewById(R.id.map_view);
+        mapView.setGameContext(gameContext);
+
+        GameControllerView gc = GameControllerView.addGameController(this);
+        gc.setListener(this);
+
         getSupportFragmentManager().addOnBackStackChangedListener(this);
+
     }
 
     @Override
@@ -124,4 +134,31 @@ public class GameActivity extends FragmentActivity
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    @Override
+    public void onLeft() {
+        gameContext.moveLeft();
+        onMoveAction();
+    }
+
+    @Override
+    public void onRight() {
+        gameContext.moveRight();
+        onMoveAction();
+    }
+
+    @Override
+    public void onUp() {
+        gameContext.moveUP();
+        onMoveAction();
+    }
+
+    @Override
+    public void onDown() {
+        gameContext.moveDown();
+        onMoveAction();
+    }
+
+    private void onMoveAction() {
+        mapView.checkMove();
+    }
 }

@@ -4,17 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="@string/app_name"
-        android:gravity="center"
-        android:textSize="30sp"
+    <LinearLayout
+        android:id="@+id/map_view_area"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/map_border_width"
+            android:background="@drawable/border_horizontal_repeat"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/map_border_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_vertical_repeat"/>
+
+            <com.cyanflxy.game.widget.MapView
+                android:id="@+id/map_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <View
+                android:layout_width="@dimen/map_border_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_vertical_repeat"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/map_border_width"
+            android:background="@drawable/border_horizontal_repeat"/>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/full_fragment_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
-
 </RelativeLayout>

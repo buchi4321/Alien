@@ -1,6 +1,9 @@
 {
     "floorImage": "floor",
-    "heroPosition": 104,
+
+    "upPosition":{"x":5,"y":9, "direction":"down"},
+    "downPosition":{"x":1,"y":0, "direction":"down"},
+
     "mapFloor": 1,
     "mapHeight": 11,
     "mapWidth": 11,

@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Xml;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 
@@ -33,7 +34,27 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        drawSword();
+
+        Bitmap bitmap = null;
+        try {
+            bitmap = drawBorder();
+            ImageView imageView = (ImageView) findViewById(R.id.image);
+            imageView.setImageBitmap(bitmap);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Bitmap drawBorder() throws IOException {
+        Bitmap allBitmap = BitmapFactory.decodeStream(getAssets().open("all.png"));
+        Bitmap border = Bitmap.createBitmap(allBitmap, 0, 32 * 5 +4, 8, 32 );
+        saveBitmap(border, "border.png");
+
+        allBitmap.recycle();
+        return border;
+
     }
 
     private void writeJson() {
@@ -258,7 +279,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void drawPicture() {
+    private Bitmap drawPicture() {
 
         Bitmap bitmap = Bitmap.createBitmap(width, 832, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bitmap);
@@ -266,6 +287,7 @@ public class MainActivity extends Activity {
         top = 0;
 
         try {
+            drawBg();
             drawFlow("hero.png");
 
             drawEnemy();
@@ -292,12 +314,26 @@ public class MainActivity extends Activity {
             drawItem4();
             nextLine();
 
-            saveBitmap(bitmap, "alien_resource.png");
+            saveBitmap(bitmap, "resource.png");
+            return bitmap;
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            bitmap.recycle();
+            return null;
         }
+    }
+
+    private void drawBg() throws IOException {
+        Bitmap allBitmap = BitmapFactory.decodeStream(getAssets().open("all.png"));
+        Bitmap floor = Bitmap.createBitmap(allBitmap, 3 * 32, 32, 32, 32);
+
+        for (int w = 0; w < canvas.getWidth(); w += 32) {
+            for (int h = 0; h < canvas.getHeight(); h += 32) {
+                canvas.drawBitmap(floor, w, h, null);
+            }
+        }
+
+        allBitmap.recycle();
+        floor.recycle();
 
     }
 
@@ -357,7 +393,6 @@ public class MainActivity extends Activity {
         }
         doorBitmap.recycle();
     }
-
 
     private void drawBackground() throws IOException {
         Bitmap lavaBitmap = BitmapFactory.decodeStream(getAssets().open("lava.png"));

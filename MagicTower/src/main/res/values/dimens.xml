@@ -4,5 +4,6 @@
     <dimen name="comm_dialog_padding">20dp</dimen>
 
     <dimen name="comm_text_size">18sp</dimen>
+    <dimen name="map_border_width">4dp</dimen>
 
 </resources>

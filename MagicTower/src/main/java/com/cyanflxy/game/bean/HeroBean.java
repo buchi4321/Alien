@@ -2,10 +2,10 @@ package com.cyanflxy.game.bean;
 
 import java.util.List;
 
-public class HeroBean extends BeanParent{
+public class HeroBean extends BeanParent {
 
     public int floor;//当前地图是第几层
-    public int position;//当前地图中的位置
+    public HeroPositionBean position; //当前位置
 
     public int level;//人物等级
     public int hp;//人物血量

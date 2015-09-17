@@ -5,7 +5,8 @@ public class MapBean extends BeanParent {
     public int mapFloor;
     public int mapWidth;
     public int mapHeight;
-    public int heroPosition;
+    public HeroPositionBean upPosition;
+    public HeroPositionBean downPosition;
 
     public String floorImage;
 

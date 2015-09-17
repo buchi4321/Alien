@@ -2,6 +2,7 @@ package com.cyanflxy.game.driver;
 
 import com.cyanflxy.game.bean.GameBean;
 import com.cyanflxy.game.bean.HeroBean;
+import com.cyanflxy.game.bean.HeroPositionBean;
 import com.cyanflxy.game.bean.MapBean;
 import com.cyanflxy.game.record.GameHistory;
 
@@ -33,6 +34,11 @@ public class GameContext {
         gameData = GameHistory.getGame(GameHistory.AUTO_SAVE);
         currentMap = GameHistory.getMap(GameHistory.AUTO_SAVE, gameData.maps[gameData.hero.floor]);
         imageResourceManager = new ImageResourceManager(gameData.res);
+    }
+
+    public void destroy() {
+        autoSave();
+        imageResourceManager.destroy();
     }
 
     public boolean autoSave() {
@@ -79,9 +85,39 @@ public class GameContext {
         return imageResourceManager;
     }
 
-    public void destroy() {
-        autoSave();
-        imageResourceManager.destroy();
+    public HeroPositionBean getHeroPosition() {
+        return gameData.hero.position;
     }
 
+    public void moveUP() {
+        HeroPositionBean p = getHeroPosition();
+        if (p.y > 0) {
+            p.y--;
+            p.direction = HeroPositionBean.Direction.up;
+        }
+    }
+
+    public void moveDown() {
+        HeroPositionBean p = getHeroPosition();
+        if (p.y < currentMap.mapHeight - 1) {
+            p.y++;
+            p.direction = HeroPositionBean.Direction.down;
+        }
+    }
+
+    public void moveLeft() {
+        HeroPositionBean p = getHeroPosition();
+        if (p.x > 0) {
+            p.x--;
+            p.direction = HeroPositionBean.Direction.left;
+        }
+    }
+
+    public void moveRight() {
+        HeroPositionBean p = getHeroPosition();
+        if (p.x < currentMap.mapWidth - 1) {
+            p.x++;
+            p.direction = HeroPositionBean.Direction.right;
+        }
+    }
 }

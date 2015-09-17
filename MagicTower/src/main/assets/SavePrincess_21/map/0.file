@@ -3,7 +3,8 @@
     "mapWidth":11,
     "mapHeight":11,
 
-    "heroPosition":115,
+    "upPosition":{"x":5,"y":10, "direction":"down"},
+    "downPosition":{"x":5,"y":1, "direction":"down"},
 
     "floorImage":"floor",
 

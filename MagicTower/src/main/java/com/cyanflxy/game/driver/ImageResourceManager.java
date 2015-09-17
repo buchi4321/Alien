@@ -3,6 +3,7 @@ package com.cyanflxy.game.driver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.cyanflxy.game.bean.HeroPositionBean.Direction;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.ImageResourceBean;
 import com.cyanflxy.game.record.GameHistory;
@@ -22,6 +23,8 @@ public class ImageResourceManager {
 
     private Map<String, ImageInfoBean> imageInfoMap;
     private Map<Integer, Bitmap> bitmapCache;
+
+    private int heroMoveStep;
 
     public ImageResourceManager(String resourceFile) {
         bitmapCache = new WeakHashMap<>();
@@ -65,6 +68,7 @@ public class ImageResourceManager {
         }
 
         initImageInfo();
+        initHeroMoveStep();
     }
 
     private void initImageInfo() {
@@ -79,6 +83,17 @@ public class ImageResourceManager {
         }
     }
 
+    private void initHeroMoveStep() {
+        heroMoveStep = Integer.MAX_VALUE;
+
+        for (Direction d : Direction.values()) {
+            ImageInfoBean info = imageInfoMap.get(d.name());
+            int len = info.getIdLength();
+            if (heroMoveStep > len) {
+                heroMoveStep = len;
+            }
+        }
+    }
 
     public ImageInfoBean getImage(String name) {
         return imageInfoMap.get(name);
@@ -99,6 +114,10 @@ public class ImageResourceManager {
             bitmapCache.put(id, bitmap);
         }
         return bitmap;
+    }
+
+    public int getHeroMoveStep() {
+        return heroMoveStep;
     }
 
     public void destroy() {

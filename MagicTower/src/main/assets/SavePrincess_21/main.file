@@ -2,7 +2,7 @@
     "res":"image/resources.file",
 
     "hero":{
-        "position":-1,
+        "position":{"x":5,"y":10, "direction":"down"},
         "floor":0,
 
         "level":1,
