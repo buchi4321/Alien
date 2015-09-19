@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cyanflxy.mapcreator.bean.EnemyPropertyBean;
 import com.cyanflxy.mapcreator.bean.ImageInfoBean;
@@ -161,10 +160,6 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
     }
 
     private void save() {
-        if (mapCreateView.getHeroPosition() < 0) {
-            Toast.makeText(this, "没有设置主角位置", Toast.LENGTH_SHORT).show();
-        }
-
         File floorFile = getFile(currentFloor);
         FileOutputStream fos = null;
         try {
@@ -217,17 +212,14 @@ public class MainActivity extends Activity implements View.OnClickListener, MapE
 
     private String getMapJson() {
         MapBean mapBean = new MapBean(currentFloor);
-
-        int p = mapCreateView.getHeroPosition();
-        mapBean.setHeroPosition(p);
         mapBean.setMapData(mapCreateView.getMapData());
-
         return mapBean.toJson();
     }
 
     private void loadMap() {
         File mapFile = getFile(currentFloor);
         if (!mapFile.exists()) {
+            mapCreateView.clearMap();
             return;
         }
 

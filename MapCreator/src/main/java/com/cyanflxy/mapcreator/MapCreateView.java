@@ -41,8 +41,6 @@ public class MapCreateView extends View {
     private float touchY;
     private ImageInfoBean currentImage;
 
-    private int heroPosition;
-
     public MapCreateView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -66,7 +64,6 @@ public class MapCreateView extends View {
         touchX = -1;
         touchY = -1;
 
-        heroPosition = -1;
         mapData = new ImageInfoBean[WIDTH_PIECE * HEIGHT_PIECE];
     }
 
@@ -113,13 +110,6 @@ public class MapCreateView extends View {
         }
     }
 
-//    public void setPiece(int w, int h) {
-//
-//        // 如果地图宽高有变化，应该在这里改动数据
-//
-//        requestLayout();
-//    }
-
     public void setImageManager(ImageManager imageManager) {
         this.imageManager = imageManager;
     }
@@ -130,10 +120,6 @@ public class MapCreateView extends View {
 
     public ImageInfoBean[] getMapData() {
         return mapData;
-    }
-
-    public int getHeroPosition() {
-        return heroPosition;
     }
 
     public void loadMapData(MapBean mapBean) {
@@ -147,9 +133,12 @@ public class MapCreateView extends View {
             }
         }
 
-        heroPosition = mapBean.heroPosition;
-        mapData[heroPosition] = imageManager.getImage("hero");
+        invalidate();
+    }
 
+    public void clearMap(){
+        currentImage = null;
+        Arrays.fill(mapData, null);
         invalidate();
     }
 
@@ -193,6 +182,7 @@ public class MapCreateView extends View {
 
         canvas.drawPath(outBorder, linePaint);
         canvas.drawPath(dotPath, dotPaint);
+
     }
 
     @Override
@@ -212,7 +202,6 @@ public class MapCreateView extends View {
                 if (currentImage != null) {
                     int focusId = calculateTouchId(touchX, touchY);
                     if (focusId >= 0 && focusId < mapData.length) {
-                        checkHero(focusId);
                         mapData[focusId] = currentImage;
                     }
                 }
@@ -230,10 +219,4 @@ public class MapCreateView extends View {
         return row * WIDTH_PIECE + col;
     }
 
-    private void checkHero(int id) {
-        if ("hero".equals(currentImage.name)) {
-            heroPosition = id;
-        }
-
-    }
 }

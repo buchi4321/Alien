@@ -68,11 +68,8 @@ public class ImageManager {
             }
 
             nameSet.add(name);
-            if ("hero".equals(image.name)) {
-                allImages.add(image);
-                imageInfoMap.put(image.name, image);
-            }
-            if (!"hero".equals(image.type)) {
+
+            if (!image.name.equals("hero")) {
                 allImages.add(image);
                 imageInfoMap.put(image.name, image);
             }
