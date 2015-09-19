@@ -90,34 +90,34 @@ public class GameContext {
     }
 
     public void moveUP() {
-        HeroPositionBean p = getHeroPosition();
-        if (p.y > 0) {
-            p.y--;
-            p.direction = HeroPositionBean.Direction.up;
-        }
+//        HeroPositionBean p = getHeroPosition();
+//        if (p.y > 0) {
+//            p.y--;
+//            p.direction = HeroPositionBean.Direction.up;
+//        }
     }
 
     public void moveDown() {
-        HeroPositionBean p = getHeroPosition();
-        if (p.y < currentMap.mapHeight - 1) {
-            p.y++;
-            p.direction = HeroPositionBean.Direction.down;
-        }
+//        HeroPositionBean p = getHeroPosition();
+//        if (p.y < currentMap.mapHeight - 1) {
+//            p.y++;
+//            p.direction = HeroPositionBean.Direction.down;
+//        }
     }
 
     public void moveLeft() {
-        HeroPositionBean p = getHeroPosition();
-        if (p.x > 0) {
-            p.x--;
-            p.direction = HeroPositionBean.Direction.left;
-        }
+//        HeroPositionBean p = getHeroPosition();
+//        if (p.x > 0) {
+//            p.x--;
+//            p.direction = HeroPositionBean.Direction.left;
+//        }
     }
 
     public void moveRight() {
-        HeroPositionBean p = getHeroPosition();
-        if (p.x < currentMap.mapWidth - 1) {
-            p.x++;
-            p.direction = HeroPositionBean.Direction.right;
-        }
+//        HeroPositionBean p = getHeroPosition();
+//        if (p.x < currentMap.mapWidth - 1) {
+//            p.x++;
+//            p.direction = HeroPositionBean.Direction.right;
+//        }
     }
 }

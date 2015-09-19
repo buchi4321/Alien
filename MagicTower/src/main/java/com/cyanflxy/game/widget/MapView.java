@@ -19,7 +19,7 @@ import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.ImageResourceManager;
 
 import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -28,11 +28,10 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 public class MapView extends View {
 
     private static final int ANIMATION_DURATION = 500;
-    private static final int OPEN_DOOR_DURATION = 70;
+    private static final int OPEN_DOOR_DURATION = 50;
     public static final int HERO_MOVE_DURATION = 100;
 
     private int widthPiece = 11;
@@ -98,7 +97,18 @@ public class MapView extends View {
 
     @Override
     protected void onDetachedFromWindow() {
-        threadPool.shutdown();
+        threadPool.shutdownNow();
+
+        animateHandler.removeMessages(MSG_MAP_ANIMATION);
+
+        if (animateHandler.hasMessages(MSG_HERO_ANIMATION)) {
+            animateHandler.removeMessages(MSG_HERO_ANIMATION);
+        }
+
+        if (animateHandler.hasMessages(MSG_OPEN_DOOR)) {
+            animateHandler.removeMessages(MSG_OPEN_DOOR);
+        }
+
         super.onDetachedFromWindow();
     }
 
@@ -159,6 +169,7 @@ public class MapView extends View {
 
         Bitmap bitmap = getHeroBitmap(p.direction, phase);
         canvas.drawBitmap(bitmap, null, imageRect, null);
+
     }
 
     public void setGameContext(GameContext gameContext) {
@@ -167,7 +178,7 @@ public class MapView extends View {
         imageResourceManager = gameContext.getImageResourceManager();
 
         MapBean map = gameContext.getCurrentMap();
-        int id = imageResourceManager.getImage(map.floorImage).id;
+        int id = imageResourceManager.getImage(map.floorImage).getId();
         floorBitmap = imageResourceManager.getBitmap(id);
 
         HeroPositionBean p = gameContext.getHeroPosition();
@@ -216,26 +227,20 @@ public class MapView extends View {
         } else {
             ImageInfoBean info = imageResourceManager.getImage(imageName);
 
-            if ("door".equals(info.type)) {
-                return imageResourceManager.getBitmap(info.ids[0]);
-            } else if (info.ids != null && info.ids.length > 0) {
-                int index = mapAnimatePhase % info.ids.length;
-                return imageResourceManager.getBitmap(info.ids[index]);
-            } else {
-                return imageResourceManager.getBitmap(info.id);
+            int index = 0;
+            if (info.getIdLength() > 0 && !"door".equals(info.type)) {
+                index = mapAnimatePhase % info.getIdLength();
             }
+
+            return imageResourceManager.getBitmap(info.getId(index));
         }
     }
 
     private Bitmap getHeroBitmap(HeroPositionBean.Direction d, int phase) {
         String name = d.name();
         ImageInfoBean info = imageResourceManager.getImage(name);
-        if (info.ids != null && info.ids.length > 0) {
-            int index = phase % info.ids.length;
-            return imageResourceManager.getBitmap(info.ids[index]);
-        } else {
-            return imageResourceManager.getBitmap(info.id);
-        }
+        int index = phase % info.getIdLength();
+        return imageResourceManager.getBitmap(info.getId(index));
     }
 
     // 主角移动处理代码
@@ -352,7 +357,7 @@ public class MapView extends View {
         private Reference<MapView> mapViewRef;
 
         public AnimateHandler(MapView mapView) {
-            mapViewRef = new WeakReference<>(mapView);
+            mapViewRef = new SoftReference<>(mapView);
         }
 
         @Override
