@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+    }
 
     }
 
@@ -287,7 +287,7 @@ public class MainActivity extends Activity {
         top = 0;
 
         try {
-            drawBg();
+            //drawBg();
             drawFlow("hero.png");
 
             drawEnemy();

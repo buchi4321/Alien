@@ -44,6 +44,15 @@
 
     </LinearLayout>
 
+    <com.cyanflxy.game.widget.HeroInfoVerticalView
+        android:id="@+id/hero_info_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toEndOf="@+id/map_view_area"
+        android:layout_toRightOf="@+id/map_view_area"/>
+
     <FrameLayout
         android:id="@+id/full_fragment_content"
         android:layout_width="match_parent"

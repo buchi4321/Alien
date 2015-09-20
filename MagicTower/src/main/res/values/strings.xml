@@ -15,4 +15,12 @@
     <string name="continue_game">继续</string>
     <string name="finish_game">结束</string>
 
+    <string name="hero_level">等级</string>
+    <string name="hero_hp">生命</string>
+    <string name="hero_damage">攻击</string>
+    <string name="hero_defence">防御</string>
+    <string name="hero_money">金钱</string>
+    <string name="hero_exp">经验</string>
+    <string name="floor">第%1$d层</string>
+
 </resources>

@@ -12,17 +12,16 @@
         "money":0,
         "exp":0,
 
-        "keys":[
-            {"name":"yellow","value":0},
-            {"name":"blue","value":0},
-            {"name":"red","value":0}
-        ],
+        "yellowKey":0,
+        "blueKey":0,
+        "redKey":0,
+        "keyImage":["yellow_key","blue_key","red_key"],
 
         "lookUp":false,
         "fly":false,
         "cross":false,
 
-        "thumb":"res/hero",
+        "avatar":"hero",
 
         "moveImage":[
             {"name":"down", "value":"down"},

@@ -99,6 +99,11 @@ public class ImageResourceManager {
         return imageInfoMap.get(name);
     }
 
+    public Bitmap getBitmap(String name) {
+        ImageInfoBean info = getImage(name);
+        return getBitmap(info.getId());
+    }
+
     public Bitmap getBitmap(int id) {
         Bitmap bitmap = bitmapCache.get(id);
         if (bitmap == null) {

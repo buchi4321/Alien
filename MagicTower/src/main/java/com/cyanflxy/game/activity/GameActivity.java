@@ -13,6 +13,7 @@ import com.cyanflxy.game.fragment.BaseFragment;
 import com.cyanflxy.game.fragment.IntroduceFragment;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.widget.GameControllerView;
+import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
 import com.github.cyanflxy.magictower.MainActivity;
 import com.github.cyanflxy.magictower.R;
@@ -25,6 +26,7 @@ public class GameActivity extends FragmentActivity
 
     private GameContext gameContext;
     private MapView mapView;
+    private HeroInfoView heroInfoView;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -35,6 +37,9 @@ public class GameActivity extends FragmentActivity
 
         mapView = (MapView) findViewById(R.id.map_view);
         mapView.setGameContext(gameContext);
+
+        heroInfoView = (HeroInfoView) findViewById(R.id.hero_info_view);
+        heroInfoView.setGameContext(gameContext);
 
         GameControllerView gc = GameControllerView.addGameController(this);
         gc.setListener(this);
@@ -160,5 +165,6 @@ public class GameActivity extends FragmentActivity
 
     private void onMoveAction() {
         mapView.checkMove();
+        heroInfoView.refreshInfo();
     }
 }

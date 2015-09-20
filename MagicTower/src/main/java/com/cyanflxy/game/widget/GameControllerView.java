@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import com.cyanflxy.common.Utils;
+
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class GameControllerView extends FrameLayout implements View.OnTouchListener {
@@ -35,8 +37,10 @@ public class GameControllerView extends FrameLayout implements View.OnTouchListe
         void onDown();
     }
 
+    private static final int EFFECTIVE_MOTION_DP = 50;
+
     private final float EFFECTIVE_MOTION;
-    private static final float DIRECTION_PROPORTION = 2;
+    private static final float DIRECTION_PROPORTION = 2;// 方向确认比例
 
     private float touchX;
     private float touchY;
@@ -45,7 +49,7 @@ public class GameControllerView extends FrameLayout implements View.OnTouchListe
 
     public GameControllerView(Context context) {
         super(context);
-        EFFECTIVE_MOTION = dip2px(context, 80);
+        EFFECTIVE_MOTION = Utils.dip2px(EFFECTIVE_MOTION_DP);
 
         setOnTouchListener(this);
     }
@@ -111,8 +115,4 @@ public class GameControllerView extends FrameLayout implements View.OnTouchListe
         }
     }
 
-    private int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale);
-    }
 }

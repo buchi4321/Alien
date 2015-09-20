@@ -24,6 +24,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -123,13 +124,16 @@ public class MapView extends View {
         onMapChange();
 
         MapBean map = gameContext.getCurrentMap();
+        Bitmap floorBitmap = imageResourceManager.getBitmap(map.floorImage);
 
         int imageIndex = 0;
         for (int row = 0; row < heightPiece; row++) {
             for (int col = 0; col < widthPiece; col++) {
 
                 String imageName = map.mapData[imageIndex].element;
-                canvas.drawBitmap(getBitmap(imageName), null, getImageRect(row, col), null);
+                imageRect = getImageRect(row, col);
+                canvas.drawBitmap(floorBitmap, null, imageRect, null);
+                canvas.drawBitmap(getBitmap(imageName), null, imageRect, null);
 
                 imageIndex++;
 
@@ -314,11 +318,14 @@ public class MapView extends View {
 
                 lastPosition = p.copy();
 
+                int waitTime = HERO_MOVE_DURATION * (imageResourceManager.getHeroMoveStep() + 1);
                 heroMoveStepLock.lock();
                 try {
                     while (heroAnimatePhase != -1) {
                         try {
-                            heroMoveSignal.await();
+                            if (!heroMoveSignal.await(waitTime, TimeUnit.MILLISECONDS)) {
+                                break;// 等待时间到，不管是否被唤醒问题
+                            }
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }

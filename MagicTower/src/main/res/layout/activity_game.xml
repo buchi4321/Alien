@@ -44,6 +44,13 @@
             android:background="@drawable/border_horizontal_repeat"/>
     </LinearLayout>
 
+    <com.cyanflxy.game.widget.HeroInfoHorizontalView
+        android:id="@+id/hero_info_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/map_view_area"/>
+
     <FrameLayout
         android:id="@+id/full_fragment_content"
         android:layout_width="match_parent"

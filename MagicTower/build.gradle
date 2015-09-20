@@ -17,6 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors{
+        Alien{
+            buildConfigField "boolean", "QUICK", "false"
+        }
+        Alien2{
+            buildConfigField "boolean", "QUICK", "true"
+        }
+    }
 }
 
 dependencies {
