@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/dialog_bg"
+    android:padding="10dp">
+
+    <com.cyanflxy.game.widget.HeadView
+        android:id="@+id/head_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="fitXY"/>
+
+    <com.cyanflxy.game.widget.AnimateTextView
+        android:id="@+id/animate_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/head_view"
+        android:layout_toRightOf="@+id/head_view"/>
+
+    <Button
+        android:id="@+id/end_dialogue"
+        style="@style/Button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom"
+        android:text="@string/end_dialogue"/>
+
+</RelativeLayout>

@@ -23,4 +23,18 @@ public class Utils {
         final float fontScale = baseContext.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
+
+    public static boolean isArrayEmpty(Object[] array) {
+        if (array == null || array.length == 0) {
+            return true;
+        }
+
+        for (Object o : array) {
+            if (o != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

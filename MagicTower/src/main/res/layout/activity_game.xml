@@ -51,9 +51,21 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/map_view_area"/>
 
+
+    <!-- 以下是Fragment区域 -->
+
+    <!-- 全屏Fragment -->
     <FrameLayout
         android:id="@+id/full_fragment_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+    </FrameLayout>
+
+    <!-- 下半屏的Fragment - 对话框-->
+    <FrameLayout
+        android:id="@+id/bottom_half_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
     </FrameLayout>
 </RelativeLayout>

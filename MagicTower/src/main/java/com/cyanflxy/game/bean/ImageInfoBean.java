@@ -4,7 +4,7 @@ public class ImageInfoBean extends BeanParent {
 
     public String name;
     public int[] ids;
-    public String type;
+    public ImageType type;
     public EnemyPropertyBean property;
 
     public int getIdLength() {
@@ -19,4 +19,7 @@ public class ImageInfoBean extends BeanParent {
         return ids[index];
     }
 
+    public enum ImageType{
+        hero,enemy,goods,npc,wall,floor,door
+    }
 }

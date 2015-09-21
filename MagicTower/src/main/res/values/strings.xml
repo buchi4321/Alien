@@ -23,4 +23,5 @@
     <string name="hero_exp">经验</string>
     <string name="floor">第%1$d层</string>
 
+    <string name="end_dialogue">结束对话</string>
 </resources>

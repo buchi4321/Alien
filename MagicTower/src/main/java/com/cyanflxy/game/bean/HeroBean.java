@@ -1,7 +1,5 @@
 package com.cyanflxy.game.bean;
 
-import java.util.List;
-
 public class HeroBean extends BeanParent {
 
     public int floor;//当前地图是第几层
@@ -23,9 +21,9 @@ public class HeroBean extends BeanParent {
     public boolean lookUp;// 是否可以查看怪物属性
     public boolean fly;//是否可以飞行跳转
     public boolean cross;//是否有十字架
+    public boolean hoe; //是否有榔头
 
     public String avatar;//人物头像
-    public List<MoveImageEntity> moveImage;//人物移动图片
 
     public static class MoveImageEntity {
         public String name;

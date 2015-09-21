@@ -1,9 +1,16 @@
 package com.cyanflxy.game.driver;
 
+import android.text.TextUtils;
+
+import com.cyanflxy.common.Utils;
+import com.cyanflxy.game.bean.DialogueBean;
 import com.cyanflxy.game.bean.GameBean;
 import com.cyanflxy.game.bean.HeroBean;
 import com.cyanflxy.game.bean.HeroPositionBean;
+import com.cyanflxy.game.bean.ImageInfoBean;
+import com.cyanflxy.game.bean.ImageInfoBean.ImageType;
 import com.cyanflxy.game.bean.MapBean;
+import com.cyanflxy.game.bean.MapElementBean;
 import com.cyanflxy.game.record.GameHistory;
 
 public class GameContext {
@@ -28,7 +35,11 @@ public class GameContext {
 
     private GameBean gameData;
     private MapBean currentMap;
+
+    private DialogueBean currentDialogue;
     private ImageResourceManager imageResourceManager;
+
+    private OnGameProcessListener gameListener;
 
     private GameContext() {
         gameData = GameHistory.getGame(GameHistory.AUTO_SAVE);
@@ -36,7 +47,12 @@ public class GameContext {
         imageResourceManager = new ImageResourceManager(gameData.res);
     }
 
+    public void setGameListener(OnGameProcessListener l) {
+        gameListener = l;
+    }
+
     public void destroy() {
+        gameListener = null;
         autoSave();
         imageResourceManager.destroy();
     }
@@ -90,34 +106,119 @@ public class GameContext {
     }
 
     public void moveUP() {
-//        HeroPositionBean p = getHeroPosition();
-//        if (p.y > 0) {
-//            p.y--;
-//            p.direction = HeroPositionBean.Direction.up;
-//        }
+        HeroPositionBean p = getHeroPosition();
+        if (moveTo(p.x, p.y - 1)) {
+            p.y--;
+            p.direction = HeroPositionBean.Direction.up;
+        }
     }
 
     public void moveDown() {
-//        HeroPositionBean p = getHeroPosition();
-//        if (p.y < currentMap.mapHeight - 1) {
-//            p.y++;
-//            p.direction = HeroPositionBean.Direction.down;
-//        }
+        HeroPositionBean p = getHeroPosition();
+        if (moveTo(p.x, p.y + 1)) {
+            p.y++;
+            p.direction = HeroPositionBean.Direction.down;
+        }
     }
 
     public void moveLeft() {
-//        HeroPositionBean p = getHeroPosition();
-//        if (p.x > 0) {
-//            p.x--;
-//            p.direction = HeroPositionBean.Direction.left;
-//        }
+        HeroPositionBean p = getHeroPosition();
+        if (moveTo(p.x - 1, p.y)) {
+            p.x--;
+            p.direction = HeroPositionBean.Direction.left;
+        }
     }
 
     public void moveRight() {
-//        HeroPositionBean p = getHeroPosition();
-//        if (p.x < currentMap.mapWidth - 1) {
-//            p.x++;
-//            p.direction = HeroPositionBean.Direction.right;
-//        }
+        HeroPositionBean p = getHeroPosition();
+        if (moveTo(p.x + 1, p.y)) {
+            p.x++;
+            p.direction = HeroPositionBean.Direction.right;
+        }
+    }
+
+    private boolean moveTo(int x, int y) {
+        MapElementBean element = getMapElement(x, y);
+        if (element == null) {
+            return false;
+        }
+
+        ImageInfoBean info = imageResourceManager.getImage(element.element);
+
+        boolean canMove = canMoveTo(element, info);
+
+        if (!Utils.isArrayEmpty(element.dialog)) {
+            DialogueBean d = getDialogue(element.dialog);
+            if (gameListener != null) {
+                gameListener.showDialogue();
+            }
+        }
+
+        // TODO 处理NPC对话
+        // TODO 处理获取物品（Toast展示）
+        // TODO 处理敌人遭遇
+        // TODO 处理商店
+
+        return canMove;
+    }
+
+    private MapElementBean getMapElement(int x, int y) {
+        if (x >= 0 && x < currentMap.mapWidth && y >= 0 && y < currentMap.mapHeight) {
+            int index = y * currentMap.mapWidth + x;
+            return currentMap.mapData[index];
+        }
+        return null;
+    }
+
+    private boolean canMoveTo(MapElementBean element, ImageInfoBean info) {
+        if (element == null) {
+            return false;
+        }
+
+        if (TextUtils.isEmpty(element.element)) {
+            return true;
+        }
+
+        if (info.type == ImageType.goods) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 获取合适的对话
+     */
+    private DialogueBean getDialogue(DialogueBean[] dialogues) {
+        currentDialogue = null;
+        int index = 0;
+
+        for (; index < dialogues.length; index++) {
+            DialogueBean d = dialogues[index];
+
+            if (d != null) {
+                if (!Utils.isArrayEmpty(d.dialogues)) {
+                    currentDialogue = d;
+                    break;
+                } else if (!TextUtils.isEmpty(d.condition) && !Utils.isArrayEmpty(d.conditionResult)) {
+                    // 条件判断
+                    int i = ActionParser.parseCondition(gameData, d.condition);
+                    if (i >= 0 && i < d.conditionResult.length) {
+                        currentDialogue = d.conditionResult[i];
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (currentDialogue != null && currentDialogue.end) {
+            dialogues[index] = null;
+        }
+
+        return currentDialogue;
+    }
+
+    public DialogueBean getCurrentDialogue() {
+        return currentDialogue;
     }
 }

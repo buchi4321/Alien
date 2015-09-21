@@ -9,8 +9,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.cyanflxy.magictower.R;
@@ -45,8 +47,17 @@ public class AnimateTextView extends View {
     private Bitmap cursorBitmap;
     private RectF cursorRect = new RectF();
 
+    // 滑动手势
+    private float touchX;
+    private float touchY;
+    private float lastY;
+    private float drawTop;
+    private float maxTop;
+    private boolean showTouchTop;
+
     private Handler animateHandler;
     private OnTextAnimationListener listener;
+    private OnClickListener onClickListener;
 
     public AnimateTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -58,6 +69,7 @@ public class AnimateTextView extends View {
         drawPaint.setFakeBoldText(true);
 
         cursorBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sward_cursor);
+
     }
 
     @Override
@@ -68,22 +80,62 @@ public class AnimateTextView extends View {
             return;
         }
 
-        calculateWordPosition();
+        calculateWordPosition(false);
 
     }
 
-    private void calculateWordPosition() {
+    @Override
+    public boolean dispatchTouchEvent(@NonNull MotionEvent event) {
+        int action = event.getAction();
+        float x = event.getX();
+        float y = event.getY();
+
+        if (action == MotionEvent.ACTION_DOWN) {
+            if (isAnimationEnd()) {
+                touchX = x;
+                touchY = y;
+                lastY = drawTop;
+            }
+        } else if (action == MotionEvent.ACTION_MOVE) {
+            if (isAnimationEnd()) {
+                drawTop = lastY + touchY - y;
+                if (drawTop < 0) {
+                    drawTop = 0;
+                } else if (drawTop > maxTop) {
+                    drawTop = maxTop;
+                }
+                showTouchTop = true;
+                invalidate();
+            }
+        } else if (action == MotionEvent.ACTION_UP) {
+            if (onClickListener != null) {
+                onClickListener.onClick(this);
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        onClickListener = l;
+    }
+
+    private void calculateWordPosition(boolean force) {
+
         int w = getWidth();
         int h = getHeight();
-        if (w == width && h == height) {
+        if (!force && w == width && h == height) {
             return;
         }
 
         width = w;
         height = h;
 
-        drawPaint.getTextBounds(infoString, 0, 1, wordRect);
+        drawPaint.getTextBounds(infoString, 0, infoString.length(), wordRect);
         wordHeight = wordRect.height();
+
+        drawPaint.getTextBounds(infoString, 0, 1, wordRect);
         wordWidth = wordRect.width();
         int lastWordWidth = wordWidth;
 
@@ -121,6 +173,13 @@ public class AnimateTextView extends View {
 
         }
 
+        int maxHeight = (int) infoStringPosition[infoStringPosition.length - 1];
+        maxTop = maxHeight - height + 10;
+        if (maxTop < 0) {
+            maxTop = 0;
+        }
+        drawTop = maxTop;
+
     }
 
     @Override
@@ -131,14 +190,18 @@ public class AnimateTextView extends View {
             return;
         }
 
-        calculateWordPosition();
+        calculateWordPosition(false);
 
-        int heightCorrect = 0;
-        int maxHeight = (int) infoStringPosition[currentStringLen * 2 - 1];
-        int height = getHeight();
+        float heightCorrect = 0;
+        if (isAnimationEnd() && showTouchTop) {
+            heightCorrect = drawTop;
+        } else {
+            int maxHeight = (int) infoStringPosition[currentStringLen * 2 - 1];
+            int height = getHeight();
 
-        if (maxHeight > height) {
-            heightCorrect = maxHeight - height + 10;
+            if (maxHeight > height) {
+                heightCorrect = maxHeight - height + 10;
+            }
         }
 
         for (int i = 0; i < currentStringLen; i++) {
@@ -166,8 +229,10 @@ public class AnimateTextView extends View {
     public void setString(String str) {
         infoString = str;
         infoStringPosition = new float[str.length() * 2];
+        drawTop = 0;
+        showTouchTop = false;
 
-        requestLayout();
+        calculateWordPosition(true);
     }
 
     public void startAnimation(int progress) {
@@ -182,6 +247,12 @@ public class AnimateTextView extends View {
         currentStringLen = progress;
         animateHandler.sendEmptyMessageDelayed(0, ANIMATE_DURATION);
         invalidate();
+    }
+
+    public void stopAnimation() {
+        if (animateHandler != null && animateHandler.hasMessages(0)) {
+            animateHandler.removeMessages(0);
+        }
     }
 
     public int getProgress() {

@@ -137,7 +137,7 @@
                         "end":true
                     },
                     {
-                        "condition":"hero.cross:false;true",
+                        "condition":"hero.cross:false,true",
                         "conditionResult":[
                                 {
                                     "dialogues":[

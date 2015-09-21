@@ -97,23 +97,6 @@ public class MapView extends View {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        threadPool.shutdownNow();
-
-        animateHandler.removeMessages(MSG_MAP_ANIMATION);
-
-        if (animateHandler.hasMessages(MSG_HERO_ANIMATION)) {
-            animateHandler.removeMessages(MSG_HERO_ANIMATION);
-        }
-
-        if (animateHandler.hasMessages(MSG_OPEN_DOOR)) {
-            animateHandler.removeMessages(MSG_OPEN_DOOR);
-        }
-
-        super.onDetachedFromWindow();
-    }
-
-    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
@@ -232,7 +215,7 @@ public class MapView extends View {
             ImageInfoBean info = imageResourceManager.getImage(imageName);
 
             int index = 0;
-            if (info.getIdLength() > 0 && !"door".equals(info.type)) {
+            if (info.getIdLength() > 0 && info.type != ImageInfoBean.ImageType.door) {
                 index = mapAnimatePhase % info.getIdLength();
             }
 
@@ -253,6 +236,21 @@ public class MapView extends View {
 
         Runnable heroPosition = new HeroMovePutThread(p);
         threadPool.execute(heroPosition);
+
+    }
+
+    public void onDestroy() {
+        threadPool.shutdownNow();
+
+        animateHandler.removeMessages(MSG_MAP_ANIMATION);
+
+        if (animateHandler.hasMessages(MSG_HERO_ANIMATION)) {
+            animateHandler.removeMessages(MSG_HERO_ANIMATION);
+        }
+
+        if (animateHandler.hasMessages(MSG_OPEN_DOOR)) {
+            animateHandler.removeMessages(MSG_OPEN_DOOR);
+        }
 
     }
 

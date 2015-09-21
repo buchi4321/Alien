@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
 import com.cyanflxy.game.driver.GameContext;
+import com.cyanflxy.game.driver.OnGameProcessListener;
 import com.cyanflxy.game.fragment.BaseFragment;
+import com.cyanflxy.game.fragment.DialogueFragment;
 import com.cyanflxy.game.fragment.IntroduceFragment;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.widget.GameControllerView;
@@ -22,7 +24,8 @@ import java.util.List;
 
 public class GameActivity extends FragmentActivity
         implements FragmentManager.OnBackStackChangedListener,
-        OnFragmentCloseListener, GameControllerView.MotionListener {
+        OnFragmentCloseListener, GameControllerView.MotionListener,
+        OnGameProcessListener {
 
     private GameContext gameContext;
     private MapView mapView;
@@ -32,6 +35,7 @@ public class GameActivity extends FragmentActivity
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         gameContext = GameContext.getInstance();
+        gameContext.setGameListener(this);
 
         setContentView(R.layout.activity_game);
 
@@ -46,23 +50,15 @@ public class GameActivity extends FragmentActivity
 
         getSupportFragmentManager().addOnBackStackChangedListener(this);
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
         if (!TextUtils.isEmpty(gameContext.getIntroduce())) {
             String btnString = getString(R.string.continue_game);
             showIntroduceFragment(gameContext.getIntroduce(), btnString);
             gameContext.setIntroduceShown();
         }
-
     }
 
     @Override
     protected void onDestroy() {
-        GameContext.destroyInstance();
         getSupportFragmentManager().removeOnBackStackChangedListener(this);
         super.onDestroy();
     }
@@ -79,6 +75,8 @@ public class GameActivity extends FragmentActivity
         }
 
         // TODO 显示菜单
+
+        cleanUp();
 
         super.onBackPressed();
     }
@@ -120,15 +118,15 @@ public class GameActivity extends FragmentActivity
     }
 
     private void showIntroduceFragment(String info, String btnString) {
-        String introduceTag = BaseFragment.getFragmentTag(IntroduceFragment.class);
+        String tag = BaseFragment.getFragmentTag(IntroduceFragment.class);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentByTag(introduceTag);
+        Fragment fragment = fm.findFragmentByTag(tag);
 
         if (fragment == null) {
             FragmentTransaction ft = fm.beginTransaction();
             fragment = IntroduceFragment.newInstance(info, btnString);
-            ft.add(R.id.full_fragment_content, fragment, introduceTag);
+            ft.add(R.id.full_fragment_content, fragment, tag);
             ft.addToBackStack(null);
             ft.commit();
         }
@@ -141,24 +139,40 @@ public class GameActivity extends FragmentActivity
 
     @Override
     public void onLeft() {
+        if (getCurrentTopFragment() != null) {
+            return;
+        }
+
         gameContext.moveLeft();
         onMoveAction();
     }
 
     @Override
     public void onRight() {
+        if (getCurrentTopFragment() != null) {
+            return;
+        }
+
         gameContext.moveRight();
         onMoveAction();
     }
 
     @Override
     public void onUp() {
+        if (getCurrentTopFragment() != null) {
+            return;
+        }
+
         gameContext.moveUP();
         onMoveAction();
     }
 
     @Override
     public void onDown() {
+        if (getCurrentTopFragment() != null) {
+            return;
+        }
+
         gameContext.moveDown();
         onMoveAction();
     }
@@ -166,5 +180,29 @@ public class GameActivity extends FragmentActivity
     private void onMoveAction() {
         mapView.checkMove();
         heroInfoView.refreshInfo();
+    }
+
+    @Override
+    public void showDialogue() {
+        String tag = BaseFragment.getFragmentTag(DialogueFragment.class);
+
+        FragmentManager fm = getSupportFragmentManager();
+        DialogueFragment fragment = (DialogueFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment = new DialogueFragment();
+            ft.add(R.id.bottom_half_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    private void cleanUp() {
+        // 只有真正退出游戏的时候才需要干掉游戏实例
+        mapView.onDestroy();
+        GameContext.destroyInstance();
+
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

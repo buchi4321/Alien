@@ -67,6 +67,8 @@ public class IntroduceFragment extends BaseFragment implements
         animateTextView = (AnimateTextView) view.findViewById(R.id.animate_text);
         animateTextView.setOnTextAnimationEndListener(this);
         animateTextView.setString(infoString);
+        animateTextView.startAnimation(textProgress);
+        animateTextView.setOnClickListener(this);
 
         continueButton = (Button) view.findViewById(R.id.continue_button);
         continueButton.setOnClickListener(this);
@@ -82,6 +84,13 @@ public class IntroduceFragment extends BaseFragment implements
     }
 
     @Override
+    public void onPause() {
+        textProgress = animateTextView.getProgress();
+        animateTextView.stopAnimation();
+        super.onPause();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(SAVE_TEXT_PROGRESS, animateTextView.getProgress());
         super.onSaveInstanceState(outState);
@@ -91,6 +100,7 @@ public class IntroduceFragment extends BaseFragment implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.introduce_content:
+            case R.id.animate_text:
                 if (!animateTextView.isAnimationEnd()) {
                     animateTextView.endAnimation();
                 }
