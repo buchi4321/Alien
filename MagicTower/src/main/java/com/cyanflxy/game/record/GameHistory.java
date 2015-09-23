@@ -134,8 +134,8 @@ public class GameHistory {
         return new String(buffer, 0, len, "utf-8");
     }
 
-    public static boolean saveBean(String record, BeanParent bean) {
-        String fileName = DATA_PATH + "/" + record + "/" + bean.getSavePath();
+    public static boolean autoSave( BeanParent bean) {
+        String fileName = DATA_PATH + "/" + AUTO_SAVE + "/" + bean.getSavePath();
         File file = new File(fileName);
 
         File folder = file.getParentFile();

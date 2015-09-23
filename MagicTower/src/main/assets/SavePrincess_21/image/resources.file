@@ -99,8 +99,8 @@
         {"ids":[344], "name":"fake_wall", "type":"wall"},
         {"ids":[345], "name":"wall", "type":"wall"},
         {"ids":[346], "name":"floor", "type":"floor"},
-        {"ids":[347], "name":"stair_down", "type":"floor"},
-        {"ids":[348], "name":"stair_up", "type":"floor"},
+        {"ids":[347], "name":"stair_down", "type":"stairDown"},
+        {"ids":[348], "name":"stair_up", "type":"stairUp"},
         {"ids":[349], "name":"shop_left", "type":"wall"},
         {"ids":[350], "name":"shop_right", "type":"wall"},
 

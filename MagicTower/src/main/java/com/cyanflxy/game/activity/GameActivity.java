@@ -202,4 +202,14 @@ public class GameActivity extends FragmentActivity
             ft.commit();
         }
     }
+
+    @Override
+    public void openDoor(int x, int y, String doorName) {
+        mapView.openDoor(x, y, doorName);
+    }
+
+    @Override
+    public void changeFloor(int floor) {
+        mapView.changeFloor();
+    }
 }

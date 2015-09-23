@@ -1,28 +1,28 @@
 package com.github.cyanflxy.magictower;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cyanflxy.common.CommDialog;
+import com.cyanflxy.common.CommFragmentDialog;
 import com.cyanflxy.game.activity.GameActivity;
 import com.cyanflxy.game.record.GameHistory;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     private static final long BACK_TIME = 1000;
-    private static final String ARG_NEW_GAME_DIALOG_SHOWING = "new_game_dialog";
 
     private long lastBackPressed;
-    private CommDialog newGameDialog;
+
+    private View contentView;
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_main);
+        contentView = findViewById(R.id.content_view);
 
         findViewById(R.id.new_game).setOnClickListener(this);
         findViewById(R.id.read_memory).setOnClickListener(this);
@@ -30,11 +30,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.help).setOnClickListener(this);
         findViewById(R.id.exit).setOnClickListener(this);
 
-        if (bundle != null) {
-            if (bundle.getBoolean(ARG_NEW_GAME_DIALOG_SHOWING)) {
-                newGame();
-            }
-        }
     }
 
     @Override
@@ -45,16 +40,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             lastBackPressed = System.currentTimeMillis();
             Toast.makeText(this, R.string.press_again_exit, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        if (newGameDialog != null && newGameDialog.isShowing()) {
-            newGameDialog.dismiss();
-            outState.putBoolean(ARG_NEW_GAME_DIALOG_SHOWING, true);
-        }
-
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -79,23 +64,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void newGame() {
         if (GameHistory.haveAutoSave()) {
 
-            if (newGameDialog == null) {
-                newGameDialog = new CommDialog(this);
-                newGameDialog.setText(R.string.new_game_tip);
-                newGameDialog.setOnOkClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (GameHistory.deleteAutoSave()) {
-                            startGame();
-                            newGameDialog.dismiss();
-                        } else {
-                            Toast.makeText(MainActivity.this, R.string.delete_fail, Toast.LENGTH_SHORT).show();
-                        }
+            final CommFragmentDialog dialog = CommFragmentDialog.newInstance(getString(R.string.new_game_tip));
+            dialog.setOnOkClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (GameHistory.deleteAutoSave()) {
+                        startGame();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(MainActivity.this, R.string.delete_fail, Toast.LENGTH_SHORT).show();
                     }
-                });
-            }
+                }
+            });
 
-            newGameDialog.show();
+            dialog.show(getSupportFragmentManager(), "NewGameDialog");
+
         } else {
             startGame();
         }
@@ -105,4 +88,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
         startActivity(new Intent(this, GameActivity.class));
         finish();
     }
+
 }

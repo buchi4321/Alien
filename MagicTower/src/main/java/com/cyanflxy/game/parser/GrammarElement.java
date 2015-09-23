@@ -196,7 +196,7 @@ public abstract class GrammarElement {
         @Override
         public void checkSave() {
             if (mapBean != null) {
-                GameHistory.saveBean(GameHistory.AUTO_SAVE, mapBean);
+                GameHistory.autoSave(mapBean);
             }
         }
     }

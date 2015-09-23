@@ -11,7 +11,7 @@ public class ImageInfoBean extends BeanParent {
         return ids.length;
     }
 
-    public int getId(){
+    public int getId() {
         return ids[0];
     }
 
@@ -19,7 +19,7 @@ public class ImageInfoBean extends BeanParent {
         return ids[index];
     }
 
-    public enum ImageType{
-        hero,enemy,goods,npc,wall,floor,door
+    public enum ImageType {
+        hero, enemy, goods, npc, wall, floor, door, stairDown, stairUp
     }
 }

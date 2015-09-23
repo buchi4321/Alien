@@ -16,9 +16,7 @@
 
     <style name="common_dialog_style" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
-        <!-- 边框 -->
         <item name="android:windowIsFloating">true</item>
-        <!-- 是否浮现在activity之上 -->
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:background">@android:color/transparent</item>

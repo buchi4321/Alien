@@ -59,15 +59,8 @@ public class GameContext {
     }
 
     public boolean autoSave() {
-        return GameHistory.saveBean(GameHistory.AUTO_SAVE, gameData) &&
-                GameHistory.saveBean(GameHistory.AUTO_SAVE, currentMap);
-    }
-
-    public boolean save(String record) {
-        return GameHistory.deleteRecord(record) &&
-                GameHistory.copyRecord(GameHistory.AUTO_SAVE, record) &&
-                GameHistory.saveBean(record, gameData) &&
-                GameHistory.saveBean(record, currentMap);
+        return GameHistory.autoSave(gameData) &&
+                GameHistory.autoSave(currentMap);
     }
 
     public GameBean getGameData() {
@@ -149,22 +142,97 @@ public class GameContext {
         }
 
         ImageInfoBean info = imageResourceManager.getImage(element.element);
-
         boolean canMove = canMoveTo(element, info);
 
+        if (info == null) {
+            return canMove;
+        }
+
         if (!Utils.isArrayEmpty(element.dialog)) {
-            DialogueBean d = getDialogue(element.dialog);
+            getDialogue(element.dialog);
             if (gameListener != null) {
                 gameListener.showDialogue();
             }
+        } else {
+
+            // TODO 处理获取物品（Toast展示）
+            // TODO 处理敌人遭遇
+            // TODO 处理商店
+
+            switch (info.type) {
+                case enemy:
+                    break;
+                case goods:
+                    break;
+                case door:
+                    openDoor(element, info, x, y);
+                    break;
+                case stairDown:
+                    gotoFloor(gameData.hero.floor - 1);
+                    break;
+                case stairUp:
+                    // 18层向上的楼梯需要条件
+                    gotoFloor(gameData.hero.floor + 1);
+                    break;
+                default:
+                    break;
+            }
         }
 
-        // TODO 处理NPC对话
-        // TODO 处理获取物品（Toast展示）
-        // TODO 处理敌人遭遇
-        // TODO 处理商店
 
         return canMove;
+    }
+
+    private void openDoor(MapElementBean element, ImageInfoBean info, int x, int y) {
+        String doorName = info.name;
+        HeroBean hero = gameData.hero;
+        boolean open = false;
+
+        if (TextUtils.equals(doorName, "yellow_door")) {
+            if (hero.yellowKey > 0) {
+                hero.yellowKey--;
+                open = true;
+            }
+        } else if (TextUtils.equals(doorName, "blue_door")) {
+            if (hero.blueKey > 0) {
+                hero.blueKey--;
+                open = true;
+            }
+        } else if (TextUtils.equals(doorName, "red_door")) {
+            if (hero.redKey > 0) {
+                hero.redKey--;
+                open = true;
+            }
+        } else {
+            if (!TextUtils.isEmpty(element.action)) {
+                open = SentenceParser.parseCondition(this, element.action);
+            }
+        }
+
+        if (open) {
+            element.element = null;
+            if (gameListener != null) {
+                gameListener.openDoor(x, y, doorName);
+            }
+        }
+    }
+
+    private void gotoFloor(int floor) {
+        autoSave();
+
+        String mapFile = gameData.maps[floor];
+        currentMap = GameHistory.getMap(mapFile);
+
+        if (gameData.hero.floor < floor) {
+            gameData.hero.position = currentMap.startPosition.copy();
+        } else {
+            gameData.hero.position = currentMap.endPosition.copy();
+        }
+        gameData.hero.floor = floor;
+
+        if (gameListener != null) {
+            gameListener.changeFloor(floor);
+        }
     }
 
     private MapElementBean getMapElement(int x, int y) {

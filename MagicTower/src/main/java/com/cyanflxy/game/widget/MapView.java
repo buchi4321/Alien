@@ -15,7 +15,6 @@ import android.view.View;
 import com.cyanflxy.game.bean.HeroPositionBean;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.MapBean;
-import com.cyanflxy.game.bean.MapElementBean;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.ImageResourceManager;
 
@@ -58,6 +57,7 @@ public class MapView extends View {
     private Lock heroPositionLock;
     private Lock heroMoveStepLock;
     private Condition heroMoveSignal;
+    private HeroMoveThread heroMove;
 
     // 开门动画数据
     private int doorX;
@@ -106,8 +106,6 @@ public class MapView extends View {
         if (gameContext == null) {
             return;
         }
-
-        onMapChange();
 
         MapBean map = gameContext.getCurrentMap();
         Bitmap floorBitmap = imageResourceManager.getBitmap(map.floorImage);
@@ -176,29 +174,30 @@ public class MapView extends View {
         HeroPositionBean p = gameContext.getHeroPosition();
         currentPosition = p.copy();
 
-        Runnable heroMove = new HeroMoveThread(p);
+        heroMove = new HeroMoveThread(p);
         threadPool.execute(heroMove);
     }
 
-    public void openDoor(int x, int y, MapElementBean doorElement) {
+    public void openDoor(int x, int y, String doorName) {
         doorX = x;
         doorY = y;
-        doorInfo = imageResourceManager.getImage(doorElement.element);
+        doorInfo = imageResourceManager.getImage(doorName);
         doorPhase = 0;
 
         invalidate();
         animateHandler.sendEmptyMessageDelayed(MSG_OPEN_DOOR, OPEN_DOOR_DURATION);
     }
 
-    private void onMapChange() {
-        MapBean map = gameContext.getCurrentMap();
-
-        int wp = map.mapWidth;
-        int hp = map.mapHeight;
-
-        if (wp != widthPiece || hp != heightPiece) {
-            requestLayout();
+    public void changeFloor() {
+        heroSteps.clear();
+        if (animateHandler.hasMessages(MSG_HERO_ANIMATION)) {
+            animateHandler.removeMessages(MSG_HERO_ANIMATION);
         }
+
+        currentPosition = gameContext.getHeroPosition();
+        heroMove.setNewPosition(currentPosition);
+
+        invalidate();
     }
 
     private RectF getImageRectXY(int x, int y) {
@@ -266,6 +265,10 @@ public class MapView extends View {
         public HeroMoveThread(HeroPositionBean lastPosition) {
             heroSteps = new ArrayBlockingQueue<>(5);
             this.lastPosition = lastPosition.copy();
+        }
+
+        public void setNewPosition(HeroPositionBean position) {
+            lastPosition = position.copy();
         }
 
         @Override

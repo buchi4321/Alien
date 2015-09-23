@@ -6,4 +6,5 @@
     <dimen name="comm_text_size">18sp</dimen>
     <dimen name="map_border_width">4dp</dimen>
 
+    <dimen name="toast_text_size">32sp</dimen>
 </resources>
