@@ -3,6 +3,7 @@ package com.cyanflxy.game.bean;
 public class HeroBean extends BeanParent {
 
     public int floor;//当前地图是第几层
+    public int maxFloor;//到达的最高层
     public HeroPositionBean position; //当前位置
 
     public int level;//人物等级

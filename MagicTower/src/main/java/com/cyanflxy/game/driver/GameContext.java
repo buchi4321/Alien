@@ -11,8 +11,13 @@ import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.ImageInfoBean.ImageType;
 import com.cyanflxy.game.bean.MapBean;
 import com.cyanflxy.game.bean.MapElementBean;
+import com.cyanflxy.game.bean.ResourcePropertyBean;
 import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.record.GameHistory;
+import com.cyanflxy.game.widget.MessageToast;
+import com.github.cyanflxy.magictower.R;
+
+import static com.github.cyanflxy.magictower.AppApplication.baseContext;
 
 public class GameContext {
 
@@ -107,32 +112,32 @@ public class GameContext {
         HeroPositionBean p = getHeroPosition();
         if (moveTo(p.x, p.y - 1)) {
             p.y--;
-            p.direction = HeroPositionBean.Direction.up;
         }
+        p.direction = HeroPositionBean.Direction.up;
     }
 
     public void moveDown() {
         HeroPositionBean p = getHeroPosition();
         if (moveTo(p.x, p.y + 1)) {
             p.y++;
-            p.direction = HeroPositionBean.Direction.down;
         }
+        p.direction = HeroPositionBean.Direction.down;
     }
 
     public void moveLeft() {
         HeroPositionBean p = getHeroPosition();
         if (moveTo(p.x - 1, p.y)) {
             p.x--;
-            p.direction = HeroPositionBean.Direction.left;
         }
+        p.direction = HeroPositionBean.Direction.left;
     }
 
     public void moveRight() {
         HeroPositionBean p = getHeroPosition();
         if (moveTo(p.x + 1, p.y)) {
             p.x++;
-            p.direction = HeroPositionBean.Direction.right;
         }
+        p.direction = HeroPositionBean.Direction.right;
     }
 
     private boolean moveTo(int x, int y) {
@@ -163,6 +168,7 @@ public class GameContext {
                 case enemy:
                     break;
                 case goods:
+                    getGoods(element, info);
                     break;
                 case door:
                     openDoor(element, info, x, y);
@@ -179,8 +185,28 @@ public class GameContext {
             }
         }
 
-
         return canMove;
+    }
+
+    private void getGoods(MapElementBean element, ImageInfoBean info) {
+        ResourcePropertyBean property = info.property;
+        if(property != null) {
+            if (!TextUtils.isEmpty(property.action)) {
+                SentenceParser.parseSentence(this, property.action);
+            }
+        }
+
+        if (!TextUtils.isEmpty(element.action)) {
+            SentenceParser.parseSentence(this, element.action);
+        }
+
+        String name = info.property.name;
+        if (property != null && !TextUtils.isEmpty(property.info)) {
+            name += "，" + property.info;
+        }
+        MessageToast.showText(baseContext.getString(R.string.get_goods, name));
+
+        element.clear();
     }
 
     private void openDoor(MapElementBean element, ImageInfoBean info, int x, int y) {
@@ -210,7 +236,7 @@ public class GameContext {
         }
 
         if (open) {
-            element.element = null;
+            element.clear();
             if (gameListener != null) {
                 gameListener.openDoor(x, y, doorName);
             }
@@ -224,11 +250,15 @@ public class GameContext {
         currentMap = GameHistory.getMap(mapFile);
 
         if (gameData.hero.floor < floor) {
-            gameData.hero.position = currentMap.startPosition.copy();
+            gameData.hero.position = currentMap.upPosition.copy();
         } else {
-            gameData.hero.position = currentMap.endPosition.copy();
+            gameData.hero.position = currentMap.downPosition.copy();
         }
+
         gameData.hero.floor = floor;
+        if (floor > gameData.hero.maxFloor) {
+            gameData.hero.maxFloor = floor;
+        }
 
         if (gameListener != null) {
             gameListener.changeFloor(floor);

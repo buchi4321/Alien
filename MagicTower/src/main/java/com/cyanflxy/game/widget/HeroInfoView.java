@@ -101,7 +101,8 @@ public abstract class HeroInfoView extends View {
     }
 
     protected String getFloorString() {
-        return getContext().getString(R.string.floor, heroBean.floor);
+        int floor = gameContext.getCurrentMap().mapFloor;
+        return getContext().getString(R.string.floor, floor);
     }
 
     protected Bitmap getHeroAvatar() {

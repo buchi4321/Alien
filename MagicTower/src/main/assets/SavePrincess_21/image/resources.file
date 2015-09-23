@@ -104,8 +104,8 @@
         {"ids":[349], "name":"shop_left", "type":"wall"},
         {"ids":[350], "name":"shop_right", "type":"wall"},
 
-        {"ids":[352], "name":"red_jewel", "type":"goods"},
-        {"ids":[353], "name":"blue_jewel", "type":"goods"},
+        {"ids":[352], "name":"red_jewel", "type":"goods","property":{"name":"红宝石", "action":"gameData.hero.damage+=3", "info":"攻击力+3"}},
+        {"ids":[353], "name":"blue_jewel", "type":"goods","property":{"name":"蓝宝石", "action":"gameData.hero.defence+=3", "info":"防御力+3"}},
         {"ids":[354], "name":"green_jewel", "type":"goods"},
         {"ids":[355], "name":"yellow_jewel", "type":"goods"},
         {"ids":[356], "name":"red_hp", "type":"goods"},
@@ -119,9 +119,9 @@
         {"ids":[364], "name":"diamond_bottle", "type":"goods"},
         {"ids":[365], "name":"cross_bottle", "type":"goods"},
 
-        {"ids":[368], "name":"yellow_key", "type":"goods"},
-        {"ids":[369], "name":"blue_key", "type":"goods"},
-        {"ids":[370], "name":"red_key", "type":"goods"},
+        {"ids":[368], "name":"yellow_key", "type":"goods","property":{"name":"黄钥匙", "action":"gameData.hero.yellowKey+=1"}},
+        {"ids":[369], "name":"blue_key", "type":"goods","property":{"name":"蓝钥匙", "action":"gameData.hero.blueKey+=1"}},
+        {"ids":[370], "name":"red_key", "type":"goods","property":{"name":"红钥匙", "action":"gameData.hero.redKey+=1"}},
         {"ids":[371], "name":"green_key", "type":"goods"},
         {"ids":[372], "name":"gray_big_key", "type":"goods"},
         {"ids":[373], "name":"blue_big_key", "type":"goods"},

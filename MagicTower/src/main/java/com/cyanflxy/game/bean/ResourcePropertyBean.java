@@ -1,6 +1,6 @@
 package com.cyanflxy.game.bean;
 
-public class EnemyPropertyBean extends BeanParent {
+public class ResourcePropertyBean extends BeanParent {
 
     public String name;
     public int hp;
@@ -9,5 +9,7 @@ public class EnemyPropertyBean extends BeanParent {
     public int exp;
     public int money;
     public String extra;
+    public String action;
+    public String info;
 
 }

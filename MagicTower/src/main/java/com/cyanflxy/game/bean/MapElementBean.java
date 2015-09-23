@@ -6,4 +6,10 @@ public class MapElementBean {
     public String action;
 
     public DialogueBean[] dialog;
+
+    public void clear() {
+        element = null;
+        action = null;
+        dialog = null;
+    }
 }

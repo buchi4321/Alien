@@ -33,7 +33,7 @@ public class MapView extends View {
 
     private static final int ANIMATION_DURATION = 500;
     private static final int OPEN_DOOR_DURATION = 50;
-    public static final int HERO_MOVE_DURATION = 100;
+    public static final int HERO_MOVE_DURATION = 60;
 
     private int widthPiece = 11;
     private int heightPiece = 11;
@@ -195,6 +195,7 @@ public class MapView extends View {
         }
 
         currentPosition = gameContext.getHeroPosition();
+        heroAnimatePhase = 0;
         heroMove.setNewPosition(currentPosition);
 
         invalidate();
@@ -237,10 +238,7 @@ public class MapView extends View {
     // 主角移动处理代码
     public void checkMove() {
         HeroPositionBean p = gameContext.getHeroPosition();
-
-        Runnable heroPosition = new HeroMovePutThread(p);
-        threadPool.execute(heroPosition);
-
+        heroSteps.add(p.copy());
     }
 
     public void onDestroy() {
@@ -263,7 +261,7 @@ public class MapView extends View {
         private HeroPositionBean lastPosition;
 
         public HeroMoveThread(HeroPositionBean lastPosition) {
-            heroSteps = new ArrayBlockingQueue<>(5);
+            heroSteps = new ArrayBlockingQueue<>(1);
             this.lastPosition = lastPosition.copy();
         }
 
@@ -283,6 +281,15 @@ public class MapView extends View {
                 }
 
                 if (p.equals(lastPosition)) {
+                    if (p.direction != currentPosition.direction) {
+                        heroPositionLock.lock();
+                        try {
+                            currentPosition.direction = p.direction;
+                        } finally {
+                            heroPositionLock.unlock();
+                        }
+                        postInvalidate();
+                    }
                     continue;
                 }
 
@@ -339,24 +346,6 @@ public class MapView extends View {
                 } finally {
                     heroMoveStepLock.unlock();
                 }
-            }
-        }
-    }
-
-    private class HeroMovePutThread implements Runnable {
-
-        private HeroPositionBean position;
-
-        public HeroMovePutThread(HeroPositionBean p) {
-            position = p.copy();
-        }
-
-        @Override
-        public void run() {
-            try {
-                heroSteps.put(position);
-            } catch (InterruptedException e) {
-                // ignore
             }
         }
     }

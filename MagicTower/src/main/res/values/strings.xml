@@ -25,6 +25,7 @@
 
     <string name="end_dialogue">结束对话</string>
 
+    <string name="get_goods">获得%1$s</string>
     <string name="fight_win">战斗胜利</string>
     <string name="fight_get">获得%1$d金钱，%2$d经验</string>
 </resources>

@@ -5,7 +5,7 @@ public class ImageInfoBean extends BeanParent {
     public String name;
     public int[] ids;
     public ImageType type;
-    public EnemyPropertyBean property;
+    public ResourcePropertyBean property;
 
     public int getIdLength() {
         return ids.length;

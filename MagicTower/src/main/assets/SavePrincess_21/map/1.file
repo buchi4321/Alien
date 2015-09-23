@@ -1,8 +1,8 @@
 {
     "floorImage": "floor",
 
-    "startPosition":{"x":5,"y":9, "direction":"up"},
-    "endPosition":{"x":1,"y":0, "direction":"down"},
+    "upPosition":{"x":5,"y":9, "direction":"up"},
+    "downPosition":{"x":1,"y":0, "direction":"down"},
 
     "mapFloor": 1,
     "mapHeight": 11,
