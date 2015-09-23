@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.cyanflxy.game.bean.HeroPositionBean;
@@ -100,6 +101,8 @@ public class MapView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        long start = System.currentTimeMillis();
+
         if (gameContext == null) {
             return;
         }
@@ -157,6 +160,8 @@ public class MapView extends View {
         Bitmap bitmap = getHeroBitmap(p.direction, phase);
         canvas.drawBitmap(bitmap, null, imageRect, null);
 
+        long end = System.currentTimeMillis();
+        Log.i("Alien", "MapView Draw time(ms):" + (end - start));
     }
 
     public void setGameContext(GameContext gameContext) {

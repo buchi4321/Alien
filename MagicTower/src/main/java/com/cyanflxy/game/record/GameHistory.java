@@ -75,8 +75,8 @@ public class GameHistory {
 
     }
 
-    public static GameBean getGame(String record) {
-        String recordFile = DATA_PATH + "/" + record + "/" + GAME_START_FILE;
+    public static GameBean getGame() {
+        String recordFile = DATA_PATH + "/" + AUTO_SAVE + "/" + GAME_START_FILE;
         String assetsFile = getAssetsFileName(GAME_START_FILE);
 
         String content = getFileContent(recordFile, assetsFile);
@@ -85,8 +85,8 @@ public class GameHistory {
         return bean;
     }
 
-    public static MapBean getMap(String record, String mapFile) {
-        String recordFile = DATA_PATH + "/" + record + "/" + mapFile;
+    public static MapBean getMap(String mapFile) {
+        String recordFile = DATA_PATH + "/" + AUTO_SAVE + "/" + mapFile;
         String assetsFile = getAssetsFileName(mapFile);
 
         String content = getFileContent(recordFile, assetsFile);

@@ -133,26 +133,26 @@
                             {"speaker":"hero","sentence":"......可是我怎么进去呢？"},
                             {"speaker":"angel","sentence":"我这里有三把钥匙，你先拿去，塔里还有一些钥匙，你要珍惜使用。勇敢的去吧，勇士！"}
                         ],
-                        "action":"hero.keys.yellow:+1;hero.keys.blue:+1;hero.keys.red:+1;",
+                        "action":"gameData.hero.yellowKey+=1; gameData.hero.blueKey+=1; gameData.hero.redKey+=1; currentMap.mapData[92].element=currentMap.mapData[93].element; currentMap.mapData[92].dialog=currentMap.mapData[93].dialog; currentMap.mapData[93].element=null; currentMap.mapData[93].dialog=null",
                         "end":true
                     },
                     {
-                        "condition":"hero.cross:false,true",
+                        "condition":"gameData.hero.cross",
                         "conditionResult":[
-                                {
-                                    "dialogues":[
-                                        {"speaker":"angel","sentence":"去吧，勇士！"}
-                                    ],
-                                    "end":false
-                                },
                                 {
                                     "dialogues":[
                                         {"speaker":"angel","sentence":"......"},
                                         {"speaker":"hero","sentence":"仙子，我找到你的十字架了！"},
                                         {"speaker":"angel","sentence":"你做的很好，现在我就开始授与你更强的力量！妈咪妈咪轰~"}
                                     ],
-                                    "action":"hero.hp:*1.333;hero.damage:*1.333;hero.defense:*1.333;",
+                                    "action":"gameData.hero.hp*=1.334; gameData.hero.damage*=1.334; gameData.hero.defense*=1.334;",
                                     "end":true
+                                },
+                                {
+                                    "dialogues":[
+                                        {"speaker":"angel","sentence":"去吧，勇士！"}
+                                    ],
+                                    "end":false
                                 }
                         ]
                     },

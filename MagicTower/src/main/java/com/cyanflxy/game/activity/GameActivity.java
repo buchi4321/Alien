@@ -76,20 +76,21 @@ public class GameActivity extends FragmentActivity
 
         // TODO 显示菜单
 
-        cleanUp();
-
-        super.onBackPressed();
+        endGame();
     }
 
     @Override
     public void closeFragment(Fragment f) {
         getSupportFragmentManager().popBackStackImmediate();
+        heroInfoView.refreshInfo();
     }
 
     @Override
     public void onBackStackChanged() {
-        if (gameContext.isFinish() && getCurrentTopFragment() == null) {
-            endGame();
+        if (getCurrentTopFragment() == null) {
+            if (gameContext.isFinish()) {// 游戏结束，退出游戏
+                endGame();
+            }
         }
     }
 
@@ -133,6 +134,10 @@ public class GameActivity extends FragmentActivity
     }
 
     private void endGame() {
+        // 只有真正退出游戏的时候才需要干掉游戏实例
+        mapView.onDestroy();
+        GameContext.destroyInstance();
+
         finish();
         startActivity(new Intent(this, MainActivity.class));
     }
@@ -196,13 +201,5 @@ public class GameActivity extends FragmentActivity
             ft.addToBackStack(null);
             ft.commit();
         }
-    }
-
-    private void cleanUp() {
-        // 只有真正退出游戏的时候才需要干掉游戏实例
-        mapView.onDestroy();
-        GameContext.destroyInstance();
-
-        startActivity(new Intent(this, MainActivity.class));
     }
 }

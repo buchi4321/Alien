@@ -2,6 +2,7 @@ package com.cyanflxy.game.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import com.cyanflxy.game.bean.DialogueBean;
 import com.cyanflxy.game.bean.DialogueBean.DialogueElementBean;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.ImageResourceManager;
+import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.widget.AnimateTextView;
 import com.cyanflxy.game.widget.HeadView;
 import com.github.cyanflxy.magictower.R;
@@ -82,8 +84,8 @@ public class DialogueFragment extends BaseFragment implements View.OnClickListen
                 }
                 break;
             case R.id.end_dialogue:
-                ((OnFragmentCloseListener) getActivity()).closeFragment(this);
                 endDialogue();
+                ((OnFragmentCloseListener) getActivity()).closeFragment(this);
                 break;
         }
     }
@@ -95,8 +97,8 @@ public class DialogueFragment extends BaseFragment implements View.OnClickListen
             animateTextView.setString(d.sentence);
             animateTextView.startAnimation(textProgress);
         } else {
-            ((OnFragmentCloseListener) getActivity()).closeFragment(this);
             endDialogue();
+            ((OnFragmentCloseListener) getActivity()).closeFragment(this);
         }
     }
 
@@ -107,6 +109,8 @@ public class DialogueFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void endDialogue() {
-
+        if (!TextUtils.isEmpty(dialogue.action)) {
+            SentenceParser.parseSentence(GameContext.getInstance(), dialogue.action);
+        }
     }
 }

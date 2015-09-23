@@ -11,6 +11,7 @@ import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.ImageInfoBean.ImageType;
 import com.cyanflxy.game.bean.MapBean;
 import com.cyanflxy.game.bean.MapElementBean;
+import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.record.GameHistory;
 
 public class GameContext {
@@ -42,8 +43,8 @@ public class GameContext {
     private OnGameProcessListener gameListener;
 
     private GameContext() {
-        gameData = GameHistory.getGame(GameHistory.AUTO_SAVE);
-        currentMap = GameHistory.getMap(GameHistory.AUTO_SAVE, gameData.maps[gameData.hero.floor]);
+        gameData = GameHistory.getGame();
+        currentMap = GameHistory.getMap(gameData.maps[gameData.hero.floor]);
         imageResourceManager = new ImageResourceManager(gameData.res);
     }
 
@@ -67,6 +68,10 @@ public class GameContext {
                 GameHistory.copyRecord(GameHistory.AUTO_SAVE, record) &&
                 GameHistory.saveBean(record, gameData) &&
                 GameHistory.saveBean(record, currentMap);
+    }
+
+    public GameBean getGameData() {
+        return gameData;
     }
 
     public String getIntroduce() {
@@ -202,11 +207,12 @@ public class GameContext {
                     break;
                 } else if (!TextUtils.isEmpty(d.condition) && !Utils.isArrayEmpty(d.conditionResult)) {
                     // 条件判断
-                    int i = ActionParser.parseCondition(gameData, d.condition);
-                    if (i >= 0 && i < d.conditionResult.length) {
-                        currentDialogue = d.conditionResult[i];
-                        break;
+                    if (SentenceParser.parseCondition(this, d.condition)) {
+                        currentDialogue = d.conditionResult[0];
+                    } else {
+                        currentDialogue = d.conditionResult[1];
                     }
+                    break;
                 }
             }
         }
