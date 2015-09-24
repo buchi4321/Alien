@@ -178,6 +178,14 @@ public class MapView extends View {
         threadPool.execute(heroMove);
     }
 
+    public void newMap() {
+        MapBean map = gameContext.getCurrentMap();
+        int id = imageResourceManager.getImage(map.floorImage).getId();
+        floorBitmap = imageResourceManager.getBitmap(id);
+
+        changeFloor();
+    }
+
     public void openDoor(int x, int y, String doorName) {
         doorX = x;
         doorY = y;
@@ -194,7 +202,7 @@ public class MapView extends View {
             animateHandler.removeMessages(MSG_HERO_ANIMATION);
         }
 
-        currentPosition = gameContext.getHeroPosition();
+        currentPosition = gameContext.getHeroPosition().copy();
         heroAnimatePhase = 0;
         heroMove.setNewPosition(currentPosition);
 
@@ -277,6 +285,7 @@ public class MapView extends View {
                 try {
                     p = heroSteps.take();
                 } catch (InterruptedException e) {
+                    Log.i("Alien", "HeroMoveThread exit!");
                     return;
                 }
 
@@ -347,6 +356,7 @@ public class MapView extends View {
                     heroMoveStepLock.unlock();
                 }
             }
+
         }
     }
 

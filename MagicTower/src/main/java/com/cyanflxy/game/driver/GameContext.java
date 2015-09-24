@@ -14,6 +14,7 @@ import com.cyanflxy.game.bean.MapElementBean;
 import com.cyanflxy.game.bean.ResourcePropertyBean;
 import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.record.GameHistory;
+import com.cyanflxy.game.record.GameReader;
 import com.cyanflxy.game.widget.MessageToast;
 import com.github.cyanflxy.magictower.R;
 
@@ -48,8 +49,8 @@ public class GameContext {
     private OnGameProcessListener gameListener;
 
     private GameContext() {
-        gameData = GameHistory.getGame();
-        currentMap = GameHistory.getMap(gameData.maps[gameData.hero.floor]);
+        gameData = GameReader.getGameMainData();
+        currentMap = GameReader.getMapData(gameData.maps[gameData.hero.floor]);
         imageResourceManager = new ImageResourceManager(gameData.res);
     }
 
@@ -66,6 +67,31 @@ public class GameContext {
     public boolean autoSave() {
         return GameHistory.autoSave(gameData) &&
                 GameHistory.autoSave(currentMap);
+    }
+
+    public boolean save(String record) {
+        String name = GameHistory.getRecordName(record);
+
+        boolean success = GameHistory.deleteRecord(record)
+                && GameHistory.copyRecord(GameHistory.AUTO_SAVE, record)
+                && GameHistory.save(record, gameData)
+                && GameHistory.save(record, currentMap);
+
+        if (success) {
+            GameHistory.rename(record, name);
+        }
+
+        return success;
+    }
+
+    public void readRecord(String record) {
+        if (!TextUtils.equals(record, GameHistory.AUTO_SAVE)) {
+            GameHistory.deleteRecord(GameHistory.AUTO_SAVE);
+            GameHistory.copyRecord(record, GameHistory.AUTO_SAVE);
+        }
+
+        gameData = GameReader.getGameMainData();
+        currentMap = GameReader.getMapData(gameData.maps[gameData.hero.floor]);
     }
 
     public GameBean getGameData() {
@@ -190,7 +216,7 @@ public class GameContext {
 
     private void getGoods(MapElementBean element, ImageInfoBean info) {
         ResourcePropertyBean property = info.property;
-        if(property != null) {
+        if (property != null) {
             if (!TextUtils.isEmpty(property.action)) {
                 SentenceParser.parseSentence(this, property.action);
             }
@@ -247,7 +273,7 @@ public class GameContext {
         autoSave();
 
         String mapFile = gameData.maps[floor];
-        currentMap = GameHistory.getMap(mapFile);
+        currentMap = GameReader.getMapData(mapFile);
 
         if (gameData.hero.floor < floor) {
             gameData.hero.position = currentMap.upPosition.copy();

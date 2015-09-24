@@ -18,6 +18,8 @@ import com.github.cyanflxy.magictower.R;
 
 public class DialogueFragment extends BaseFragment implements View.OnClickListener {
 
+    public static final String TAG = "DialogueFragment";
+
     private static final String SAVE_CURRENT_INDEX = "current_index";
     private static final String SAVE_TEXT_PROGRESS = "text_progress";
 

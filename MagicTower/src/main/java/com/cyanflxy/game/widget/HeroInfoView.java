@@ -14,7 +14,6 @@ import android.view.View;
 
 import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.bean.HeroBean;
-import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.ImageResourceManager;
 import com.github.cyanflxy.magictower.BuildConfig;
@@ -93,6 +92,7 @@ public abstract class HeroInfoView extends View {
     }
 
     public void refreshInfo() {
+        heroBean = gameContext.getHero();
         int hash = heroBean.hashCode();
         if (heroHashCode != hash) {
             heroHashCode = hash;
@@ -106,8 +106,7 @@ public abstract class HeroInfoView extends View {
     }
 
     protected Bitmap getHeroAvatar() {
-        ImageInfoBean info = imageManager.getImage(heroBean.avatar);
-        return imageManager.getBitmap(info.getId(0));
+        return imageManager.getBitmap(heroBean.avatar);
     }
 
     @Override

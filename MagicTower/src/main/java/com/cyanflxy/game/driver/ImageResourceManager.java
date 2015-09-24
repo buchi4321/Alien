@@ -3,10 +3,11 @@ package com.cyanflxy.game.driver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.cyanflxy.common.FileUtils;
 import com.cyanflxy.game.bean.HeroPositionBean.Direction;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.ImageResourceBean;
-import com.cyanflxy.game.record.GameHistory;
+import com.cyanflxy.game.record.GameReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,13 +38,13 @@ public class ImageResourceManager {
         InputStream resIS = null;
         InputStream bitmapIS = null;
         try {
-            resIS = baseContext.getAssets().open(GameHistory.getAssetsFileName(resourceFile));
-            String result = GameHistory.getInputStreamString(resIS);
+            resIS = baseContext.getAssets().open(GameReader.getAssetsFileName(resourceFile));
+            String result = FileUtils.getInputStreamString(resIS);
             resIS.close();
 
             imageInfo = ImageResourceBean.getInstance(result);
 
-            String bitmapFile = GameHistory.getAssetsFileName(imageInfo.source);
+            String bitmapFile = GameReader.getAssetsFileName(imageInfo.source);
             bitmapIS = baseContext.getAssets().open(bitmapFile);
             imageBitmap = BitmapFactory.decodeStream(bitmapIS);
 

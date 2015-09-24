@@ -1,87 +1,98 @@
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/main_bg"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="2"
+        android:id="@+id/content_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_bg"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <FrameLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/new_game"
-                style="@style/Button"
-                android:layout_gravity="center"
-                android:text="@string/new_game"/>
-        </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+                <Button
+                    android:id="@+id/new_game"
+                    style="@style/Button"
+                    android:layout_gravity="center"
+                    android:text="@string/new_game"/>
+            </FrameLayout>
 
-            <Button
-                android:id="@+id/read_record"
-                style="@style/Button"
-                android:layout_gravity="center"
-                android:text="@string/read_record"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-        </FrameLayout>
+                <Button
+                    android:id="@+id/read_record"
+                    style="@style/Button"
+                    android:layout_gravity="center"
+                    android:text="@string/read_record"/>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            </FrameLayout>
 
-            <Button
-                android:id="@+id/setting"
-                style="@style/Button"
-                android:layout_gravity="center"
-                android:text="@string/setting"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-        </FrameLayout>
+                <Button
+                    android:id="@+id/setting"
+                    style="@style/Button"
+                    android:layout_gravity="center"
+                    android:text="@string/setting"/>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            </FrameLayout>
 
-            <Button
-                android:id="@+id/help"
-                style="@style/Button"
-                android:layout_gravity="center"
-                android:text="@string/help"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-        </FrameLayout>
+                <Button
+                    android:id="@+id/help"
+                    style="@style/Button"
+                    android:layout_gravity="center"
+                    android:text="@string/help"/>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            </FrameLayout>
 
-            <Button
-                android:id="@+id/exit"
-                style="@style/Button"
-                android:layout_gravity="center"
-                android:text="@string/exit"/>
-        </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
+                <Button
+                    android:id="@+id/exit"
+                    style="@style/Button"
+                    android:layout_gravity="center"
+                    android:text="@string/exit"/>
+            </FrameLayout>
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/full_fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+</FrameLayout>

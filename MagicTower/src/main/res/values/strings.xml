@@ -11,9 +11,23 @@
     <string name="exit">退出</string>
     <string name="back_game">返回游戏</string>
     <string name="press_again_exit">再按一次退出</string>
+    <string name="back">返回</string>
+
+    <string name="rename">重命名</string>
+    <string name="delete">删除</string>
+    <string name="input_name">请输入新的名称</string>
+
+    <string name="save_success">保存成功</string>
+    <string name="save_fail">保存失败</string>
+    <string name="read_fail">读取失败</string>
 
     <string name="new_game_tip">新游戏将会覆盖自动存档，确定吗？</string>
     <string name="delete_fail">删除存档失败</string>
+    <string name="auto_save">自动存档</string>
+    <string name="record_name">记录%1$d</string>
+    <string name="new_record">新建存档</string>
+    <string name="new_record_history">没有历史存档</string>
+    <string name="loading">正在加载…</string>
 
     <string name="continue_game">继续</string>
     <string name="finish_game">结束</string>
@@ -24,6 +38,7 @@
     <string name="hero_defence">防御</string>
     <string name="hero_money">金钱</string>
     <string name="hero_exp">经验</string>
+    <string name="map">地图</string>
     <string name="floor">第%1$d层</string>
 
     <string name="end_dialogue">结束对话</string>

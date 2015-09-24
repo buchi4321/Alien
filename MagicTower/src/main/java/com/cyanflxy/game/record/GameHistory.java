@@ -1,45 +1,36 @@
 package com.cyanflxy.game.record;
 
-import android.os.Environment;
+import android.text.TextUtils;
 
+import com.cyanflxy.common.FileUtils;
 import com.cyanflxy.game.bean.BeanParent;
 import com.cyanflxy.game.bean.GameBean;
-import com.cyanflxy.game.bean.MapBean;
+import com.cyanflxy.game.data.GameSharedPref;
+import com.github.cyanflxy.magictower.R;
 import com.google.gson.Gson;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.FilenameFilter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import static com.github.cyanflxy.magictower.AppApplication.baseContext;
 
 public class GameHistory {
-    private static final String GAME_NAME = "SavePrincess_21";
-    private static final String GAME_START_FILE = "main.file";
-
-    private static String DATA_PATH;
     public static final String AUTO_SAVE = "auto";
     public static final String SAVE_RECORD = "record_";//带编号
 
+    public static final String RECORD_NAME = "name";
+    public static final String RECORD_TIME = "time";
+
     private static Gson gson = new Gson();
 
-    static {
-        DATA_PATH = Environment.getExternalStorageDirectory()+"/CyanFlxy/Alien/"+GAME_NAME;
-        new File(DATA_PATH).mkdirs();
-    }
-
-    public static String getAssetsFileName(String src) {
-        return GAME_NAME + "/" + src;
-    }
-
     public static boolean haveAutoSave() {
-        File auto = new File(DATA_PATH, AUTO_SAVE);
-        File mainFile = new File(auto, GAME_START_FILE);
+        File auto = new File(GameReader.DATA_PATH, AUTO_SAVE);
+        File mainFile = new File(auto, GameReader.GAME_START_FILE);
         return mainFile.exists();
     }
 
@@ -48,94 +39,15 @@ public class GameHistory {
     }
 
     public static boolean deleteRecord(String recordName) {
-        return deleteFolder(new File(DATA_PATH, recordName));
+        return FileUtils.deleteFolder(new File(GameReader.DATA_PATH, recordName));
     }
 
-    private static boolean deleteFolder(File folder) {
-        if (!folder.exists()) {
-            return true;
-        }
-
-        File[] subFiles = folder.listFiles();
-        if (subFiles != null) {
-            for (File f : subFiles) {
-                if (f.isFile()) {
-                    if (!f.delete()) {
-                        return false;
-                    }
-                } else {
-                    if (!deleteFolder(f)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return folder.delete();
-
+    public static boolean autoSave(BeanParent bean) {
+        return save(AUTO_SAVE, bean);
     }
 
-    public static GameBean getGame() {
-        String recordFile = DATA_PATH + "/" + AUTO_SAVE + "/" + GAME_START_FILE;
-        String assetsFile = getAssetsFileName(GAME_START_FILE);
-
-        String content = getFileContent(recordFile, assetsFile);
-        GameBean bean = gson.fromJson(content, GameBean.class);
-        bean.setSavePath(GAME_START_FILE);
-        return bean;
-    }
-
-    public static MapBean getMap(String mapFile) {
-        String recordFile = DATA_PATH + "/" + AUTO_SAVE + "/" + mapFile;
-        String assetsFile = getAssetsFileName(mapFile);
-
-        String content = getFileContent(recordFile, assetsFile);
-        MapBean bean = gson.fromJson(content, MapBean.class);
-        bean.setSavePath(mapFile);
-        return bean;
-    }
-
-    private static String getFileContent(String recordFile, String assetsFile) {
-
-        File file = new File(recordFile);
-        InputStream is = null;
-
-        try {
-            if (!file.exists()) {
-                is = getAssetsFileIS(assetsFile);
-            } else {
-                is = new FileInputStream(file);
-            }
-
-            return getInputStreamString(is);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }
-
-    public static InputStream getAssetsFileIS(String fileName) throws IOException {
-        return baseContext.getAssets().open(fileName);
-    }
-
-    public static String getInputStreamString(InputStream is) throws IOException {
-        byte[] buffer = new byte[is.available()];
-        int len = is.read(buffer);
-        return new String(buffer, 0, len, "utf-8");
-    }
-
-    public static boolean autoSave( BeanParent bean) {
-        String fileName = DATA_PATH + "/" + AUTO_SAVE + "/" + bean.getSavePath();
+    public static boolean save(String record, BeanParent bean) {
+        String fileName = GameReader.DATA_PATH + "/" + record + "/" + bean.getSavePath();
         File file = new File(fileName);
 
         File folder = file.getParentFile();
@@ -145,106 +57,113 @@ public class GameHistory {
             }
         }
 
+        String timeFile = GameReader.DATA_PATH + "/" + record + "/" + RECORD_TIME;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String time = format.format(new Date());
+        FileUtils.saveFile(time, new File(timeFile));
+
         String str = gson.toJson(bean);
-        return saveFile(str, file);
-    }
-
-    public static boolean saveFile(String str, File path) {
-        BufferedWriter bw = null;
-
-        try {
-            bw = new BufferedWriter(new FileWriter(path));
-            bw.write(str);
-            bw.flush();
-            return true;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-
-        } finally {
-            if (bw != null) {
-                try {
-                    bw.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
-        }
+        return FileUtils.saveFile(str, file);
     }
 
     public static boolean copyRecord(String source, String dest) {
-        File sourceFolder = new File(DATA_PATH, source);
-        File destFolder = new File(DATA_PATH, dest);
+        File sourceFolder = new File(GameReader.DATA_PATH, source);
+        File destFolder = new File(GameReader.DATA_PATH, dest);
 
-        return copyFolder(sourceFolder, destFolder);
+        return FileUtils.copyFolder(sourceFolder, destFolder);
     }
 
-    private static boolean copyFolder(File source, File dest) {
-        if (!dest.exists()) {
-            if (!dest.mkdir()) {
-                return false;
+    public static GameRecord getAutoSaveRecord() {
+        if (haveAutoSave()) {
+            GameRecord record = getGameRecord(AUTO_SAVE);
+            record.id = 0;
+            record.displayName = baseContext.getString(R.string.auto_save);
+            return record;
+        } else {
+            return null;
+        }
+    }
+
+    private static GameRecord getGameRecord(String recordName) {
+        GameRecord record = new GameRecord();
+        record.id = getRecordId(recordName);
+        record.displayName = getRecordName(recordName);
+        record.recordName = recordName;
+        record.recordTime = getRecordTime(recordName);
+
+        GameBean game = GameReader.getGameMainData(recordName);
+        record.hero = game.hero;
+
+        return record;
+    }
+
+    public static List<GameRecord> getRecords() {
+        List<GameRecord> list = new ArrayList<>();
+
+        File recordFolder = new File(GameReader.DATA_PATH);
+        String[] recordNames = recordFolder.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                return filename.startsWith(SAVE_RECORD);
+            }
+        });
+
+        int maxId = 0;
+        if (recordNames != null && recordNames.length > 0) {
+            for (String record : recordNames) {
+                list.add(getGameRecord(record));
+
+                int id = getRecordId(record);
+                if (maxId < id) {
+                    maxId = id;
+                }
             }
         }
 
-        String[] sourceFiles = source.list();
-        for (String file : sourceFiles) {
-            File src = new File(source, file);
-            File dst = new File(dest, file);
-            if (src.isFile()) {
-                if (!copyFile(src, dst)) {
-                    return false;
-                }
-            } else {
-                if (!copyFolder(src, dst)) {
-                    return false;
-                }
-            }
-        }
+        GameSharedPref.setMaxRecordId(maxId + 1);
 
-        return true;
+        return list;
     }
 
-    private static boolean copyFile(File src, File dst) {
-        InputStream is = null;
-        OutputStream os = null;
-        byte[] buffer = new byte[1024];
+    public static String getRecordName(String record) {
+        if (TextUtils.equals(record, AUTO_SAVE)) {
+            return baseContext.getString(R.string.auto_save);
+        }
 
+        String name;
+        File nameFile = new File(GameReader.DATA_PATH + "/" + record + "/" + RECORD_NAME);
+        if (nameFile.exists()) {
+            name = FileUtils.getFileContent(nameFile);
+        } else {
+            name = baseContext.getString(R.string.record_name, getRecordId(record));
+        }
+
+        return name;
+    }
+
+    private static int getRecordId(String recordName) {
+        if (!recordName.startsWith(SAVE_RECORD)) {
+            return 0;
+        }
+        String index = recordName.substring(SAVE_RECORD.length());
         try {
-            is = new FileInputStream(src);
-            os = new FileOutputStream(dst);
+            return Integer.valueOf(index);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 
-            while (true) {
-                int len = is.read(buffer);
-                if (len <= 0) {
-                    break;
-                }
-
-                os.write(buffer, 0, len);
-            }
-
-            os.flush();
-            return true;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
+    private static String getRecordTime(String record) {
+        File nameFile = new File(GameReader.DATA_PATH + "/" + record + "/" + RECORD_TIME);
+        if (!nameFile.exists()) {
+            return "";
         }
 
+        return FileUtils.getFileContent(nameFile);
+    }
+
+    public static void rename(String recordName, String newName) {
+        File nameFile = new File(GameReader.DATA_PATH + "/" + recordName + "/" + RECORD_NAME);
+        FileUtils.saveFile(newName, nameFile);
     }
 }

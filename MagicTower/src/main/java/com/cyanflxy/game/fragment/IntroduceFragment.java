@@ -14,6 +14,8 @@ import com.github.cyanflxy.magictower.R;
 public class IntroduceFragment extends BaseFragment implements
         View.OnClickListener, AnimateTextView.OnTextAnimationListener {
 
+    public static final String TAG = "IntroduceFragment";
+
     public static final String ARG_INFO_STRING = "info_string";
     public static final String ARG_BTN_STRING = "btn_string";
 

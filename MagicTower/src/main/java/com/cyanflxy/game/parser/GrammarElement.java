@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.cyanflxy.game.bean.MapBean;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.record.GameHistory;
+import com.cyanflxy.game.record.GameReader;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -189,7 +190,7 @@ public abstract class GrammarElement {
 
         private MapBean getMap(GameContext gameContext, int index) {
             String fileName = gameContext.getGameData().maps[index];
-            mapBean = GameHistory.getMap(fileName);
+            mapBean = GameReader.getMapData(fileName);
             return mapBean;
         }
 

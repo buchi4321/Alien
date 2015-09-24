@@ -1,4 +1,4 @@
-package com.cyanflxy.common;
+package com.cyanflxy.game.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -10,15 +10,17 @@ import android.widget.TextView;
 
 import com.github.cyanflxy.magictower.R;
 
-public class CommFragmentDialog extends DialogFragment implements View.OnClickListener {
+public class NewGameDialog extends DialogFragment implements View.OnClickListener {
+
+    public static final String TAG = "NewGameDialog";
 
     private static final String ARG_CONTENT_STRING = "content_string";
 
     private String contentText;
     private View.OnClickListener onOkClick;
 
-    public static CommFragmentDialog newInstance(String contentText) {
-        CommFragmentDialog dialog = new CommFragmentDialog();
+    public static NewGameDialog newInstance(String contentText) {
+        NewGameDialog dialog = new NewGameDialog();
 
         Bundle bundle = new Bundle();
         bundle.putString(ARG_CONTENT_STRING, contentText);

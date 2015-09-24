@@ -1,6 +1,9 @@
 package com.cyanflxy.game.bean;
 
-public class HeroPositionBean extends BeanParent implements Cloneable {
+import java.io.Serializable;
+
+public class HeroPositionBean extends BeanParent implements Cloneable, Serializable {
+    private static final long serialVersionUID = 1L;
 
     public int x;
     public int y;

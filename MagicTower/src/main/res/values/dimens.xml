@@ -7,4 +7,9 @@
     <dimen name="map_border_width">4dp</dimen>
 
     <dimen name="toast_text_size">32sp</dimen>
+
+    <dimen name="record_item_height">140dp</dimen>
+    <dimen name="record_text_size">12sp</dimen>
+    <dimen name="record_avatar_size">35dp</dimen>
+
 </resources>

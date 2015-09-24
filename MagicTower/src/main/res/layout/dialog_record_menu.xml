@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/rename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/click_color"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/rename"
+        android:textColor="@color/comm_text"
+        android:textSize="18sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider"/>
+
+    <TextView
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/click_color"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/delete"
+        android:textColor="@color/comm_text"
+        android:textSize="18sp"/>
+
+</LinearLayout>

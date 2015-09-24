@@ -1,6 +1,9 @@
 package com.cyanflxy.game.bean;
 
-public class HeroBean extends BeanParent {
+import java.io.Serializable;
+
+public class HeroBean extends BeanParent implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public int floor;//当前地图是第几层
     public int maxFloor;//到达的最高层
