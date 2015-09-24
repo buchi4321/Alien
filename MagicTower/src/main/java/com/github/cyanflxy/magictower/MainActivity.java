@@ -25,7 +25,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         contentView = findViewById(R.id.content_view);
 
         findViewById(R.id.new_game).setOnClickListener(this);
-        findViewById(R.id.read_memory).setOnClickListener(this);
+        findViewById(R.id.read_record).setOnClickListener(this);
         findViewById(R.id.setting).setOnClickListener(this);
         findViewById(R.id.help).setOnClickListener(this);
         findViewById(R.id.exit).setOnClickListener(this);
@@ -48,7 +48,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.new_game:
                 newGame();
                 break;
-            case R.id.read_memory:
+            case R.id.read_record:
                 startGame();
                 break;
             case R.id.setting:

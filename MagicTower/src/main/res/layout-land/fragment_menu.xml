@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/comm_translate_bg"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/main_menu"
+            style="@style/Button"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/main_menu"/>
+
+        <Button
+            android:id="@+id/back_game"
+            style="@style/Button"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/back_game"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/read_record"
+            style="@style/Button"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/read_record"/>
+
+
+        <Button
+            android:id="@+id/save_record"
+            style="@style/Button"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/save_record"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/setting"
+            style="@style/Button"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/setting"/>
+
+        <Button
+            android:id="@+id/help"
+            style="@style/Button"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/help"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"/>
+</LinearLayout>

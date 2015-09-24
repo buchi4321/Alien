@@ -3,10 +3,13 @@
 
     <!-- 主菜单 -->
     <string name="new_game">新的游戏</string>
-    <string name="read_memory">读取存档</string>
+    <string name="main_menu">主菜单</string>
+    <string name="read_record">读取存档</string>
+    <string name="save_record">保存存档</string>
     <string name="setting">设置</string>
     <string name="help">帮助</string>
     <string name="exit">退出</string>
+    <string name="back_game">返回游戏</string>
     <string name="press_again_exit">再按一次退出</string>
 
     <string name="new_game_tip">新游戏将会覆盖自动存档，确定吗？</string>

@@ -7,12 +7,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.OnGameProcessListener;
 import com.cyanflxy.game.fragment.BaseFragment;
 import com.cyanflxy.game.fragment.DialogueFragment;
 import com.cyanflxy.game.fragment.IntroduceFragment;
+import com.cyanflxy.game.fragment.MenuFragment;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.widget.GameControllerView;
 import com.cyanflxy.game.widget.HeroInfoView;
@@ -25,7 +27,7 @@ import java.util.List;
 public class GameActivity extends FragmentActivity
         implements FragmentManager.OnBackStackChangedListener,
         OnFragmentCloseListener, GameControllerView.MotionListener,
-        OnGameProcessListener {
+        OnGameProcessListener, MenuFragment.OnMenuClickListener {
 
     private GameContext gameContext;
     private MapView mapView;
@@ -74,9 +76,25 @@ public class GameActivity extends FragmentActivity
             return;
         }
 
-        // TODO 显示菜单
+        showMenuFragment();
+    }
 
-        endGame();
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+            Fragment f = getCurrentTopFragment();
+            if (f == null) {
+                showMenuFragment();
+            } else if (f instanceof MenuFragment) {
+                closeFragment(f);
+            }
+
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -142,6 +160,7 @@ public class GameActivity extends FragmentActivity
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    // 方向控制器回调
     @Override
     public void onLeft() {
         if (getCurrentTopFragment() != null) {
@@ -187,6 +206,7 @@ public class GameActivity extends FragmentActivity
         heroInfoView.refreshInfo();
     }
 
+    // 游戏进程回调
     @Override
     public void showDialogue() {
         String tag = BaseFragment.getFragmentTag(DialogueFragment.class);
@@ -211,5 +231,48 @@ public class GameActivity extends FragmentActivity
     @Override
     public void changeFloor(int floor) {
         mapView.changeFloor();
+    }
+
+
+    private void showMenuFragment() {
+        String tag = BaseFragment.getFragmentTag(MenuFragment.class);
+
+        FragmentManager fm = getSupportFragmentManager();
+        MenuFragment fragment = (MenuFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment = new MenuFragment();
+            fragment.setListener(this);
+            ft.add(R.id.full_fragment_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    // 菜单Fragment回调
+    @Override
+    public void onMainMenu() {
+        endGame();
+    }
+
+    @Override
+    public void onReadRecord() {
+
+    }
+
+    @Override
+    public void onSaveRecord() {
+
+    }
+
+    @Override
+    public void onSetting() {
+
+    }
+
+    @Override
+    public void onHelp() {
+
     }
 }

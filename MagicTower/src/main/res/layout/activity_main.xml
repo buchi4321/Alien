@@ -38,10 +38,10 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/read_memory"
+                android:id="@+id/read_record"
                 style="@style/Button"
                 android:layout_gravity="center"
-                android:text="@string/read_memory"/>
+                android:text="@string/read_record"/>
 
         </FrameLayout>
 
