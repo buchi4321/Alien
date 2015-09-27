@@ -10,6 +10,9 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.cyanflxy.game.bean.ImageInfoBean;
+import com.cyanflxy.game.bean.MapElementBean;
+import com.cyanflxy.game.dialog.BattleDialog;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.OnGameProcessListener;
 import com.cyanflxy.game.fragment.BaseFragment;
@@ -66,6 +69,10 @@ public class GameActivity extends FragmentActivity
             recordFragment.setRecordItemSelected(onRecordItemSelected);
         }
 
+        BattleDialog battleDialog = (BattleDialog) fm.findFragmentByTag(BattleDialog.TAG);
+        if (battleDialog != null) {
+            battleDialog.setOnBattleEndListener(onBattleEndListener);
+        }
     }
 
     private void loadGameContext() {
@@ -272,6 +279,20 @@ public class GameActivity extends FragmentActivity
             mapView.changeFloor();
         }
 
+        @Override
+        public void showBattle(MapElementBean element, ImageInfoBean enemy) {
+            String tag = BattleDialog.TAG;
+
+            FragmentManager fm = getSupportFragmentManager();
+            BattleDialog dialog = (BattleDialog) fm.findFragmentByTag(tag);
+
+            if (dialog == null) {
+                dialog = BattleDialog.newInstance(enemy);
+                dialog.setOnBattleEndListener(onBattleEndListener);
+                dialog.show(fm, tag);
+            }
+
+        }
     };
 
     private void showMenuFragment() {
@@ -359,5 +380,12 @@ public class GameActivity extends FragmentActivity
         }
     };
 
+    private BattleDialog.OnBattleEndListener onBattleEndListener
+            = new BattleDialog.OnBattleEndListener() {
+        @Override
+        public void onBattleEnd() {
+            gameContext.onBattleEnd();
+        }
+    };
 
 }

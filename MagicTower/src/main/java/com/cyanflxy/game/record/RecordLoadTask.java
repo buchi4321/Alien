@@ -30,18 +30,21 @@ public class RecordLoadTask extends AsyncTask<Integer, Integer, ArrayList<GameRe
     @Override
     protected ArrayList<GameRecord> doInBackground(Integer... params) {
 
-        ArrayList<GameRecord> records = new ArrayList<>();
+        int mode = -1;
+        if (params != null && params.length == 1) {
+            mode = params[0];
+        }
 
-        records.add(GameHistory.getAutoSaveRecord());
+        ArrayList<GameRecord> records = new ArrayList<>();
         records.addAll(GameHistory.getRecords());
 
-        if (params != null && params.length == 1) {
-            if (params[0] == RecordFragment.MODE_SAVE) {
-                GameRecord record = new GameRecord();
-                record.id = GameSharedPref.getNewRecordId();
-                record.recordName = GameHistory.SAVE_RECORD + GameSharedPref.getNewRecordId();
-                records.add(record);
-            }
+        if (mode == RecordFragment.MODE_SAVE) {
+            GameRecord record = new GameRecord();
+            record.id = GameSharedPref.getNewRecordId();
+            record.recordName = GameHistory.SAVE_RECORD + GameSharedPref.getNewRecordId();
+            records.add(record);
+        } else if (mode == RecordFragment.MODE_READ) {
+            records.add(GameHistory.getAutoSaveRecord());
         }
 
         Collections.sort(records);

@@ -44,6 +44,8 @@ public class GameContext {
     private MapBean currentMap;
 
     private DialogueBean currentDialogue;
+    private MapElementBean currentBattleElement;
+    private ImageInfoBean currentBattleEnemyInfo;
     private ImageResourceManager imageResourceManager;
 
     private OnGameProcessListener gameListener;
@@ -187,11 +189,11 @@ public class GameContext {
         } else {
 
             // TODO 处理获取物品（Toast展示）
-            // TODO 处理敌人遭遇
             // TODO 处理商店
 
             switch (info.type) {
                 case enemy:
+                    battleEnemy(element, info);
                     break;
                 case goods:
                     getGoods(element, info);
@@ -212,6 +214,20 @@ public class GameContext {
         }
 
         return canMove;
+    }
+
+    private void battleEnemy(MapElementBean element, ImageInfoBean info) {
+        // TODO 判断攻击能否获胜
+        currentBattleElement = element;
+        currentBattleEnemyInfo = info;
+        if (gameListener != null) {
+            gameListener.showBattle(element, info);
+        }
+    }
+
+    public void onBattleEnd() {
+        currentBattleElement.element = "";
+        // TODO 处理获取金钱和经验
     }
 
     private void getGoods(MapElementBean element, ImageInfoBean info) {
