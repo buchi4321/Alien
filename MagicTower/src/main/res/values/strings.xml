@@ -46,4 +46,20 @@
     <string name="get_goods">获得%1$s</string>
     <string name="fight_win">战斗胜利</string>
     <string name="fight_get">获得%1$d金钱，%2$d经验</string>
+
+    <string name="screen_light">屏幕亮度</string>
+    <string name="game_volume">游戏音量</string>
+    <string name="background_music">背景音乐</string>
+    <string name="game_sound">游戏音效</string>
+    <string name="auto_find_way">自动寻路</string>
+    <string name="screen_orientation">屏幕方向</string>
+
+    <string name="orientation_land">横屏</string>
+    <string name="orientation_port">竖屏</string>
+    <string name="orientation_auto">自动</string>
+
+    <string name="shop_shortcut">商店快捷</string>
+    <string name="open_all_function">功能全开</string>
+    <string name="map_invisible">无视地图</string>
+    <string name="show_fight_dialog">显示打斗</string>
 </resources>

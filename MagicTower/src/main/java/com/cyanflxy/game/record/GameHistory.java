@@ -76,7 +76,7 @@ public class GameHistory {
     public static GameRecord getAutoSaveRecord() {
         if (haveAutoSave()) {
             GameRecord record = getGameRecord(AUTO_SAVE);
-            record.id = 0;
+            record.id = Integer.MAX_VALUE;
             record.displayName = baseContext.getString(R.string.auto_save);
             return record;
         } else {

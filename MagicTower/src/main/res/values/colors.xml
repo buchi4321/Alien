@@ -3,11 +3,9 @@
     <color name="comm_text">#232323</color>
     <color name="comm_translate_bg">#D0000000</color>
     <color name="record_text_color">#FFFFFF</color>
-
     <color name="record_normal_bg">#424242</color>
     <color name="record_press_bg">#848184</color>
-
     <color name="divider">#303030</color>
-
     <color name="color_press">#30000000</color>
+    <color name="setting_selected_color">#C23020</color>
 </resources>

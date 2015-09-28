@@ -10,8 +10,9 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.bean.ImageInfoBean;
-import com.cyanflxy.game.bean.MapElementBean;
+import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.dialog.BattleDialog;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.OnGameProcessListener;
@@ -21,6 +22,7 @@ import com.cyanflxy.game.fragment.IntroduceFragment;
 import com.cyanflxy.game.fragment.MenuFragment;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.fragment.RecordFragment;
+import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.widget.GameControllerView;
 import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
@@ -40,6 +42,9 @@ public class GameActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        Utils.setBrightness(this, GameSharedPref.getScreenLight());
+        //noinspection ResourceType
+        setRequestedOrientation(GameSharedPref.getScreenOrientation());
 
         setContentView(R.layout.activity_game);
 
@@ -198,103 +203,6 @@ public class GameActivity extends FragmentActivity
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    // 方向控制器回调
-    private GameControllerView.MotionListener directionMotionListener =
-            new GameControllerView.MotionListener()
-
-            {
-                @Override
-                public void onLeft() {
-                    if (getCurrentTopFragment() != null) {
-                        return;
-                    }
-
-                    gameContext.moveLeft();
-                    onMoveAction();
-                }
-
-                @Override
-                public void onRight() {
-                    if (getCurrentTopFragment() != null) {
-                        return;
-                    }
-
-                    gameContext.moveRight();
-                    onMoveAction();
-                }
-
-                @Override
-                public void onUp() {
-                    if (getCurrentTopFragment() != null) {
-                        return;
-                    }
-
-                    gameContext.moveUP();
-                    onMoveAction();
-                }
-
-                @Override
-                public void onDown() {
-                    if (getCurrentTopFragment() != null) {
-                        return;
-                    }
-
-                    gameContext.moveDown();
-                    onMoveAction();
-                }
-
-                private void onMoveAction() {
-                    mapView.checkMove();
-                    heroInfoView.refreshInfo();
-                }
-
-            };
-
-    // 游戏进程回调
-    private OnGameProcessListener gameProcessListener = new OnGameProcessListener() {
-
-        @Override
-        public void showDialogue() {
-            String tag = DialogueFragment.TAG;
-
-            FragmentManager fm = getSupportFragmentManager();
-            DialogueFragment fragment = (DialogueFragment) fm.findFragmentByTag(tag);
-
-            if (fragment == null) {
-                FragmentTransaction ft = fm.beginTransaction();
-                fragment = new DialogueFragment();
-                ft.add(R.id.bottom_half_content, fragment, tag);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        }
-
-        @Override
-        public void openDoor(int x, int y, String doorName) {
-            mapView.openDoor(x, y, doorName);
-        }
-
-        @Override
-        public void changeFloor(int floor) {
-            mapView.changeFloor();
-        }
-
-        @Override
-        public void showBattle(MapElementBean element, ImageInfoBean enemy) {
-            String tag = BattleDialog.TAG;
-
-            FragmentManager fm = getSupportFragmentManager();
-            BattleDialog dialog = (BattleDialog) fm.findFragmentByTag(tag);
-
-            if (dialog == null) {
-                dialog = BattleDialog.newInstance(enemy);
-                dialog.setOnBattleEndListener(onBattleEndListener);
-                dialog.show(fm, tag);
-            }
-
-        }
-    };
-
     private void showMenuFragment() {
         String tag = MenuFragment.TAG;
 
@@ -311,35 +219,6 @@ public class GameActivity extends FragmentActivity
             ft.commit();
         }
     }
-
-    // 菜单Fragment回调
-    private MenuFragment.OnMenuClickListener onMenuClickListener =
-            new MenuFragment.OnMenuClickListener() {
-                @Override
-                public void onMainMenu() {
-                    endGame();
-                }
-
-                @Override
-                public void onReadRecord() {
-                    showRecordFragment(RecordFragment.MODE_READ);
-                }
-
-                @Override
-                public void onSaveRecord() {
-                    showRecordFragment(RecordFragment.MODE_SAVE);
-                }
-
-                @Override
-                public void onSetting() {
-
-                }
-
-                @Override
-                public void onHelp() {
-
-                }
-            };
 
     private void showRecordFragment(int mode) {
 
@@ -358,6 +237,155 @@ public class GameActivity extends FragmentActivity
             ft.commit();
         }
     }
+
+    private void showSettingFragment() {
+        String tag = SettingFragment.TAG;
+
+        FragmentManager fm = getSupportFragmentManager();
+        SettingFragment fragment = (SettingFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment = new SettingFragment();
+
+            ft.add(R.id.full_fragment_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    public void showDialogueFragment() {
+        String tag = DialogueFragment.TAG;
+
+        FragmentManager fm = getSupportFragmentManager();
+        DialogueFragment fragment = (DialogueFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment = new DialogueFragment();
+            ft.add(R.id.bottom_half_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    public void showBattleFragment(ImageInfoBean enemy) {
+        String tag = BattleDialog.TAG;
+
+        FragmentManager fm = getSupportFragmentManager();
+        BattleDialog dialog = (BattleDialog) fm.findFragmentByTag(tag);
+
+        if (dialog == null) {
+            dialog = BattleDialog.newInstance(enemy);
+            dialog.setOnBattleEndListener(onBattleEndListener);
+            dialog.show(fm, tag);
+        }
+
+    }
+
+    // 方向控制器回调
+    private GameControllerView.MotionListener directionMotionListener
+            = new GameControllerView.MotionListener() {
+        @Override
+        public void onLeft() {
+            if (getCurrentTopFragment() != null) {
+                return;
+            }
+
+            gameContext.moveLeft();
+            onMoveAction();
+        }
+
+        @Override
+        public void onRight() {
+            if (getCurrentTopFragment() != null) {
+                return;
+            }
+
+            gameContext.moveRight();
+            onMoveAction();
+        }
+
+        @Override
+        public void onUp() {
+            if (getCurrentTopFragment() != null) {
+                return;
+            }
+
+            gameContext.moveUP();
+            onMoveAction();
+        }
+
+        @Override
+        public void onDown() {
+            if (getCurrentTopFragment() != null) {
+                return;
+            }
+
+            gameContext.moveDown();
+            onMoveAction();
+        }
+
+        private void onMoveAction() {
+            mapView.checkMove();
+            heroInfoView.refreshInfo();
+        }
+
+    };
+
+    // 游戏进程回调
+    private OnGameProcessListener gameProcessListener
+            = new OnGameProcessListener() {
+
+        @Override
+        public void showDialogue() {
+            showDialogueFragment();
+        }
+
+        @Override
+        public void openDoor(int x, int y, String doorName) {
+            mapView.openDoor(x, y, doorName);
+        }
+
+        @Override
+        public void changeFloor(int floor) {
+            mapView.changeFloor();
+        }
+
+        @Override
+        public void showBattle(ImageInfoBean enemy) {
+            showBattleFragment(enemy);
+        }
+    };
+
+    // 菜单Fragment回调
+    private MenuFragment.OnMenuClickListener onMenuClickListener
+            = new MenuFragment.OnMenuClickListener() {
+        @Override
+        public void onMainMenu() {
+            endGame();
+        }
+
+        @Override
+        public void onReadRecord() {
+            showRecordFragment(RecordFragment.MODE_READ);
+        }
+
+        @Override
+        public void onSaveRecord() {
+            showRecordFragment(RecordFragment.MODE_SAVE);
+        }
+
+        @Override
+        public void onSetting() {
+            showSettingFragment();
+        }
+
+        @Override
+        public void onHelp() {
+
+        }
+    };
 
     private RecordFragment.OnRecordItemSelected onRecordItemSelected
             = new RecordFragment.OnRecordItemSelected() {

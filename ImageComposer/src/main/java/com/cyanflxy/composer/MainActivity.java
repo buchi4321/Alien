@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Xml;
@@ -35,21 +37,43 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bitmap bitmap = null;
         try {
-            bitmap = drawBorder();
+            Bitmap bitmap = changeColor();
+
             ImageView imageView = (ImageView) findViewById(R.id.image);
             imageView.setImageBitmap(bitmap);
-
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
     }
 
+    private Bitmap changeColor() throws IOException {
+        Bitmap source = BitmapFactory.decodeStream(getAssets().open("checkbox_checked.png"));
+
+        Bitmap bitmap = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        Paint paint = new Paint();
+        paint.setColor(0xFFC23020);
+
+        for (int x = 0; x < bitmap.getWidth(); x++) {
+            for (int y = 0; y < bitmap.getHeight(); y++) {
+                int c = source.getPixel(x, y);
+                if (Color.alpha(c) != 0) {
+                    canvas.drawPoint(x, y, paint);
+                }
+            }
+        }
+
+        saveBitmap(bitmap, "checkbox_checked.png");
+
+        return bitmap;
     }
 
     private Bitmap drawBorder() throws IOException {
         Bitmap allBitmap = BitmapFactory.decodeStream(getAssets().open("all.png"));
-        Bitmap border = Bitmap.createBitmap(allBitmap, 0, 32 * 5 +4, 8, 32 );
+        Bitmap border = Bitmap.createBitmap(allBitmap, 0, 32 * 5 + 4, 8, 32);
         saveBitmap(border, "border.png");
 
         allBitmap.recycle();

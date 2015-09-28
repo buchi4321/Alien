@@ -1,6 +1,8 @@
 package com.cyanflxy.common;
 
+import android.app.Activity;
 import android.content.Context;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import java.lang.reflect.Field;
@@ -75,4 +77,17 @@ public class Utils {
             t.printStackTrace();
         }
     }
+
+    public static void setBrightness(Activity activity, int brightness) {
+        if (activity != null) {
+            try {
+                WindowManager.LayoutParams params = activity.getWindow().getAttributes();
+                params.screenBrightness = brightness / 100f;
+                activity.getWindow().setAttributes(params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

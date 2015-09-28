@@ -221,7 +221,7 @@ public class GameContext {
         currentBattleElement = element;
         currentBattleEnemyInfo = info;
         if (gameListener != null) {
-            gameListener.showBattle(element, info);
+            gameListener.showBattle(info);
         }
     }
 

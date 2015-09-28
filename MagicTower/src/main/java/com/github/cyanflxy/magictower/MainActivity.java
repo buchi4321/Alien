@@ -12,9 +12,11 @@ import android.widget.Toast;
 
 import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.activity.GameActivity;
+import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.dialog.NewGameDialog;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.fragment.RecordFragment;
+import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.record.GameHistory;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener,
@@ -27,6 +29,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        Utils.setBrightness(this, GameSharedPref.getScreenLight());
+        //noinspection ResourceType
+        setRequestedOrientation(GameSharedPref.getScreenOrientation());
+
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.new_game).setOnClickListener(this);
@@ -83,6 +89,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 showRecordFragment();
                 break;
             case R.id.setting:
+                showSettingFragment();
                 break;
             case R.id.help:
                 break;
@@ -161,4 +168,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             startGame();
         }
     };
+
+    private void showSettingFragment() {
+        String tag = SettingFragment.TAG;
+
+        FragmentManager fm = getSupportFragmentManager();
+        SettingFragment fragment = (SettingFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment = new SettingFragment();
+
+            ft.add(R.id.full_fragment_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
 }

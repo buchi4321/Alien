@@ -14,9 +14,9 @@ import android.view.View;
 
 import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.bean.HeroBean;
+import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.ImageResourceManager;
-import com.github.cyanflxy.magictower.BuildConfig;
 import com.github.cyanflxy.magictower.R;
 
 import static com.github.cyanflxy.magictower.AppApplication.baseContext;
@@ -151,12 +151,12 @@ public abstract class HeroInfoView extends View {
         canvas.drawBitmap(getHeroAvatar(), null, avatarRect, null);
 
         //noinspection PointlessBooleanExpression,ConstantConditions
-        if (BuildConfig.QUICK || heroBean.lookUp) {
+        if (GameSharedPref.isOpenAllFunction()|| heroBean.lookUp) {
             canvas.drawBitmap(imageManager.getBitmap("help_book"), null, bookRect, null);
         }
 
         //noinspection PointlessBooleanExpression,ConstantConditions
-        if (BuildConfig.QUICK || heroBean.fly) {
+        if (GameSharedPref.isOpenAllFunction() || heroBean.fly) {
             canvas.drawBitmap(imageManager.getBitmap("swing"), null, flyRect, null);
         }
 
