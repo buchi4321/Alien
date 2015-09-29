@@ -15,7 +15,7 @@ import java.lang.ref.SoftReference;
 
 public class HeadView extends ImageView {
 
-    private static final int ANIMATION_DURATION = 300;
+    private static final int ANIMATION_DURATION = MapView.ANIMATION_DURATION;
 
     private ImageInfoBean info;
     private ImageResourceManager imageManager;

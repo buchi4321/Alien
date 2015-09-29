@@ -12,17 +12,21 @@ import com.cyanflxy.game.driver.GameContext;
  *      currentMap.mapData[82]=currentMap.mapData[83];
  *      currentMap.mapData[83].element="";
  *      currentMap.mapData[83].dialog=null
+ *      gameData.hero.help=true
  * </pre>
  * <p/>
  * 例2，计算下面的判断式子，获取冒号左侧的域的值，符合右侧的第几个值则返回几:(来自第一层，天使对话2判断)
  * <pre>
- *     hero.cross:false,true
+ *     hero.cross
  * </pre>
  * <p/>
  * 例3，计算下面判断式子：(模拟多个判断式组合)
  * <pre>
- *     hero.cross&&hero.lookUp:false,true
+ *     hero.cross&&hero.help
  * </pre>
+ *
+ * 关键字：
+ *      null，true，false， maps（指定其他层地图）
  */
 public class SentenceParser {
 

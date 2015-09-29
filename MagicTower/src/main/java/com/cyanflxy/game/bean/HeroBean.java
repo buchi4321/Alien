@@ -22,17 +22,12 @@ public class HeroBean extends BeanParent implements Serializable {
     public int redKey;
     public String[] keyImage;
 
-    public boolean lookUp;// 是否可以查看怪物属性
+    public boolean help;// 是否可以查看怪物属性
     public boolean fly;//是否可以飞行跳转
-    public boolean cross;//是否有十字架
-    public boolean hoe; //是否有榔头
+    public boolean cross;//是否有十字架, 被地图文件反射调用
+    public boolean hoe; //是否有榔头， 被地图文件反射调用
 
     public String avatar;//人物头像
-
-    public static class MoveImageEntity {
-        public String name;
-        public String value;
-    }
 
     public int[] getHeroAttribute() {
         return new int[]{level, hp, damage, defense, money, exp};
@@ -59,7 +54,7 @@ public class HeroBean extends BeanParent implements Serializable {
         if (yellowKey != heroBean.yellowKey) return false;
         if (blueKey != heroBean.blueKey) return false;
         if (redKey != heroBean.redKey) return false;
-        if (lookUp != heroBean.lookUp) return false;
+        if (help != heroBean.help) return false;
         return fly == heroBean.fly;
 
     }
@@ -76,7 +71,7 @@ public class HeroBean extends BeanParent implements Serializable {
         result = 31 * result + yellowKey;
         result = 31 * result + blueKey;
         result = 31 * result + redKey;
-        result = 31 * result + (lookUp ? 1 : 0);
+        result = 31 * result + (help ? 1 : 0);
         result = 31 * result + (fly ? 1 : 0);
         return result;
     }

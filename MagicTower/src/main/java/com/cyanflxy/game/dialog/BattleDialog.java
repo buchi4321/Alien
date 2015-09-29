@@ -30,12 +30,7 @@ public class BattleDialog extends DialogFragment {
     public static BattleDialog newInstance(ImageInfoBean enemy) {
         BattleDialog dialog = new BattleDialog();
 
-        EnemyProperty property = new EnemyProperty();
-        property.resourceName = enemy.name;
-        property.hp = enemy.property.hp;
-        property.damage = enemy.property.damage;
-        property.defense = enemy.property.defense;
-        property.lifeDrain = enemy.property.lifeDrain;
+        EnemyProperty property = new EnemyProperty(enemy);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_ENEMY, property);

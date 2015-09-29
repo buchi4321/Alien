@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/hero_hp"
+                android:text="@string/hp"
                 android:textColor="@color/record_text_color"
                 android:textSize="@dimen/record_text_size"/>
 
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/hero_damage"
+                android:text="@string/damage"
                 android:textColor="@color/record_text_color"
                 android:textSize="@dimen/record_text_size"/>
 
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/hero_defence"
+                android:text="@string/defense"
                 android:textColor="@color/record_text_color"
                 android:textSize="@dimen/record_text_size"/>
 
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:text="@string/hero_damage"
+                android:text="@string/damage"
                 android:textColor="@color/record_text_color"
                 android:textSize="@dimen/record_text_size"/>
 
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/hero_hp"
+                android:text="@string/hp"
                 android:textColor="@color/record_text_color"
                 android:textSize="@dimen/record_text_size"/>
 
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/hero_damage"
+                android:text="@string/damage"
                 android:textColor="@color/record_text_color"
                 android:textSize="@dimen/record_text_size"/>
 
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/hero_defence"
+                android:text="@string/defense"
                 android:textColor="@color/record_text_color"
                 android:textSize="@dimen/record_text_size"/>
 

@@ -8,4 +8,5 @@
     <color name="divider">#303030</color>
     <color name="color_press">#30000000</color>
     <color name="setting_selected_color">#C23020</color>
+    <color name="enemy_property_text">#6B4B2B</color>
 </resources>

@@ -235,21 +235,25 @@ public class GameContext {
         }
     }
 
-    public int calculateHPDamage(ResourcePropertyBean enemyProperty) {
+    public int calculateHPDamage(ResourcePropertyBean enemy) {
+        return calculateHPDamage(enemy.hp, enemy.damage, enemy.defense, enemy.lifeDrain);
+    }
+
+    public int calculateHPDamage(int hp, int damage, int defense, String lifeDrain) {
         HeroBean hero = gameData.hero;
 
         int total = 0;
-        if (!TextUtils.isEmpty(enemyProperty.lifeDrain)) {
-            total += SentenceParser.parseLifeDrain(hero.hp, enemyProperty.lifeDrain);
+        if (!TextUtils.isEmpty(lifeDrain)) {
+            total += SentenceParser.parseLifeDrain(hero.hp, lifeDrain);
         }
 
-        int damageToHero = enemyProperty.damage - hero.defense;
+        int damageToHero = damage - hero.defense;
         if (damageToHero <= 0) {
             return total;
         }
 
-        int damageToEnemy = hero.damage - enemyProperty.defense;
-        int round = (enemyProperty.hp + damageToEnemy - 1) / damageToEnemy;
+        int damageToEnemy = hero.damage - defense;
+        int round = (hp + damageToEnemy - 1) / damageToEnemy;
 
         total += (round - 1) * damageToHero;
 
@@ -274,10 +278,6 @@ public class GameContext {
             if (!TextUtils.isEmpty(property.action)) {
                 SentenceParser.parseSentence(this, property.action);
             }
-        }
-
-        if (!TextUtils.isEmpty(element.action)) {
-            SentenceParser.parseSentence(this, element.action);
         }
 
         String name = info.property.name;
@@ -343,6 +343,8 @@ public class GameContext {
         if (gameListener != null) {
             gameListener.changeFloor(floor);
         }
+
+        autoSave();
     }
 
     private MapElementBean getMapElement(int x, int y) {

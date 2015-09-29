@@ -9,7 +9,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.cyanflxy.common.Utils;
@@ -23,17 +25,23 @@ import static com.github.cyanflxy.magictower.AppApplication.baseContext;
 
 public abstract class HeroInfoView extends View {
 
+    public interface OnFunctionClickListener {
+        void onEnemyProperty();
+
+        void onJumpFloor();
+    }
+
     protected static final int AVATAR_SIZE = Utils.dip2px(45);
     protected static final int GOODS_SIZE = Utils.dip2px(30);
     protected static final int GOODS_MARGIN = Utils.dip2px(8);
 
     private static final String[] ATTRIBUTE_NAME = new String[]{
-            baseContext.getString(R.string.hero_level),
-            baseContext.getString(R.string.hero_hp),
-            baseContext.getString(R.string.hero_damage),
-            baseContext.getString(R.string.hero_defence),
-            baseContext.getString(R.string.hero_money),
-            baseContext.getString(R.string.hero_exp),
+            baseContext.getString(R.string.level),
+            baseContext.getString(R.string.hp),
+            baseContext.getString(R.string.damage),
+            baseContext.getString(R.string.defense),
+            baseContext.getString(R.string.money),
+            baseContext.getString(R.string.exp),
     };
 
     protected int width;
@@ -57,6 +65,12 @@ public abstract class HeroInfoView extends View {
     private Path dotPath;
     private Paint dotPaint;
 
+    private boolean focusHelp;
+    private boolean focusFly;
+    private Paint focusPaint;
+
+    private OnFunctionClickListener listener;
+
     public HeroInfoView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -71,9 +85,10 @@ public abstract class HeroInfoView extends View {
         keysRect = new RectF();
 
         textPaint = new Paint();
-        textPaint.setColor(0xFF505050);
         textPaint.setTextSize(Utils.sp2px(14));
         textPaint.setAntiAlias(true);
+        //noinspection deprecation
+        textPaint.setColor(context.getResources().getColor(R.color.comm_text));
 
         dotPath = new Path();
         dotPaint = new Paint();
@@ -83,12 +98,23 @@ public abstract class HeroInfoView extends View {
         dotPaint.setStyle(Paint.Style.STROKE);
         dotPaint.setPathEffect(new DashPathEffect(new float[]{10, 10}, 0));
 
+        focusPaint = new Paint();
+        focusPaint.setAntiAlias(true);
+        focusPaint.setStyle(Paint.Style.STROKE);
+        focusPaint.setStrokeWidth(2);
+        //noinspection deprecation
+        focusPaint.setColor(context.getResources().getColor(R.color.setting_selected_color));
+
     }
 
     public void setGameContext(GameContext gameContext) {
         this.gameContext = gameContext;
         imageManager = gameContext.getImageResourceManager();
         heroBean = gameContext.getHero();
+    }
+
+    public void setOnFunctionClickListener(OnFunctionClickListener l) {
+        listener = l;
     }
 
     public void refreshInfo() {
@@ -115,6 +141,10 @@ public abstract class HeroInfoView extends View {
 
         int w = getWidth();
         int h = getHeight();
+
+        if (w == 0 || h == 0) {
+            return;
+        }
 
         if (w == width && h == height) {
             return;
@@ -150,14 +180,18 @@ public abstract class HeroInfoView extends View {
 
         canvas.drawBitmap(getHeroAvatar(), null, avatarRect, null);
 
-        //noinspection PointlessBooleanExpression,ConstantConditions
-        if (GameSharedPref.isOpenAllFunction()|| heroBean.lookUp) {
+        if (showHelpButton()) {
             canvas.drawBitmap(imageManager.getBitmap("help_book"), null, bookRect, null);
+            if (focusHelp) {
+                canvas.drawRoundRect(bookRect, 5, 5, focusPaint);
+            }
         }
 
-        //noinspection PointlessBooleanExpression,ConstantConditions
-        if (GameSharedPref.isOpenAllFunction() || heroBean.fly) {
+        if (showFlyButton()) {
             canvas.drawBitmap(imageManager.getBitmap("swing"), null, flyRect, null);
+            if (focusFly) {
+                canvas.drawRoundRect(flyRect, 5, 5, focusPaint);
+            }
         }
 
         // ClipXX方法对画图片和颜色有效，对划线就有问题了,还是自己算吧
@@ -165,6 +199,14 @@ public abstract class HeroInfoView extends View {
         drawKeys(canvas, keysRect);
 
         canvas.drawPath(dotPath, dotPaint);
+    }
+
+    private boolean showHelpButton() {
+        return GameSharedPref.isOpenAllFunction() || heroBean.help;
+    }
+
+    private boolean showFlyButton() {
+        return GameSharedPref.isOpenAllFunction() || heroBean.fly;
     }
 
     private void drawAttribute(Canvas canvas, RectF rect) {
@@ -239,4 +281,51 @@ public abstract class HeroInfoView extends View {
         canvas.drawText(value, left + middle - rectTool.left, textBottom - rectTool.bottom, textPaint);
     }
 
+    @Override
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+
+        boolean oldFocusHelp = focusHelp;
+        boolean oldFocusFly = focusFly;
+
+        int action = event.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                if (bookRect.contains(x, y) && showHelpButton()) {
+                    focusHelp = true;
+                } else if (flyRect.contains(x, y) && showFlyButton()) {
+                    focusFly = true;
+                } else {
+                    return false;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (focusHelp && !bookRect.contains(x, y)) {
+                    focusHelp = false;
+                } else if (focusFly && !flyRect.contains(x, y)) {
+                    focusFly = false;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (focusHelp) {
+                    if (listener != null) {
+                        listener.onEnemyProperty();
+                    }
+                    focusHelp = false;
+                } else if (focusFly) {
+                    if (listener != null) {
+                        listener.onJumpFloor();
+                    }
+                    focusFly = false;
+                }
+                break;
+        }
+
+        if (oldFocusFly != focusFly || oldFocusHelp != focusHelp) {
+            invalidate();
+        }
+
+        return true;
+    }
 }

@@ -271,6 +271,10 @@ public abstract class GrammarElement {
                 return null;
             } else if ("maps".equals(content)) {
                 return content;
+            } else if ("true".equals(content)) {
+                return true;
+            } else if ("false".equals(content)) {
+                return false;
             }
 
             try {

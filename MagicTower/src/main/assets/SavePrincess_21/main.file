@@ -18,7 +18,7 @@
         "redKey":0,
         "keyImage":["yellow_key","blue_key","red_key"],
 
-        "lookUp":false,
+        "help":false,
         "fly":false,
         "cross":false,
         "hoe":false,

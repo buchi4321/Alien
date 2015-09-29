@@ -18,6 +18,7 @@ import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.OnGameProcessListener;
 import com.cyanflxy.game.fragment.BaseFragment;
 import com.cyanflxy.game.fragment.DialogueFragment;
+import com.cyanflxy.game.fragment.EnemyPropertyFragment;
 import com.cyanflxy.game.fragment.IntroduceFragment;
 import com.cyanflxy.game.fragment.MenuFragment;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
@@ -43,6 +44,8 @@ public class GameActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        gameContext = GameContext.getInstance();
+
         Utils.setBrightness(this, GameSharedPref.getScreenLight());
         //noinspection ResourceType
         setRequestedOrientation(GameSharedPref.getScreenOrientation());
@@ -63,6 +66,22 @@ public class GameActivity extends FragmentActivity
         UMGameAgent.init(this);
     }
 
+    private void loadGameContext() {
+        gameContext.setGameListener(gameProcessListener);
+
+        mapView.setGameContext(gameContext);
+
+        heroInfoView.setGameContext(gameContext);
+        heroInfoView.setOnFunctionClickListener(onFunctionClickListener);
+
+        if (!TextUtils.isEmpty(gameContext.getIntroduce())) {
+            String btnString = getString(R.string.continue_game);
+            showIntroduceFragment(gameContext.getIntroduce(), btnString);
+            gameContext.setIntroduceShown();
+            gameContext.autoSave();
+        }
+    }
+
     private void resetFragmentCallback() {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -79,21 +98,6 @@ public class GameActivity extends FragmentActivity
         BattleDialog battleDialog = (BattleDialog) fm.findFragmentByTag(BattleDialog.TAG);
         if (battleDialog != null) {
             battleDialog.setOnBattleEndListener(onBattleEndListener);
-        }
-    }
-
-    private void loadGameContext() {
-        gameContext = GameContext.getInstance();
-        gameContext.setGameListener(gameProcessListener);
-
-        mapView.setGameContext(gameContext);
-        heroInfoView.setGameContext(gameContext);
-
-        if (!TextUtils.isEmpty(gameContext.getIntroduce())) {
-            String btnString = getString(R.string.continue_game);
-            showIntroduceFragment(gameContext.getIntroduce(), btnString);
-            gameContext.setIntroduceShown();
-            gameContext.autoSave();
         }
     }
 
@@ -268,7 +272,7 @@ public class GameActivity extends FragmentActivity
         }
     }
 
-    public void showDialogueFragment() {
+    private void showDialogueFragment() {
         String tag = DialogueFragment.TAG;
 
         FragmentManager fm = getSupportFragmentManager();
@@ -283,7 +287,7 @@ public class GameActivity extends FragmentActivity
         }
     }
 
-    public void showBattleFragment(ImageInfoBean enemy) {
+    private void showBattleFragment(ImageInfoBean enemy) {
         if (GameSharedPref.isShowFightView()) {
             String tag = BattleDialog.TAG;
 
@@ -298,6 +302,25 @@ public class GameActivity extends FragmentActivity
         } else {
             onBattleEndListener.onBattleEnd();
         }
+
+    }
+
+    private void showEnemyPropertyFragment() {
+        String tag = EnemyPropertyFragment.TAG;
+
+        FragmentManager fm = getSupportFragmentManager();
+        EnemyPropertyFragment fragment = (EnemyPropertyFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            fragment = new EnemyPropertyFragment();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.full_fragment_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    private void showFlyFragment() {
 
     }
 
@@ -431,4 +454,16 @@ public class GameActivity extends FragmentActivity
         }
     };
 
+    private HeroInfoView.OnFunctionClickListener onFunctionClickListener
+            = new HeroInfoView.OnFunctionClickListener() {
+        @Override
+        public void onEnemyProperty() {
+            showEnemyPropertyFragment();
+        }
+
+        @Override
+        public void onJumpFloor() {
+            showFlyFragment();
+        }
+    };
 }

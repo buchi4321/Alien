@@ -31,7 +31,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MapView extends View {
 
-    private static final int ANIMATION_DURATION = 500;
+    public static final int ANIMATION_DURATION = 500;
     private static final int OPEN_DOOR_DURATION = 50;
     public static final int HERO_MOVE_DURATION = 60;
 
