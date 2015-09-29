@@ -18,6 +18,8 @@ import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.fragment.RecordFragment;
 import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.record.GameHistory;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.analytics.game.UMGameAgent;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener,
         OnFragmentCloseListener {
@@ -42,6 +44,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         findViewById(R.id.exit).setOnClickListener(this);
 
         resetFragmentCallback();
+
+        UMGameAgent.setDebugMode(BuildConfig.DEBUG);
+        MobclickAgent.updateOnlineConfig(this);
+        UMGameAgent.init(this);
     }
 
     private void resetFragmentCallback() {
@@ -57,6 +63,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             recordFragment.setRecordItemSelected(onRecordItemSelected);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UMGameAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        UMGameAgent.onPause(this);
     }
 
     @Override

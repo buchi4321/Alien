@@ -18,6 +18,13 @@ android {
         }
     }
 
+    productFlavors {
+        dev{}//开发
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_ID: name]
+    }
 }
 
 dependencies {

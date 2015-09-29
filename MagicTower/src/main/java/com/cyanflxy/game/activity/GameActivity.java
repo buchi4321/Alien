@@ -28,6 +28,7 @@ import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
 import com.github.cyanflxy.magictower.MainActivity;
 import com.github.cyanflxy.magictower.R;
+import com.umeng.analytics.game.UMGameAgent;
 
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class GameActivity extends FragmentActivity
         loadGameContext();
         resetFragmentCallback();
 
+        UMGameAgent.init(this);
     }
 
     private void resetFragmentCallback() {
@@ -93,6 +95,18 @@ public class GameActivity extends FragmentActivity
             gameContext.setIntroduceShown();
             gameContext.autoSave();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UMGameAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        UMGameAgent.onPause(this);
     }
 
     @Override
