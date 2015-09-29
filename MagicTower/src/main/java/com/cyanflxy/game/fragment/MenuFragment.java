@@ -21,7 +21,6 @@ public class MenuFragment extends BaseFragment implements View.OnClickListener {
 
         void onSetting();
 
-        void onHelp();
     }
 
     private OnMenuClickListener listener;
@@ -45,7 +44,6 @@ public class MenuFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.save_record).setOnClickListener(this);
         view.findViewById(R.id.setting).setOnClickListener(this);
         view.findViewById(R.id.back_game).setOnClickListener(this);
-        view.findViewById(R.id.help).setOnClickListener(this);
     }
 
     @Override
@@ -73,11 +71,6 @@ public class MenuFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.back_game:
                 ((OnFragmentCloseListener) getActivity()).closeFragment(this);
-                break;
-            case R.id.help:
-                if (listener != null) {
-                    listener.onHelp();
-                }
                 break;
         }
     }

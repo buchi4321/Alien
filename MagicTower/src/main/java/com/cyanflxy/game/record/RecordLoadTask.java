@@ -44,7 +44,10 @@ public class RecordLoadTask extends AsyncTask<Integer, Integer, ArrayList<GameRe
             record.recordName = GameHistory.SAVE_RECORD + GameSharedPref.getNewRecordId();
             records.add(record);
         } else if (mode == RecordFragment.MODE_READ) {
-            records.add(GameHistory.getAutoSaveRecord());
+            GameRecord auto = GameHistory.getAutoSaveRecord();
+            if (auto != null) {
+                records.add(auto);
+            }
         }
 
         Collections.sort(records);

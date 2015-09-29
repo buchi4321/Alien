@@ -12,9 +12,11 @@ import com.cyanflxy.game.bean.ImageInfoBean.ImageType;
 import com.cyanflxy.game.bean.MapBean;
 import com.cyanflxy.game.bean.MapElementBean;
 import com.cyanflxy.game.bean.ResourcePropertyBean;
+import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.record.GameHistory;
 import com.cyanflxy.game.record.GameReader;
+import com.cyanflxy.game.widget.FightResultToast;
 import com.cyanflxy.game.widget.MessageToast;
 import com.github.cyanflxy.magictower.R;
 
@@ -174,6 +176,10 @@ public class GameContext {
             return false;
         }
 
+        if (GameSharedPref.isMapInvisible()) {
+            return true;
+        }
+
         ImageInfoBean info = imageResourceManager.getImage(element.element);
         boolean canMove = canMoveTo(element, info);
 
@@ -188,7 +194,6 @@ public class GameContext {
             }
         } else {
 
-            // TODO 处理获取物品（Toast展示）
             // TODO 处理商店
 
             switch (info.type) {
@@ -217,7 +222,12 @@ public class GameContext {
     }
 
     private void battleEnemy(MapElementBean element, ImageInfoBean info) {
-        // TODO 判断攻击能否获胜
+        if (gameData.hero.damage <= info.property.defense
+                || gameData.hero.hp <= calculateHPDamage(info.property)) {
+            MessageToast.showText(R.string.fight_fail);
+            return;
+        }
+
         currentBattleElement = element;
         currentBattleEnemyInfo = info;
         if (gameListener != null) {
@@ -225,9 +235,37 @@ public class GameContext {
         }
     }
 
+    public int calculateHPDamage(ResourcePropertyBean enemyProperty) {
+        HeroBean hero = gameData.hero;
+
+        int total = 0;
+        if (!TextUtils.isEmpty(enemyProperty.lifeDrain)) {
+            total += SentenceParser.parseLifeDrain(hero.hp, enemyProperty.lifeDrain);
+        }
+
+        int damageToHero = enemyProperty.damage - hero.defense;
+        if (damageToHero <= 0) {
+            return total;
+        }
+
+        int damageToEnemy = hero.damage - enemyProperty.defense;
+        int round = (enemyProperty.hp + damageToEnemy - 1) / damageToEnemy;
+
+        total += (round - 1) * damageToHero;
+
+        return total;
+    }
+
     public void onBattleEnd() {
         currentBattleElement.element = "";
-        // TODO 处理获取金钱和经验
+
+        int money = currentBattleEnemyInfo.property.money;
+        int exp = currentBattleEnemyInfo.property.exp;
+
+        gameData.hero.money += money;
+        gameData.hero.exp += exp;
+
+        FightResultToast.show(money, exp);
     }
 
     private void getGoods(MapElementBean element, ImageInfoBean info) {

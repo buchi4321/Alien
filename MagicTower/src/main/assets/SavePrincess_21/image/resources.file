@@ -105,7 +105,7 @@
         {"ids":[350], "name":"shop_right", "type":"wall"},
 
         {"ids":[352], "name":"red_jewel", "type":"goods","property":{"name":"红宝石", "action":"gameData.hero.damage+=3", "info":"攻击力+3"}},
-        {"ids":[353], "name":"blue_jewel", "type":"goods","property":{"name":"蓝宝石", "action":"gameData.hero.defence+=3", "info":"防御力+3"}},
+        {"ids":[353], "name":"blue_jewel", "type":"goods","property":{"name":"蓝宝石", "action":"gameData.hero.defense+=3", "info":"防御力+3"}},
         {"ids":[354], "name":"green_jewel", "type":"goods"},
         {"ids":[355], "name":"yellow_jewel", "type":"goods"},
         {"ids":[356], "name":"red_hp", "type":"goods"},

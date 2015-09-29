@@ -40,12 +40,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         findViewById(R.id.new_game).setOnClickListener(this);
         findViewById(R.id.read_record).setOnClickListener(this);
         findViewById(R.id.setting).setOnClickListener(this);
-        findViewById(R.id.help).setOnClickListener(this);
         findViewById(R.id.exit).setOnClickListener(this);
 
         resetFragmentCallback();
 
         UMGameAgent.setDebugMode(BuildConfig.DEBUG);
+        //noinspection deprecation
         MobclickAgent.updateOnlineConfig(this);
         UMGameAgent.init(this);
     }
@@ -108,8 +108,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.setting:
                 showSettingFragment();
-                break;
-            case R.id.help:
                 break;
             case R.id.exit:
                 finish();

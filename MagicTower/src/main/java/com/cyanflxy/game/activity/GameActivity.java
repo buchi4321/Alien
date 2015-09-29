@@ -284,15 +284,19 @@ public class GameActivity extends FragmentActivity
     }
 
     public void showBattleFragment(ImageInfoBean enemy) {
-        String tag = BattleDialog.TAG;
+        if (GameSharedPref.isShowFightView()) {
+            String tag = BattleDialog.TAG;
 
-        FragmentManager fm = getSupportFragmentManager();
-        BattleDialog dialog = (BattleDialog) fm.findFragmentByTag(tag);
+            FragmentManager fm = getSupportFragmentManager();
+            BattleDialog dialog = (BattleDialog) fm.findFragmentByTag(tag);
 
-        if (dialog == null) {
-            dialog = BattleDialog.newInstance(enemy);
-            dialog.setOnBattleEndListener(onBattleEndListener);
-            dialog.show(fm, tag);
+            if (dialog == null) {
+                dialog = BattleDialog.newInstance(enemy);
+                dialog.setOnBattleEndListener(onBattleEndListener);
+                dialog.show(fm, tag);
+            }
+        } else {
+            onBattleEndListener.onBattleEnd();
         }
 
     }
@@ -395,10 +399,6 @@ public class GameActivity extends FragmentActivity
             showSettingFragment();
         }
 
-        @Override
-        public void onHelp() {
-
-        }
     };
 
     private RecordFragment.OnRecordItemSelected onRecordItemSelected
@@ -427,6 +427,7 @@ public class GameActivity extends FragmentActivity
         @Override
         public void onBattleEnd() {
             gameContext.onBattleEnd();
+            heroInfoView.refreshInfo();
         }
     };
 

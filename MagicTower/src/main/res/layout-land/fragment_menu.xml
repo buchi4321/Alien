@@ -27,12 +27,12 @@
             android:text="@string/main_menu"/>
 
         <Button
-            android:id="@+id/back_game"
+            android:id="@+id/setting"
             style="@style/Button"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:text="@string/back_game"/>
+            android:text="@string/setting"/>
 
     </LinearLayout>
 
@@ -69,20 +69,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/setting"
-            style="@style/Button"
-            android:layout_gravity="center"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/setting"/>
-
-        <Button
-            android:id="@+id/help"
+            android:id="@+id/back_game"
             style="@style/Button"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:text="@string/help"/>
+            android:text="@string/back_game"/>
+
     </LinearLayout>
 
 

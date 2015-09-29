@@ -55,4 +55,14 @@ public class SentenceParser {
         return (boolean) value;
     }
 
+    public static int parseLifeDrain(int heroHP, String lifeDrainSentence) {
+        if (lifeDrainSentence.endsWith("%")) {
+            int len = lifeDrainSentence.length();
+            int percent = Integer.valueOf(lifeDrainSentence.substring(0, len - 1));
+            return heroHP * percent / 100;
+        } else {
+            return Integer.valueOf(lifeDrainSentence);
+        }
+    }
+
 }

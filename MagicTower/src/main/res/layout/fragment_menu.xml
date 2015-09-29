@@ -70,19 +70,6 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/help"
-            style="@style/Button"
-            android:layout_gravity="center"
-            android:text="@string/help"/>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <Button
             android:id="@+id/back_game"
             style="@style/Button"
             android:layout_gravity="center"

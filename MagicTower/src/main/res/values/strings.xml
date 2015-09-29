@@ -7,7 +7,6 @@
     <string name="read_record">读取存档</string>
     <string name="save_record">保存存档</string>
     <string name="setting">设置</string>
-    <string name="help">帮助</string>
     <string name="exit">退出</string>
     <string name="back_game">返回游戏</string>
     <string name="press_again_exit">再按一次退出</string>
@@ -44,6 +43,7 @@
     <string name="end_dialogue">结束对话</string>
 
     <string name="get_goods">获得%1$s</string>
+    <string name="fight_fail">打不过</string>
     <string name="fight_win">战斗胜利</string>
     <string name="fight_get">获得%1$d金钱，%2$d经验</string>
 
@@ -62,4 +62,5 @@
     <string name="open_all_function">功能全开</string>
     <string name="map_invisible">无视地图</string>
     <string name="show_fight_dialog">显示打斗</string>
+
 </resources>

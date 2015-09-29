@@ -7,12 +7,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.cyanflxy.game.bean.EnemyProperty;
 import com.cyanflxy.game.bean.HeroBean;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.driver.GameContext;
+import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.widget.BattleView;
 import com.github.cyanflxy.magictower.R;
 
@@ -70,9 +72,8 @@ public class BattleDialog extends DialogFragment {
 
         battleView.setInfo(hero, enemy);
 
-        // TODO 这里应该处理吸血问题
         Handler handler = new BattleHandler(this);
-        handler.sendEmptyMessage(MSG_HIT_ENEMY);
+        handler.sendEmptyMessage(MSG_LIFE_DRAIN);
     }
 
     @NonNull
@@ -119,8 +120,9 @@ public class BattleDialog extends DialogFragment {
         }
     }
 
-    private static final int MSG_HIT_ENEMY = 1;
-    private static final int MSG_HIT_HERO = 2;
+    private static final int MSG_LIFE_DRAIN = 1;
+    private static final int MSG_HIT_ENEMY = 2;
+    private static final int MSG_HIT_HERO = 3;
 
     private static final int BATTLE_INTERVAL = 200;
 
@@ -147,6 +149,13 @@ public class BattleDialog extends DialogFragment {
             }
 
             switch (msg.what) {
+                case MSG_LIFE_DRAIN:
+                    if (!TextUtils.isEmpty(enemy.lifeDrain)) {
+                        int drain = SentenceParser.parseLifeDrain(hero.hp, enemy.lifeDrain);
+                        hero.hp -= drain;
+                    }
+                    sendEmptyMessageDelayed(MSG_HIT_ENEMY, BATTLE_INTERVAL);
+                    break;
                 case MSG_HIT_ENEMY: {
                     int damage = hero.damage - enemy.defense;
                     enemy.hp -= damage;
