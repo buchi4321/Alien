@@ -1,0 +1,381 @@
+{
+    "downPosition": {
+        "direction": "up",
+        "x": 0,
+        "y": 8
+    },
+    "floorImage": "floor",
+    "mapData": [
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "gold_captain"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "red_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "stair_down"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "blue_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "gold_guard"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "iron_door"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "gold_guard"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "prison"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "prison"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "stair_up"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_old"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_old"
+        },
+        {
+            "element": "wall"
+        }
+    ],
+    "upPosition": {
+        "direction": "down",
+        "x": 0,
+        "y": 2
+    },
+    "mapHeight": 11,
+    "mapWidth": 11,
+    "mapFloor": 2
+}

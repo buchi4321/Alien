@@ -44,6 +44,16 @@
             android:background="@drawable/border_horizontal_repeat"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/invincible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/invincible"
+        android:textColor="@color/invincible_color"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
     <com.cyanflxy.game.widget.HeroInfoHorizontalView
         android:id="@+id/hero_info_view"
         android:layout_width="match_parent"

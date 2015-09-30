@@ -13,8 +13,8 @@ public class MapBean {
     public int mapHeight;
     public String floorImage;
 
-    public HeroPositionBean startPosition;//从楼下上来的时候的位置
-    public HeroPositionBean endPosition;// 从楼上下来的时候的位置
+    public HeroPositionBean upPosition;//从楼下上来的时候的位置
+    public HeroPositionBean downPosition;// 从楼上下来的时候的位置
 
     public MapElement[] mapData;
 
@@ -51,17 +51,17 @@ public class MapBean {
             p.direction = imageInfo.name;
 
             if (up) {
-                endPosition = p;
+                downPosition = p;
             } else if (down) {
-                startPosition = p;
+                upPosition = p;
             } else {
-                if (endPosition != null) {
-                    startPosition = p;
-                } else if (startPosition != null) {
-                    endPosition = p;
+                if (downPosition != null) {
+                    upPosition = p;
+                } else if (upPosition != null) {
+                    downPosition = p;
                 } else {
-                    startPosition = p;
-                    endPosition = p;
+                    upPosition = p;
+                    downPosition = p;
                 }
             }
 
@@ -83,17 +83,17 @@ public class MapBean {
     }
 
     private void initHeroPosition() {
-        if (startPosition != null && !TextUtils.isEmpty(startPosition.direction)) {
+        if (upPosition != null && !TextUtils.isEmpty(upPosition.direction)) {
             MapElement element = new MapElement();
-            element.element = startPosition.direction;
-            mapData[startPosition.y * mapWidth + startPosition.x] = element;
+            element.element = upPosition.direction;
+            mapData[upPosition.y * mapWidth + upPosition.x] = element;
         }
 
 
-        if (endPosition != null && !TextUtils.isEmpty(endPosition.direction)) {
+        if (downPosition != null && !TextUtils.isEmpty(downPosition.direction)) {
             MapElement element = new MapElement();
-            element.element = endPosition.direction;
-            mapData[endPosition.y * mapWidth + endPosition.x] = element;
+            element.element = downPosition.direction;
+            mapData[downPosition.y * mapWidth + downPosition.x] = element;
         }
     }
 

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import com.cyanflxy.common.Utils;
@@ -19,6 +20,7 @@ import com.cyanflxy.game.driver.OnGameProcessListener;
 import com.cyanflxy.game.fragment.BaseFragment;
 import com.cyanflxy.game.fragment.DialogueFragment;
 import com.cyanflxy.game.fragment.EnemyPropertyFragment;
+import com.cyanflxy.game.fragment.FlyFragment;
 import com.cyanflxy.game.fragment.IntroduceFragment;
 import com.cyanflxy.game.fragment.MenuFragment;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
@@ -27,6 +29,7 @@ import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.widget.GameControllerView;
 import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
+import com.github.cyanflxy.magictower.BuildConfig;
 import com.github.cyanflxy.magictower.MainActivity;
 import com.github.cyanflxy.magictower.R;
 import com.umeng.analytics.game.UMGameAgent;
@@ -54,6 +57,20 @@ public class GameActivity extends FragmentActivity
 
         mapView = (MapView) findViewById(R.id.map_view);
         heroInfoView = (HeroInfoView) findViewById(R.id.hero_info_view);
+
+        final View invincible = findViewById(R.id.invincible);
+        if (BuildConfig.DEBUG) {
+            invincible.setVisibility(View.VISIBLE);
+            invincible.setSelected(GameSharedPref.isMapInvisible());
+            invincible.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean newValue = !GameSharedPref.isMapInvisible();
+                    GameSharedPref.setMapInvisible(newValue);
+                    invincible.setSelected(newValue);
+                }
+            });
+        }
 
         GameControllerView gc = GameControllerView.addGameController(this);
         gc.setListener(directionMotionListener);
@@ -98,6 +115,11 @@ public class GameActivity extends FragmentActivity
         BattleDialog battleDialog = (BattleDialog) fm.findFragmentByTag(BattleDialog.TAG);
         if (battleDialog != null) {
             battleDialog.setOnBattleEndListener(onBattleEndListener);
+        }
+
+        FlyFragment flyFragment = (FlyFragment) fm.findFragmentByTag(FlyFragment.TAG);
+        if (flyFragment != null) {
+            flyFragment.setOnMapSelectListener(onMapSelectListener);
         }
     }
 
@@ -321,7 +343,19 @@ public class GameActivity extends FragmentActivity
     }
 
     private void showFlyFragment() {
+        String tag = FlyFragment.TAG;
 
+        FragmentManager fm = getSupportFragmentManager();
+        FlyFragment fragment = (FlyFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            fragment = new FlyFragment();
+            fragment.setOnMapSelectListener(onMapSelectListener);
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.full_fragment_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
     }
 
     // 方向控制器回调
@@ -464,6 +498,16 @@ public class GameActivity extends FragmentActivity
         @Override
         public void onJumpFloor() {
             showFlyFragment();
+        }
+    };
+
+    private FlyFragment.OnMapSelectListener onMapSelectListener
+            = new FlyFragment.OnMapSelectListener() {
+        @Override
+        public void onMapSelect(int mapFloor) {
+            if (gameContext.jumpFloor(mapFloor)) {
+                closeFragment(null);
+            }
         }
     };
 }

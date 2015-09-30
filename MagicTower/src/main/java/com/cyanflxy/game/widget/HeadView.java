@@ -33,6 +33,10 @@ public class HeadView extends ImageView {
     }
 
     public void setImageInfo(ImageInfoBean info) {
+        if (handler.hasMessages(0)) {
+            handler.removeMessages(0);
+        }
+
         this.info = info;
         mapAnimatePhase = 0;
 
@@ -40,10 +44,6 @@ public class HeadView extends ImageView {
 
         if (info.getIdLength() > 1) {
             handler.sendEmptyMessageDelayed(0, ANIMATION_DURATION);
-        } else {
-            if (handler.hasMessages(0)) {
-                handler.removeMessages(0);
-            }
         }
     }
 

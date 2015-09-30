@@ -19,6 +19,7 @@ import com.cyanflxy.game.bean.HeroBean;
 import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.driver.ImageResourceManager;
+import com.github.cyanflxy.magictower.BuildConfig;
 import com.github.cyanflxy.magictower.R;
 
 import static com.github.cyanflxy.magictower.AppApplication.baseContext;
@@ -120,7 +121,7 @@ public abstract class HeroInfoView extends View {
     public void refreshInfo() {
         heroBean = gameContext.getHero();
         int hash = heroBean.hashCode();
-        if (heroHashCode != hash) {
+        if (heroHashCode != hash || BuildConfig.DEBUG) {
             heroHashCode = hash;
             invalidate();
         }
@@ -139,8 +140,15 @@ public abstract class HeroInfoView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int w = getWidth();
-        int h = getHeight();
+        int w = MeasureSpec.getSize(widthMeasureSpec);
+        int h = MeasureSpec.getSize(heightMeasureSpec);
+
+        int modeW = MeasureSpec.getMode(widthMeasureSpec);
+        int modeH = MeasureSpec.getMode(heightMeasureSpec);
+
+        if (modeW != MeasureSpec.EXACTLY || modeH != MeasureSpec.EXACTLY) {
+            return;
+        }
 
         if (w == 0 || h == 0) {
             return;
@@ -164,6 +172,7 @@ public abstract class HeroInfoView extends View {
         float height = attributeRect.height();
         float heightPiece = height / ATTRIBUTE_NAME.length;
 
+        dotPath.reset();
         for (int i = 0; i < ATTRIBUTE_NAME.length; i++) {
             dotPath.moveTo(attributeRect.left, attributeRect.top + heightPiece * (i + 1));
             dotPath.lineTo(attributeRect.right, attributeRect.top + heightPiece * (i + 1));

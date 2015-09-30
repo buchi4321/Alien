@@ -323,6 +323,16 @@ public class GameContext {
         }
     }
 
+    public boolean jumpFloor(int floor) {
+        if (GameSharedPref.isOpenAllFunction() || GameReader.haveReachMap(gameData.maps[floor])) {
+            gotoFloor(floor);
+            return true;
+        } else {
+            MessageToast.showText(R.string.map_not_reach);
+            return false;
+        }
+    }
+
     private void gotoFloor(int floor) {
         autoSave();
 

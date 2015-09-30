@@ -64,9 +64,14 @@
     <string name="open_all_function">功能全开</string>
     <string name="map_invisible">无视地图</string>
     <string name="show_fight_dialog">显示打斗</string>
+    <string name="invincible">无敌</string>
 
     <string name="enemy_property_help">怪物图鉴</string>
     <string name="enemy_name">怪物名</string>
     <string name="enemy_empty">没有怪物了</string>
+
+    <string name="fly_compass">风之罗盘</string>
+    <string name="select_floor">请选择想去的楼层</string>
+    <string name="map_not_reach">您还没有去过该地图</string>
 
 </resources>
