@@ -79,12 +79,7 @@ public class EnemyPropertyFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((OnFragmentCloseListener) getActivity()).closeFragment(EnemyPropertyFragment.this);
-            }
-        });
+        view.findViewById(R.id.back).setOnClickListener(onCloseListener);
 
         ListView listView = (ListView) view.findViewById(R.id.enemy_list);
         listView.setAdapter(new EnemyAdapter());

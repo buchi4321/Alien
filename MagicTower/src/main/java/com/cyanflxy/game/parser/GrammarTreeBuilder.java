@@ -3,6 +3,7 @@ package com.cyanflxy.game.parser;
 import com.cyanflxy.game.parser.GrammarElement.ArithmeticElement;
 import com.cyanflxy.game.parser.GrammarElement.ArraySelectElement;
 import com.cyanflxy.game.parser.GrammarElement.AssignmentElement;
+import com.cyanflxy.game.parser.GrammarElement.CompareElement;
 import com.cyanflxy.game.parser.GrammarElement.FieldElement;
 import com.cyanflxy.game.parser.GrammarElement.FieldGetterElement;
 import com.cyanflxy.game.parser.GrammarElement.NumberElement;
@@ -119,6 +120,17 @@ public class GrammarTreeBuilder {
             case '=':
                 op = new AssignmentElement();
                 sentenceIndex++;
+                break;
+            case '>':
+            case '<':
+                op = new CompareElement();
+                if (next == '=') {
+                    op.setContent("" + current + "=");
+                    sentenceIndex += 2;
+                } else {
+                    op.setContent("" + current);
+                    sentenceIndex++;
+                }
                 break;
         }
 

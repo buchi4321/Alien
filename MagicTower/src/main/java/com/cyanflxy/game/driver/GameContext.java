@@ -192,6 +192,10 @@ public class GameContext {
             if (gameListener != null) {
                 gameListener.showDialogue();
             }
+        } else if (element.shop != null) {
+            if (gameListener != null) {
+                gameListener.showShop(element.shop);
+            }
         } else {
 
             // TODO 处理商店
@@ -230,8 +234,11 @@ public class GameContext {
 
         currentBattleElement = element;
         currentBattleEnemyInfo = info;
-        if (gameListener != null) {
+        if (gameListener != null && GameSharedPref.isShowFightView()) {
             gameListener.showBattle(info);
+        } else {
+            gameData.hero.hp -= calculateHPDamage(info.property);
+            onBattleEnd();
         }
     }
 

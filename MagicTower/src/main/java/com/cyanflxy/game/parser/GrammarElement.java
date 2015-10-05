@@ -231,6 +231,44 @@ public abstract class GrammarElement {
         }
     }
 
+    public static class CompareElement extends OperatorElement {
+
+        @Override
+        public int getPriority() {
+            return 6;
+        }
+
+        @Override
+        public Object getValue(GameContext gameContext) {
+            Object leftValue = left.getValue(gameContext);
+            Object rightValue = right.getValue(gameContext);
+
+            if (!(leftValue instanceof Number) || !(rightValue instanceof Number)) {
+                throw new RuntimeException("语法不正确");
+            }
+
+            float leftNumber = ((Number) leftValue).floatValue();
+            float rightNumber = ((Number) rightValue).floatValue();
+
+            if (content.equals(">")) {
+                return leftNumber > rightNumber;
+            } else if (content.equals(">=")) {
+                return leftNumber >= rightNumber;
+            } else if (content.equals("<")) {
+                return leftNumber < rightNumber;
+            } else if (content.equals("<=")) {
+                return leftNumber <= rightNumber;
+            }
+
+            return null;
+        }
+
+        @Override
+        public void setValue(GameContext gameContext, char op, Object value) {
+            throw new RuntimeException("语法不正确");
+        }
+    }
+
     /**
      * 算数操作符
      */

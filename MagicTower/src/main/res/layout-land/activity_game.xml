@@ -73,6 +73,16 @@
         android:layout_height="match_parent">
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/shop_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@id/hero_info_view"
+        android:layout_toStartOf="@+id/hero_info_view">
+    </FrameLayout>
+
     <!-- 下半屏的Fragment - 对话框-->
     <FrameLayout
         android:id="@+id/bottom_half_content"

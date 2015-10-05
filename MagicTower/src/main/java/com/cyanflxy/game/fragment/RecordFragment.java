@@ -27,8 +27,7 @@ import com.github.cyanflxy.magictower.R;
 import java.util.ArrayList;
 
 public class RecordFragment extends BaseFragment
-        implements View.OnClickListener,
-        AdapterView.OnItemClickListener,
+        implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener {
 
     public static final String TAG = "RecordFragment";
@@ -176,7 +175,7 @@ public class RecordFragment extends BaseFragment
             }
         });
 
-        view.findViewById(R.id.back).setOnClickListener(this);
+        view.findViewById(R.id.back).setOnClickListener(onCloseListener);
     }
 
     @Override
@@ -193,15 +192,6 @@ public class RecordFragment extends BaseFragment
         outState.putInt(SAVE_MENU_POSITION, onItemMenuPosition);
         outState.putSerializable(SAVE_RECORD_LIST, gameRecords);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.back:
-                ((OnFragmentCloseListener) getActivity()).closeFragment(this);
-                break;
-        }
     }
 
     @Override

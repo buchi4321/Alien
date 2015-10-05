@@ -108,7 +108,7 @@ public class IntroduceFragment extends BaseFragment implements
                 }
                 break;
             case R.id.continue_button:
-                ((OnFragmentCloseListener) getActivity()).closeFragment(this);
+                closeFragment();
                 break;
             default:
                 break;

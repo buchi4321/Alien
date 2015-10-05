@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.bean.ImageInfoBean;
+import com.cyanflxy.game.bean.ShopBean;
 import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.dialog.BattleDialog;
 import com.cyanflxy.game.driver.GameContext;
@@ -26,6 +27,7 @@ import com.cyanflxy.game.fragment.MenuFragment;
 import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.fragment.RecordFragment;
 import com.cyanflxy.game.fragment.SettingFragment;
+import com.cyanflxy.game.fragment.ShopFragment;
 import com.cyanflxy.game.widget.GameControllerView;
 import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
@@ -120,6 +122,11 @@ public class GameActivity extends FragmentActivity
         FlyFragment flyFragment = (FlyFragment) fm.findFragmentByTag(FlyFragment.TAG);
         if (flyFragment != null) {
             flyFragment.setOnMapSelectListener(onMapSelectListener);
+        }
+
+        ShopFragment shopFragment = (ShopFragment) fm.findFragmentByTag(ShopFragment.TAG);
+        if (shopFragment != null) {
+            shopFragment.setOnAttributeChangeListener(onAttributeChangeListener);
         }
     }
 
@@ -310,19 +317,15 @@ public class GameActivity extends FragmentActivity
     }
 
     private void showBattleFragment(ImageInfoBean enemy) {
-        if (GameSharedPref.isShowFightView()) {
-            String tag = BattleDialog.TAG;
+        String tag = BattleDialog.TAG;
 
-            FragmentManager fm = getSupportFragmentManager();
-            BattleDialog dialog = (BattleDialog) fm.findFragmentByTag(tag);
+        FragmentManager fm = getSupportFragmentManager();
+        BattleDialog dialog = (BattleDialog) fm.findFragmentByTag(tag);
 
-            if (dialog == null) {
-                dialog = BattleDialog.newInstance(enemy);
-                dialog.setOnBattleEndListener(onBattleEndListener);
-                dialog.show(fm, tag);
-            }
-        } else {
-            onBattleEndListener.onBattleEnd();
+        if (dialog == null) {
+            dialog = BattleDialog.newInstance(enemy);
+            dialog.setOnBattleEndListener(onBattleEndListener);
+            dialog.show(fm, tag);
         }
 
     }
@@ -353,6 +356,23 @@ public class GameActivity extends FragmentActivity
             fragment.setOnMapSelectListener(onMapSelectListener);
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.full_fragment_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    private void showShopFragment(ShopBean shop) {
+
+        String tag = ShopFragment.TAG;
+
+        FragmentManager fm = getSupportFragmentManager();
+        ShopFragment fragment = (ShopFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            fragment = ShopFragment.newInstance(shop);
+            fragment.setOnAttributeChangeListener(onAttributeChangeListener);
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.shop_content, fragment, tag);
             ft.addToBackStack(null);
             ft.commit();
         }
@@ -431,6 +451,11 @@ public class GameActivity extends FragmentActivity
         public void showBattle(ImageInfoBean enemy) {
             showBattleFragment(enemy);
         }
+
+        @Override
+        public void showShop(ShopBean shopBean) {
+            showShopFragment(shopBean);
+        }
     };
 
     // 菜单Fragment回调
@@ -508,6 +533,14 @@ public class GameActivity extends FragmentActivity
             if (gameContext.jumpFloor(mapFloor)) {
                 closeFragment(null);
             }
+        }
+    };
+
+    private ShopFragment.OnAttributeChangeListener onAttributeChangeListener
+            = new ShopFragment.OnAttributeChangeListener() {
+        @Override
+        public void onAttributeChange() {
+            heroInfoView.refreshInfo();
         }
     };
 }

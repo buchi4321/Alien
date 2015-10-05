@@ -70,7 +70,7 @@ public class MenuFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.back_game:
-                ((OnFragmentCloseListener) getActivity()).closeFragment(this);
+                closeFragment();
                 break;
         }
     }

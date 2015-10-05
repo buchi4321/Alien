@@ -55,7 +55,15 @@
             "element": "shop_left"
         },
         {
-            "element": "blue_shop"
+            "element": "blue_shop",
+            "shop":{
+                "title":"想要增加能力吗，25金币选择一项：",
+                "options":[
+                    {"text":"增加800点生命","condition":"gameData.hero.money>=25","action":"gameData.hero.money-=25;gameData.hero.hp+=800"},
+                    {"text":"增加4点攻击","condition":"gameData.hero.money>=25","action":"gameData.hero.money-=25;gameData.hero.damage+=4"},
+                    {"text":"增加4点防御","condition":"gameData.hero.money>=25","action":"gameData.hero.money-=25;gameData.hero.defense+=4"}
+                ]
+            }
         },
         {
             "element": "shop_right"

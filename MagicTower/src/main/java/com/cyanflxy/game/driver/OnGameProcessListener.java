@@ -1,6 +1,7 @@
 package com.cyanflxy.game.driver;
 
 import com.cyanflxy.game.bean.ImageInfoBean;
+import com.cyanflxy.game.bean.ShopBean;
 
 public interface OnGameProcessListener {
 
@@ -11,4 +12,6 @@ public interface OnGameProcessListener {
     void changeFloor(int floor);
 
     void showBattle(ImageInfoBean enemy);
+
+    void showShop(ShopBean shopBean);
 }

@@ -110,12 +110,7 @@ public class SettingFragment extends BaseFragment {
             devView.setVisibility(View.GONE);
         }
 
-        view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((OnFragmentCloseListener) getActivity()).closeFragment(SettingFragment.this);
-            }
-        });
+        view.findViewById(R.id.back).setOnClickListener(onCloseListener);
     }
 
     @Override

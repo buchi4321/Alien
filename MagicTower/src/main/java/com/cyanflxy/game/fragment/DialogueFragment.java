@@ -87,7 +87,7 @@ public class DialogueFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.end_dialogue:
                 endDialogue();
-                ((OnFragmentCloseListener) getActivity()).closeFragment(this);
+                closeFragment();
                 break;
         }
     }
@@ -100,7 +100,7 @@ public class DialogueFragment extends BaseFragment implements View.OnClickListen
             animateTextView.startAnimation(textProgress);
         } else {
             endDialogue();
-            ((OnFragmentCloseListener) getActivity()).closeFragment(this);
+            closeFragment();
         }
     }
 

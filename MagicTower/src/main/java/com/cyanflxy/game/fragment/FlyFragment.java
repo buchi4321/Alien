@@ -34,12 +34,7 @@ public class FlyFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((OnFragmentCloseListener) getActivity()).closeFragment(FlyFragment.this);
-            }
-        });
+        view.findViewById(R.id.back).setOnClickListener(onCloseListener);
 
         MapFloorSelectView floorSelector = (MapFloorSelectView) view.findViewById(R.id.map_floor_selector);
         floorSelector.setCurrentFloor(GameContext.getInstance().getHero().floor);
