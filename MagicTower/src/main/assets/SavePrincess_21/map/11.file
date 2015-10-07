@@ -1,1 +1,389 @@
-{"downPosition":{"direction":"left","x":9,"y":10},"floorImage":"floor","mapData":[{"element":"red_hp"},{"element":"wall"},{"element":"yellow_key"},{"element":"wall"},{"element":"blue_key"},{"element":"wall"},{"element":"red_key"},{"element":"wall"},{"element":"blue_hp"},{"element":"blue_hp"},{"element":"junior_guard"},{"element":"red_hp"},{"element":"wall"},{"element":"yellow_key"},{"element":"wall"},{"element":"blue_key"},{"element":"wall"},{"element":"red_key"},{"element":"wall"},{"element":"shield_2"},{"element":"junior_guard"},{"element":""},{"element":"red_hp"},{"element":"wall"},{"element":"yellow_key"},{"element":"wall"},{"element":"blue_key"},{"element":"wall"},{"element":"red_key"},{"element":"wall"},{"element":"junior_guard"},{"element":"junior_guard"},{"element":""},{"element":"yellow_door"},{"element":"wall"},{"element":"yellow_door"},{"element":"wall"},{"element":"yellow_door"},{"element":"wall"},{"element":"yellow_door"},{"element":"wall"},{"element":"wall"},{"element":"blue_door"},{"element":"wall"},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":"wall"},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":"yellow_door"},{"element":"wall"},{"element":"wall"},{"element":"blue_door"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"blue_door"},{"element":"wall"},{"element":"wall"},{"element":"yellow_door"},{"element":"blue_jewel"},{"element":"wall"},{"element":""},{"element":"dark_guard"},{"element":"blue_hp"},{"element":"double_sword_man"},{"element":"blue_hp"},{"element":"dark_guard"},{"element":""},{"element":"wall"},{"element":"red_jewel"},{"element":"blue_jewel"},{"element":"wall"},{"element":"orc_soldier"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"orc_soldier"},{"element":"wall"},{"element":"red_jewel"},{"element":"blue_jewel"},{"element":"wall"},{"element":"orc_soldier"},{"element":"wall"},{"element":"shop_left"},{"element":"blue_shop"},{"element":"shop_right"},{"element":"wall"},{"element":"orc_soldier"},{"element":"wall"},{"element":"red_jewel"},{"element":"wall"},{"element":"wall"},{"element":"red_door"},{"element":"wall"},{"element":"red_hp"},{"element":""},{"element":"red_hp"},{"element":"wall"},{"element":"red_door"},{"element":"wall"},{"element":"wall"},{"element":"stair_down"},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":"stair_up"}],"upPosition":{"direction":"right","x":1,"y":10},"mapHeight":11,"mapWidth":11,"mapFloor":11}
+{
+    "downPosition": {
+        "direction": "left",
+        "x": 9,
+        "y": 10
+    },
+    "floorImage": "floor",
+    "mapData": [
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "junior_guard"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "shield_2"
+        },
+        {
+            "element": "junior_guard"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_key"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "junior_guard"
+        },
+        {
+            "element": "junior_guard"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "dark_guard"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "double_sword_man"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "dark_guard"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "orc_soldier"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "orc_soldier"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "orc_soldier"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "shop_left"
+        },
+        {
+            "element": "blue_shop",
+            "shop":{
+                "title":"想要增加能力吗，100金币选择一项：",
+                "options":[
+                    {"text":"增加4000点生命","condition":"gameData.hero.money>=100","action":"gameData.hero.money-=100;gameData.hero.hp+=4000"},
+                    {"text":"增加20点攻击","condition":"gameData.hero.money>=100","action":"gameData.hero.money-=100;gameData.hero.damage+=20"},
+                    {"text":"增加20点防御","condition":"gameData.hero.money>=100","action":"gameData.hero.money-=100;gameData.hero.defense+=20"}
+                ]
+            }
+        },
+        {
+            "element": "shop_right"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "orc_soldier"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "stair_down"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "stair_up"
+        }
+    ],
+    "upPosition": {
+        "direction": "right",
+        "x": 1,
+        "y": 10
+    },
+    "mapHeight": 11,
+    "mapWidth": 11,
+    "mapFloor": 11
+}

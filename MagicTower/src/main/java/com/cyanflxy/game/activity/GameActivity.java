@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,9 +27,11 @@ import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.fragment.RecordFragment;
 import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.fragment.ShopFragment;
+import com.cyanflxy.game.fragment.ShopShortcutFragment;
 import com.cyanflxy.game.widget.GameControllerView;
 import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
+import com.cyanflxy.game.widget.ShopLayout;
 import com.github.cyanflxy.magictower.BuildConfig;
 import com.github.cyanflxy.magictower.MainActivity;
 import com.github.cyanflxy.magictower.R;
@@ -50,6 +51,7 @@ public class GameActivity extends FragmentActivity
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         gameContext = GameContext.getInstance();
+//        gameContext.setTestData();
 
         Utils.setBrightness(this, GameSharedPref.getScreenLight());
         //noinspection ResourceType
@@ -128,6 +130,11 @@ public class GameActivity extends FragmentActivity
         if (shopFragment != null) {
             shopFragment.setOnAttributeChangeListener(onAttributeChangeListener);
         }
+
+        ShopShortcutFragment shopShortcutFragment = (ShopShortcutFragment) fm.findFragmentByTag(ShopShortcutFragment.TAG);
+        if (shopShortcutFragment != null) {
+            shopShortcutFragment.setOnAttributeChangeListener(onAttributeChangeListener);
+        }
     }
 
     @Override
@@ -154,7 +161,7 @@ public class GameActivity extends FragmentActivity
         BaseFragment f = getCurrentTopFragment();
         if (f != null) {
             if (!f.onBackPress()) {
-                closeFragment(f);
+                popFragment();
             }
             return;
         }
@@ -163,25 +170,7 @@ public class GameActivity extends FragmentActivity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU
-                && event.getAction() == KeyEvent.ACTION_DOWN) {
-
-            Fragment f = getCurrentTopFragment();
-            if (f == null) {
-                showMenuFragment();
-            } else if (f instanceof MenuFragment) {
-                closeFragment(f);
-            }
-
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void closeFragment(Fragment f) {
+    public void popFragment() {
         getSupportFragmentManager().popBackStackImmediate();
         heroInfoView.refreshInfo();
     }
@@ -295,7 +284,7 @@ public class GameActivity extends FragmentActivity
             FragmentTransaction ft = fm.beginTransaction();
             fragment = new SettingFragment();
 
-            ft.add(R.id.full_fragment_content, fragment, tag);
+            ft.replace(R.id.full_fragment_content, fragment, tag);
             ft.addToBackStack(null);
             ft.commit();
         }
@@ -362,7 +351,6 @@ public class GameActivity extends FragmentActivity
     }
 
     private void showShopFragment(ShopBean shop) {
-
         String tag = ShopFragment.TAG;
 
         FragmentManager fm = getSupportFragmentManager();
@@ -370,6 +358,22 @@ public class GameActivity extends FragmentActivity
 
         if (fragment == null) {
             fragment = ShopFragment.newInstance(shop);
+            fragment.setOnAttributeChangeListener(onAttributeChangeListener);
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.shop_content, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    private void showShopShortcutFragment() {
+        String tag = ShopShortcutFragment.TAG;
+
+        FragmentManager fm = getSupportFragmentManager();
+        ShopShortcutFragment fragment = (ShopShortcutFragment) fm.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            fragment = new ShopShortcutFragment();
             fragment.setOnAttributeChangeListener(onAttributeChangeListener);
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.shop_content, fragment, tag);
@@ -524,6 +528,11 @@ public class GameActivity extends FragmentActivity
         public void onJumpFloor() {
             showFlyFragment();
         }
+
+        @Override
+        public void onShopShortcut() {
+            showShopShortcutFragment();
+        }
     };
 
     private FlyFragment.OnMapSelectListener onMapSelectListener
@@ -531,13 +540,13 @@ public class GameActivity extends FragmentActivity
         @Override
         public void onMapSelect(int mapFloor) {
             if (gameContext.jumpFloor(mapFloor)) {
-                closeFragment(null);
+                popFragment();
             }
         }
     };
 
-    private ShopFragment.OnAttributeChangeListener onAttributeChangeListener
-            = new ShopFragment.OnAttributeChangeListener() {
+    private ShopLayout.OnAttributeChangeListener onAttributeChangeListener
+            = new ShopLayout.OnAttributeChangeListener() {
         @Override
         public void onAttributeChange() {
             heroInfoView.refreshInfo();

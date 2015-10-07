@@ -136,7 +136,15 @@
             "element": "skeleton_soldier"
         },
         {
-            "element": "red_old"
+            "element": "red_old",
+            "shop":{
+             "title":"可以找我买钥匙，价格便宜量又足哦！",
+             "options":[
+                 {"text":"买一把黄钥匙($10)","condition":"gameData.hero.money>=10","action":"gameData.hero.money-=10;gameData.hero.yellowKey+=1"},
+                 {"text":"买一把蓝钥匙($50)","condition":"gameData.hero.money>=50","action":"gameData.hero.money-=50;gameData.hero.blueKey+=1"},
+                 {"text":"买一把红钥匙($100)","condition":"gameData.hero.money>=100","action":"gameData.hero.money-=100;gameData.hero.redKey+=1"}
+             ]
+            }
         },
         {
             "element": "big_bat"
@@ -241,7 +249,15 @@
             "element": ""
         },
         {
-            "element": "blue_old"
+            "element": "blue_old",
+            "shop":{
+             "title":"拿经验换属性：",
+             "options":[
+                 {"text":"提升1级(100点)","condition":"gameData.hero.exp>=100","action":"gameData.hero.exp-=100;gameData.hero.hp+=1000;gameData.hero.damage+=7;gameData.hero.defense+=7;gameData.hero.level+=1"},
+                 {"text":"提升攻击5(30点)","condition":"gameData.hero.exp>=30","action":"gameData.hero.exp-=30;gameData.hero.damage+=5"},
+                 {"text":"提升防御5(30点)","condition":"gameData.hero.exp>=30","action":"gameData.hero.exp-=30;gameData.hero.defense+=5"}
+             ]
+            }
         },
         {
             "element": "wall"

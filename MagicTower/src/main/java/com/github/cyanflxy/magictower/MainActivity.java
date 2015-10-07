@@ -2,7 +2,6 @@ package com.github.cyanflxy.magictower;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -153,7 +152,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     @Override
-    public void closeFragment(Fragment f) {
+    public void popFragment() {
         getSupportFragmentManager().popBackStackImmediate();
     }
 
@@ -174,7 +173,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             = new RecordFragment.OnRecordItemSelected() {
         @Override
         public void onSelected(int mode, String record) {
-            closeFragment(null);
+            popFragment();
 
             if (!TextUtils.equals(record, GameHistory.AUTO_SAVE)) {
                 GameHistory.deleteRecord(GameHistory.AUTO_SAVE);

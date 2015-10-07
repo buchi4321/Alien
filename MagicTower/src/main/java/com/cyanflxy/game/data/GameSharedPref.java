@@ -164,4 +164,15 @@ public class GameSharedPref {
         ed.apply();
     }
 
+    private static final String LAST_SHOP_INDEX = "last_shop_index";
+
+    public static int getLastShopIndex() {
+        return sp.getInt(LAST_SHOP_INDEX, 0);
+    }
+
+    public static void setLastShopIndex(int index) {
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putInt(LAST_SHOP_INDEX, index);
+        ed.apply();
+    }
 }

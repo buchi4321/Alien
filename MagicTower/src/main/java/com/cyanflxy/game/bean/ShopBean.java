@@ -9,8 +9,9 @@ public class ShopBean extends BeanParent implements Serializable {
     public String title;
     public ShopOption[] options;
 
+    public static class ShopOption implements Serializable {
+        private static final long serialVersionUID = 1L;
 
-    public static class ShopOption{
         public String text;
         public String condition;
         public String action;

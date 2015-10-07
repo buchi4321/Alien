@@ -30,6 +30,8 @@ public abstract class HeroInfoView extends View {
         void onEnemyProperty();
 
         void onJumpFloor();
+
+        void onShopShortcut();
     }
 
     protected static final int AVATAR_SIZE = Utils.dip2px(45);
@@ -68,6 +70,7 @@ public abstract class HeroInfoView extends View {
 
     private boolean focusHelp;
     private boolean focusFly;
+    private boolean focusHero;
     private Paint focusPaint;
 
     private OnFunctionClickListener listener;
@@ -188,6 +191,9 @@ public abstract class HeroInfoView extends View {
         }
 
         canvas.drawBitmap(getHeroAvatar(), null, avatarRect, null);
+        if (focusHero) {
+            canvas.drawRoundRect(avatarRect, 5, 5, focusPaint);
+        }
 
         if (showHelpButton()) {
             canvas.drawBitmap(imageManager.getBitmap("help_book"), null, bookRect, null);
@@ -297,6 +303,7 @@ public abstract class HeroInfoView extends View {
 
         boolean oldFocusHelp = focusHelp;
         boolean oldFocusFly = focusFly;
+        boolean oldFocusHero = focusHero;
 
         int action = event.getAction();
         switch (action) {
@@ -305,6 +312,8 @@ public abstract class HeroInfoView extends View {
                     focusHelp = true;
                 } else if (flyRect.contains(x, y) && showFlyButton()) {
                     focusFly = true;
+                } else if (avatarRect.contains(x, y) && GameSharedPref.isOpenShopShortcut()) {
+                    focusHero = true;
                 } else {
                     return false;
                 }
@@ -314,6 +323,8 @@ public abstract class HeroInfoView extends View {
                     focusHelp = false;
                 } else if (focusFly && !flyRect.contains(x, y)) {
                     focusFly = false;
+                } else if (focusHero && !avatarRect.contains(x, y)) {
+                    focusHero = false;
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -327,11 +338,18 @@ public abstract class HeroInfoView extends View {
                         listener.onJumpFloor();
                     }
                     focusFly = false;
+                } else if (focusHero) {
+                    if (listener != null) {
+                        listener.onShopShortcut();
+                    }
+                    focusHero = false;
                 }
                 break;
         }
 
-        if (oldFocusFly != focusFly || oldFocusHelp != focusHelp) {
+        if (oldFocusFly != focusFly
+                || oldFocusHelp != focusHelp
+                || oldFocusHero != focusHero) {
             invalidate();
         }
 

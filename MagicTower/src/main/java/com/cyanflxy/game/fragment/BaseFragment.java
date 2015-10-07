@@ -10,7 +10,7 @@ public class BaseFragment extends Fragment {
     }
 
     protected void closeFragment() {
-        ((OnFragmentCloseListener) getActivity()).closeFragment(this);
+        ((OnFragmentCloseListener) getActivity()).popFragment();
     }
 
     public boolean onBackPress() {

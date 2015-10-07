@@ -58,6 +58,16 @@ public class GameContext {
         imageResourceManager = new ImageResourceManager(gameData.res);
     }
 
+    public void setTestData() {
+        gameData.hero.money = 1000;
+        gameData.hero.exp = 1000;
+        gameData.hero.yellowKey = 10;
+        gameData.hero.blueKey = 10;
+        gameData.hero.redKey = 10;
+        gameData.hero.damage = 2500;
+        gameData.hero.defense = 2000;
+    }
+
     public void setGameListener(OnGameProcessListener l) {
         gameListener = l;
     }
@@ -197,8 +207,6 @@ public class GameContext {
                 gameListener.showShop(element.shop);
             }
         } else {
-
-            // TODO 处理商店
 
             switch (info.type) {
                 case enemy:
