@@ -28,9 +28,11 @@ import com.cyanflxy.game.fragment.RecordFragment;
 import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.fragment.ShopFragment;
 import com.cyanflxy.game.fragment.ShopShortcutFragment;
+import com.cyanflxy.game.record.GameHistory;
 import com.cyanflxy.game.widget.GameControllerView;
 import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
+import com.cyanflxy.game.widget.MessageToast;
 import com.cyanflxy.game.widget.ShopLayout;
 import com.github.cyanflxy.magictower.BuildConfig;
 import com.github.cyanflxy.magictower.MainActivity;
@@ -170,19 +172,6 @@ public class GameActivity extends FragmentActivity
     }
 
     @Override
-    public void popFragment() {
-        getSupportFragmentManager().popBackStackImmediate();
-        heroInfoView.refreshInfo();
-    }
-
-    private void closeAllFragment() {
-        //noinspection StatementWithEmptyBody
-        while (getSupportFragmentManager().popBackStackImmediate()) {
-            // non
-        }
-    }
-
-    @Override
     public void onBackStackChanged() {
         if (getCurrentTopFragment() == null) {
             if (gameContext.isFinish()) {// 游戏结束，退出游戏
@@ -207,6 +196,28 @@ public class GameActivity extends FragmentActivity
         return null;
     }
 
+    @Override
+    public void popFragment() {
+        getSupportFragmentManager().popBackStackImmediate();
+        heroInfoView.refreshInfo();
+    }
+
+    private void closeAllFragment() {
+        //noinspection StatementWithEmptyBody
+        while (getSupportFragmentManager().popBackStackImmediate()) {
+            // non
+        }
+    }
+
+    private void endGame() {
+        // 只有真正退出游戏的时候才需要干掉游戏实例
+        mapView.onDestroy();
+        GameContext.destroyInstance();
+
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
     private void showFinishFragment() {
         if (!TextUtils.isEmpty(gameContext.getFinishString())) {
             String btnString = getString(R.string.finish_game);
@@ -228,15 +239,6 @@ public class GameActivity extends FragmentActivity
             ft.addToBackStack(null);
             ft.commit();
         }
-    }
-
-    private void endGame() {
-        // 只有真正退出游戏的时候才需要干掉游戏实例
-        mapView.onDestroy();
-        GameContext.destroyInstance();
-
-        finish();
-        startActivity(new Intent(this, MainActivity.class));
     }
 
     private void showMenuFragment() {
@@ -531,7 +533,11 @@ public class GameActivity extends FragmentActivity
 
         @Override
         public void onShopShortcut() {
-            showShopShortcutFragment();
+            if (GameHistory.haveShop()) {
+                showShopShortcutFragment();
+            } else {
+                MessageToast.showText(R.string.no_shop_shortcut);
+            }
         }
     };
 

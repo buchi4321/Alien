@@ -1,6 +1,7 @@
 package com.cyanflxy.game.record;
 
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.cyanflxy.common.FileUtils;
 import com.cyanflxy.game.bean.GameBean;
@@ -34,7 +35,7 @@ public class GameReader {
     }
 
     public static GameBean getGameMainData(String record) {
-        String recordFile = DATA_PATH + "/" + record + "/" + GAME_START_FILE;
+        String recordFile = DATA_PATH + File.separator + record + File.separator + GAME_START_FILE;
         String assetsFile = getAssetsFileName(GAME_START_FILE);
 
         String content = getFileContent(recordFile, assetsFile);
@@ -48,7 +49,7 @@ public class GameReader {
     }
 
     public static MapBean getMapData(String record, String mapFile) {
-        String recordFile = DATA_PATH + "/" + record + "/" + mapFile;
+        String recordFile = DATA_PATH + File.separator + record + File.separator + mapFile;
         String assetsFile = getAssetsFileName(mapFile);
 
         String content = getFileContent(recordFile, assetsFile);
@@ -58,24 +59,26 @@ public class GameReader {
     }
 
     public static boolean haveReachMap(String mapName) {
-        String recordFile = DATA_PATH + "/" + AUTO_SAVE + "/" + mapName;
+        String recordFile = DATA_PATH + File.separator + AUTO_SAVE + File.separator + mapName;
         return new File(recordFile).exists();
     }
 
     public static String getAssetsFileName(String src) {
-        return GAME_NAME + "/" + src;
+        return GAME_NAME + File.separator + src;
     }
 
-    private static String getFileContent(String recordFile, String assetsFile) {
+    public static String getFileContent(String recordFile, String assetsFile) {
 
         File file = new File(recordFile);
         InputStream is = null;
 
         try {
-            if (!file.exists()) {
+            if (file.exists()) {
+                is = new FileInputStream(file);
+            } else if (!TextUtils.isEmpty(assetsFile)) {
                 is = getAssetsFileIS(assetsFile);
             } else {
-                is = new FileInputStream(file);
+                return null;
             }
 
             return FileUtils.getInputStreamString(is);
@@ -95,7 +98,7 @@ public class GameReader {
 
     }
 
-    public static InputStream getAssetsFileIS(String fileName) throws IOException {
+    private static InputStream getAssetsFileIS(String fileName) throws IOException {
         return baseContext.getAssets().open(fileName);
     }
 

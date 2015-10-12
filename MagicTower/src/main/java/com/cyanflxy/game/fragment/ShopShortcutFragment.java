@@ -9,18 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
-import com.cyanflxy.common.FileUtils;
 import com.cyanflxy.game.bean.ShopBean;
 import com.cyanflxy.game.data.GameSharedPref;
-import com.cyanflxy.game.record.GameReader;
+import com.cyanflxy.game.record.GameHistory;
 import com.cyanflxy.game.widget.PageIndicatorView;
 import com.cyanflxy.game.widget.ShopLayout;
 import com.cyanflxy.game.widget.ShopLayout.OnAttributeChangeListener;
 import com.github.cyanflxy.magictower.R;
-import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class ShopShortcutFragment extends BaseFragment {
 
@@ -39,32 +34,7 @@ public class ShopShortcutFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        shops = getShops();
-    }
-
-    private ShopBean[] getShops() {
-
-        String assetsName = GameReader.getAssetsFileName("shop_shortcut.file");
-
-        InputStream is = null;
-        try {
-            is = GameReader.getAssetsFileIS(assetsName);
-            String shopContent = FileUtils.getInputStreamString(is);
-
-            Gson gson = new Gson();
-            return gson.fromJson(shopContent, ShopBean[].class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
-        }
+        shops = GameHistory.getShops();
     }
 
     @Nullable

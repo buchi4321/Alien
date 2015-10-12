@@ -71,8 +71,10 @@
     <string name="enemy_name">怪物名</string>
     <string name="enemy_empty">没有怪物了</string>
 
-    <string name="fly_compass">风之罗盘</string>
+    <string name="fly_compass">飞羽</string>
     <string name="select_floor">请选择想去的楼层</string>
     <string name="map_not_reach">您还没有去过该地图</string>
+
+    <string name="no_shop_shortcut">您还没有去过商店</string>
 
 </resources>

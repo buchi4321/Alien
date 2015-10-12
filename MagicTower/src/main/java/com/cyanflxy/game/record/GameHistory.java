@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.cyanflxy.common.FileUtils;
 import com.cyanflxy.game.bean.BeanParent;
 import com.cyanflxy.game.bean.GameBean;
+import com.cyanflxy.game.bean.ShopBean;
 import com.cyanflxy.game.data.GameSharedPref;
 import com.github.cyanflxy.magictower.R;
 import com.google.gson.Gson;
@@ -13,9 +14,12 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import static com.github.cyanflxy.magictower.AppApplication.baseContext;
 
@@ -25,6 +29,7 @@ public class GameHistory {
 
     public static final String RECORD_NAME = "name";
     public static final String RECORD_TIME = "time";
+    private static final String SHOP_SHORTCUT = "shop_shortcut.file";
 
     private static Gson gson = new Gson();
 
@@ -47,7 +52,7 @@ public class GameHistory {
     }
 
     public static boolean save(String record, BeanParent bean) {
-        String fileName = GameReader.DATA_PATH + "/" + record + "/" + bean.getSavePath();
+        String fileName = GameReader.DATA_PATH + File.separator + record + File.separator + bean.getSavePath();
         File file = new File(fileName);
 
         File folder = file.getParentFile();
@@ -57,7 +62,7 @@ public class GameHistory {
             }
         }
 
-        String timeFile = GameReader.DATA_PATH + "/" + record + "/" + RECORD_TIME;
+        String timeFile = GameReader.DATA_PATH + File.separator + record + File.separator + RECORD_TIME;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String time = format.format(new Date());
         FileUtils.saveFile(time, new File(timeFile));
@@ -131,7 +136,7 @@ public class GameHistory {
         }
 
         String name;
-        File nameFile = new File(GameReader.DATA_PATH + "/" + record + "/" + RECORD_NAME);
+        File nameFile = new File(GameReader.DATA_PATH + File.separator + record + File.separator + RECORD_NAME);
         if (nameFile.exists()) {
             name = FileUtils.getFileContent(nameFile);
         } else {
@@ -154,7 +159,7 @@ public class GameHistory {
     }
 
     private static String getRecordTime(String record) {
-        File nameFile = new File(GameReader.DATA_PATH + "/" + record + "/" + RECORD_TIME);
+        File nameFile = new File(GameReader.DATA_PATH + File.separator + record + File.separator + RECORD_TIME);
         if (!nameFile.exists()) {
             return "";
         }
@@ -163,7 +168,39 @@ public class GameHistory {
     }
 
     public static void rename(String recordName, String newName) {
-        File nameFile = new File(GameReader.DATA_PATH + "/" + recordName + "/" + RECORD_NAME);
+        File nameFile = new File(GameReader.DATA_PATH + File.separator + recordName + File.separator + RECORD_NAME);
         FileUtils.saveFile(newName, nameFile);
     }
+
+    public static boolean haveShop() {
+        String shopFile = GameReader.DATA_PATH + File.separator + AUTO_SAVE + File.separator + SHOP_SHORTCUT;
+        return new File(shopFile).exists();
+    }
+
+    public static ShopBean[] getShops() {
+        String shopFile = GameReader.DATA_PATH + File.separator + AUTO_SAVE + File.separator + SHOP_SHORTCUT;
+        String content = GameReader.getFileContent(shopFile, null);
+        if (!TextUtils.isEmpty(content)) {
+            return gson.fromJson(content, ShopBean[].class);
+        } else {
+            return null;
+        }
+    }
+
+    public static void saveShop(ShopBean shop) {
+        String shopFile = GameReader.DATA_PATH + File.separator + AUTO_SAVE + File.separator + SHOP_SHORTCUT;
+
+        ShopBean[] shops = getShops();
+        if (shops != null && shops.length > 0) {
+            Set<ShopBean> shopSet = new HashSet<>(Arrays.asList(shops));
+            shopSet.add(shop);
+
+            FileUtils.saveFile(gson.toJson(shopSet), new File(shopFile));
+        } else {
+            shops = new ShopBean[]{shop};
+            FileUtils.saveFile(gson.toJson(shops), new File(shopFile));
+        }
+
+    }
+
 }

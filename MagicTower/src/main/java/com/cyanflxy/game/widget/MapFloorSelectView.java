@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.cyanflxy.common.Utils;
-import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.record.GameReader;
 import com.github.cyanflxy.magictower.R;
 
@@ -246,10 +245,6 @@ public class MapFloorSelectView extends View {
             return -1;
         }
 
-        if (GameReader.haveReachMap(mapNames[id]) || GameSharedPref.isOpenAllFunction()) {
-            return id;
-        }
-
-        return -1;
+        return id;
     }
 }

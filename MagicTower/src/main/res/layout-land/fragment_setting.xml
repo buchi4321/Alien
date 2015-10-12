@@ -200,15 +200,6 @@
                 app:text="@string/open_all_function"/>
 
             <com.cyanflxy.game.widget.SettingCheckBox
-                android:id="@+id/map_invisible"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                app:text="@string/map_invisible"/>
-
-            <com.cyanflxy.game.widget.SettingCheckBox
                 android:id="@+id/show_fight_dialog"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -37,8 +37,6 @@ public class SettingFragment extends BaseFragment {
     private SettingCheckBox shopShortcut;
     // 开启所有功能
     private SettingCheckBox openAllFunction;
-    // 无视地图
-    private SettingCheckBox mapInvisible;
     // 显示打斗界面
     private SettingCheckBox showFightView;
 
@@ -98,10 +96,6 @@ public class SettingFragment extends BaseFragment {
             openAllFunction = (SettingCheckBox) view.findViewById(R.id.open_all_function);
             openAllFunction.setOnCheckedChangeListener(onCheckedChangeListener);
 
-            // 无视地图
-            mapInvisible = (SettingCheckBox) view.findViewById(R.id.map_invisible);
-            mapInvisible.setOnCheckedChangeListener(onCheckedChangeListener);
-
             // 显示打斗界面
             showFightView = (SettingCheckBox) view.findViewById(R.id.show_fight_dialog);
             showFightView.setOnCheckedChangeListener(onCheckedChangeListener);
@@ -126,7 +120,6 @@ public class SettingFragment extends BaseFragment {
         autoWay.setChecked(GameSharedPref.isAutoFindWay());
         shopShortcut.setChecked(GameSharedPref.isOpenShopShortcut());
         openAllFunction.setChecked(GameSharedPref.isOpenAllFunction());
-        mapInvisible.setChecked(GameSharedPref.isMapInvisible());
         showFightView.setChecked(GameSharedPref.isShowFightView());
 
         orientation = GameSharedPref.getScreenOrientation();
@@ -228,9 +221,6 @@ public class SettingFragment extends BaseFragment {
                     break;
                 case R.id.open_all_function:
                     GameSharedPref.setOpenAllFunction(isChecked);
-                    break;
-                case R.id.map_invisible:
-                    GameSharedPref.setMapInvisible(isChecked);
                     break;
                 case R.id.show_fight_dialog:
                     GameSharedPref.setShowFightView(isChecked);

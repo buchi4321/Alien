@@ -1,1 +1,381 @@
-{"downPosition":{"direction":"down","x":6,"y":7},"floorImage":"floor","mapData":[{"element":"yellow_key"},{"element":""},{"element":""},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":""},{"element":""},{"element":"wall"},{"element":""},{"element":"swing"},{"element":"yellow_key"},{"element":"orc_soldier"},{"element":"yellow_door"},{"element":""},{"element":""},{"element":""},{"element":"wall"},{"element":""},{"element":"yellow_door"},{"element":"skeleton_captain"},{"element":"wall"},{"element":"yellow_door"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"yellow_key"},{"element":""},{"element":""},{"element":""},{"element":"wall"},{"element":""},{"element":"wall"},{"element":""},{"element":""},{"element":""},{"element":"wall"},{"element":"yellow_key"},{"element":""},{"element":""},{"element":""},{"element":"red_door"},{"element":""},{"element":"wall"},{"element":"stair_down"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"red_hp"},{"element":"wall"},{"element":"blue_door"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":"blue_jewel"},{"element":"scarlet_wizard"},{"element":"red_jewel"},{"element":"wall"},{"element":"sackcloth_wizard"},{"element":"wall"},{"element":"stair_up"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"red_hp"},{"element":"wall"},{"element":"yellow_door"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":""},{"element":""},{"element":"yellow_door"},{"element":""},{"element":"wall"},{"element":"yellow_key"},{"element":"skeleton_captain"},{"element":"red_hp"},{"element":"skeleton_captain"},{"element":"wall"},{"element":"wall"},{"element":"blue_door"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"yellow_key"},{"element":"blue_key"},{"element":"skeleton_captain"},{"element":"red_hp"},{"element":"wall"},{"element":"stone_man"},{"element":"sackcloth_wizard"},{"element":"stone_man"},{"element":"wall"},{"element":""},{"element":"yellow_door"},{"element":"skeleton_captain"},{"element":"sword_2"},{"element":"blue_key"},{"element":"skeleton_captain"},{"element":"yellow_door"},{"element":"blue_hp"},{"element":"stone_man"},{"element":"blue_hp"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":""}],"upPosition":{"direction":"up","x":6,"y":3},"mapHeight":11,"mapWidth":11,"mapFloor":9}
+{
+    "downPosition": {
+        "direction": "down",
+        "x": 6,
+        "y": 7
+    },
+    "floorImage": "floor",
+    "mapData": [
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "swing"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "orc_soldier"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "skeleton_captain"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "red_door"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "stair_down"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "scarlet_wizard"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "sackcloth_wizard"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "stair_up"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "skeleton_captain"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "skeleton_captain"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_key"
+        },
+        {
+            "element": "blue_key"
+        },
+        {
+            "element": "skeleton_captain"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "stone_man"
+        },
+        {
+            "element": "sackcloth_wizard"
+        },
+        {
+            "element": "stone_man"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "skeleton_captain"
+        },
+        {
+            "element": "sword_2"
+        },
+        {
+            "element": "blue_key"
+        },
+        {
+            "element": "skeleton_captain"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "stone_man"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        }
+    ],
+    "upPosition": {
+        "direction": "up",
+        "x": 6,
+        "y": 3
+    },
+    "mapHeight": 11,
+    "mapWidth": 11,
+    "mapFloor": 9
+}

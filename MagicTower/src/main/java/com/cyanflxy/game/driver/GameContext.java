@@ -203,6 +203,7 @@ public class GameContext {
                 gameListener.showDialogue();
             }
         } else if (element.shop != null) {
+            GameHistory.saveShop(element.shop);
             if (gameListener != null) {
                 gameListener.showShop(element.shop);
             }
@@ -289,14 +290,16 @@ public class GameContext {
 
     private void getGoods(MapElementBean element, ImageInfoBean info) {
         ResourcePropertyBean property = info.property;
-        if (property != null) {
-            if (!TextUtils.isEmpty(property.action)) {
-                SentenceParser.parseSentence(this, property.action);
-            }
+        if (property == null) {
+            return;
         }
 
-        String name = info.property.name;
-        if (property != null && !TextUtils.isEmpty(property.info)) {
+        if (!TextUtils.isEmpty(property.action)) {
+            SentenceParser.parseSentence(this, property.action);
+        }
+
+        String name = property.name;
+        if (!TextUtils.isEmpty(property.info)) {
             name += "，" + property.info;
         }
         MessageToast.showText(baseContext.getString(R.string.get_goods, name));
@@ -339,7 +342,7 @@ public class GameContext {
     }
 
     public boolean jumpFloor(int floor) {
-        if (GameSharedPref.isOpenAllFunction() || GameReader.haveReachMap(gameData.maps[floor])) {
+        if (GameSharedPref.isMapInvisible() || GameReader.haveReachMap(gameData.maps[floor])) {
             gotoFloor(floor);
             return true;
         } else {
