@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.cyanflxy.common.Utils;
+import com.cyanflxy.game.bean.EnemyProperty;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.ShopBean;
 import com.cyanflxy.game.data.GameSharedPref;
@@ -23,7 +23,6 @@ import com.cyanflxy.game.fragment.EnemyPropertyFragment;
 import com.cyanflxy.game.fragment.FlyFragment;
 import com.cyanflxy.game.fragment.IntroduceFragment;
 import com.cyanflxy.game.fragment.MenuFragment;
-import com.cyanflxy.game.fragment.OnFragmentCloseListener;
 import com.cyanflxy.game.fragment.RecordFragment;
 import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.fragment.ShopFragment;
@@ -33,7 +32,6 @@ import com.cyanflxy.game.widget.GameControllerView;
 import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
 import com.cyanflxy.game.widget.MessageToast;
-import com.cyanflxy.game.widget.ShopLayout;
 import com.github.cyanflxy.magictower.BuildConfig;
 import com.github.cyanflxy.magictower.MainActivity;
 import com.github.cyanflxy.magictower.R;
@@ -42,12 +40,13 @@ import com.umeng.analytics.game.UMGameAgent;
 import java.util.List;
 
 public class GameActivity extends FragmentActivity
-        implements FragmentManager.OnBackStackChangedListener,
-        OnFragmentCloseListener {
+        implements BaseFragment.OnFragmentCloseListener {
 
     private GameContext gameContext;
     private MapView mapView;
     private HeroInfoView heroInfoView;
+
+    private FragmentStartManager fragmentStartManager;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -81,11 +80,22 @@ public class GameActivity extends FragmentActivity
         GameControllerView gc = GameControllerView.addGameController(this);
         gc.setListener(directionMotionListener);
 
-        getSupportFragmentManager().addOnBackStackChangedListener(this);
+        fragmentStartManager = new FragmentStartManager(getSupportFragmentManager());
+
+        fragmentStartManager.registerFragment(IntroduceFragment.class, R.id.full_fragment_content, null);
+        fragmentStartManager.registerFragment(MenuFragment.class, R.id.full_fragment_content, onMenuClickListener);
+        fragmentStartManager.registerFragment(RecordFragment.class, R.id.full_fragment_content, onRecordItemSelected);
+        fragmentStartManager.registerFragment(SettingFragment.class, R.id.full_fragment_content, null);
+        fragmentStartManager.registerFragment(DialogueFragment.class, R.id.bottom_half_content, null);
+        fragmentStartManager.registerFragment(EnemyPropertyFragment.class, R.id.full_fragment_content, null);
+        fragmentStartManager.registerFragment(FlyFragment.class, R.id.full_fragment_content, onMapSelectListener);
+        fragmentStartManager.registerFragment(ShopFragment.class, R.id.shop_content, onAttributeChangeListener);
+        fragmentStartManager.registerFragment(ShopShortcutFragment.class, R.id.shop_content, onAttributeChangeListener);
+        fragmentStartManager.registerDialogFragment(BattleDialog.class, onBattleEndListener);
+
+        fragmentStartManager.resetListener();
 
         loadGameContext();
-        resetFragmentCallback();
-
         UMGameAgent.init(this);
     }
 
@@ -99,43 +109,13 @@ public class GameActivity extends FragmentActivity
 
         if (!TextUtils.isEmpty(gameContext.getIntroduce())) {
             String btnString = getString(R.string.continue_game);
-            showIntroduceFragment(gameContext.getIntroduce(), btnString);
+
+            fragmentStartManager.startFragment(IntroduceFragment.class,
+                    IntroduceFragment.ARG_INFO_STRING, gameContext.getIntroduce(),
+                    IntroduceFragment.ARG_BTN_STRING, btnString);
+
             gameContext.setIntroduceShown();
             gameContext.autoSave();
-        }
-    }
-
-    private void resetFragmentCallback() {
-        FragmentManager fm = getSupportFragmentManager();
-
-        MenuFragment menuFragment = (MenuFragment) fm.findFragmentByTag(MenuFragment.TAG);
-        if (menuFragment != null) {
-            menuFragment.setOnMenuClickListener(onMenuClickListener);
-        }
-
-        RecordFragment recordFragment = (RecordFragment) fm.findFragmentByTag(RecordFragment.TAG);
-        if (recordFragment != null) {
-            recordFragment.setRecordItemSelected(onRecordItemSelected);
-        }
-
-        BattleDialog battleDialog = (BattleDialog) fm.findFragmentByTag(BattleDialog.TAG);
-        if (battleDialog != null) {
-            battleDialog.setOnBattleEndListener(onBattleEndListener);
-        }
-
-        FlyFragment flyFragment = (FlyFragment) fm.findFragmentByTag(FlyFragment.TAG);
-        if (flyFragment != null) {
-            flyFragment.setOnMapSelectListener(onMapSelectListener);
-        }
-
-        ShopFragment shopFragment = (ShopFragment) fm.findFragmentByTag(ShopFragment.TAG);
-        if (shopFragment != null) {
-            shopFragment.setOnAttributeChangeListener(onAttributeChangeListener);
-        }
-
-        ShopShortcutFragment shopShortcutFragment = (ShopShortcutFragment) fm.findFragmentByTag(ShopShortcutFragment.TAG);
-        if (shopShortcutFragment != null) {
-            shopShortcutFragment.setOnAttributeChangeListener(onAttributeChangeListener);
         }
     }
 
@@ -152,12 +132,6 @@ public class GameActivity extends FragmentActivity
     }
 
     @Override
-    protected void onDestroy() {
-        getSupportFragmentManager().removeOnBackStackChangedListener(this);
-        super.onDestroy();
-    }
-
-    @Override
     public void onBackPressed() {
 
         BaseFragment f = getCurrentTopFragment();
@@ -168,16 +142,7 @@ public class GameActivity extends FragmentActivity
             return;
         }
 
-        showMenuFragment();
-    }
-
-    @Override
-    public void onBackStackChanged() {
-        if (getCurrentTopFragment() == null) {
-            if (gameContext.isFinish()) {// 游戏结束，退出游戏
-                endGame();
-            }
-        }
+        fragmentStartManager.startFragment(MenuFragment.class);
     }
 
     private BaseFragment getCurrentTopFragment() {
@@ -200,6 +165,10 @@ public class GameActivity extends FragmentActivity
     public void popFragment() {
         getSupportFragmentManager().popBackStackImmediate();
         heroInfoView.refreshInfo();
+
+        if (gameContext.isFinish()) {// 游戏结束，退出游戏
+            endGame();
+        }
     }
 
     private void closeAllFragment() {
@@ -221,166 +190,12 @@ public class GameActivity extends FragmentActivity
     private void showFinishFragment() {
         if (!TextUtils.isEmpty(gameContext.getFinishString())) {
             String btnString = getString(R.string.finish_game);
-            showIntroduceFragment(gameContext.getFinishString(), btnString);
+
+            fragmentStartManager.startFragment(IntroduceFragment.class,
+                    IntroduceFragment.ARG_INFO_STRING, gameContext.getFinishString(),
+                    IntroduceFragment.ARG_BTN_STRING, btnString);
+
             gameContext.setFinishShown();
-        }
-    }
-
-    private void showIntroduceFragment(String info, String btnString) {
-        String tag = IntroduceFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment = IntroduceFragment.newInstance(info, btnString);
-            ft.add(R.id.full_fragment_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
-    private void showMenuFragment() {
-        String tag = MenuFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        MenuFragment fragment = (MenuFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment = new MenuFragment();
-            fragment.setOnMenuClickListener(onMenuClickListener);
-
-            ft.add(R.id.full_fragment_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
-    private void showRecordFragment(int mode) {
-
-        String tag = RecordFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        RecordFragment fragment = (RecordFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment = RecordFragment.newInstance(mode);
-            fragment.setRecordItemSelected(onRecordItemSelected);
-
-            ft.replace(R.id.full_fragment_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
-    private void showSettingFragment() {
-        String tag = SettingFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        SettingFragment fragment = (SettingFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment = new SettingFragment();
-
-            ft.replace(R.id.full_fragment_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
-    private void showDialogueFragment() {
-        String tag = DialogueFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        DialogueFragment fragment = (DialogueFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment = new DialogueFragment();
-            ft.add(R.id.bottom_half_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
-    private void showBattleFragment(ImageInfoBean enemy) {
-        String tag = BattleDialog.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        BattleDialog dialog = (BattleDialog) fm.findFragmentByTag(tag);
-
-        if (dialog == null) {
-            dialog = BattleDialog.newInstance(enemy);
-            dialog.setOnBattleEndListener(onBattleEndListener);
-            dialog.show(fm, tag);
-        }
-
-    }
-
-    private void showEnemyPropertyFragment() {
-        String tag = EnemyPropertyFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        EnemyPropertyFragment fragment = (EnemyPropertyFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            fragment = new EnemyPropertyFragment();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.full_fragment_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
-    private void showFlyFragment() {
-        String tag = FlyFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        FlyFragment fragment = (FlyFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            fragment = new FlyFragment();
-            fragment.setOnMapSelectListener(onMapSelectListener);
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.full_fragment_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
-    private void showShopFragment(ShopBean shop) {
-        String tag = ShopFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        ShopFragment fragment = (ShopFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            fragment = ShopFragment.newInstance(shop);
-            fragment.setOnAttributeChangeListener(onAttributeChangeListener);
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.shop_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
-    private void showShopShortcutFragment() {
-        String tag = ShopShortcutFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        ShopShortcutFragment fragment = (ShopShortcutFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            fragment = new ShopShortcutFragment();
-            fragment.setOnAttributeChangeListener(onAttributeChangeListener);
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.shop_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
         }
     }
 
@@ -440,7 +255,7 @@ public class GameActivity extends FragmentActivity
 
         @Override
         public void showDialogue() {
-            showDialogueFragment();
+            fragmentStartManager.startFragment(DialogueFragment.class);
         }
 
         @Override
@@ -455,12 +270,13 @@ public class GameActivity extends FragmentActivity
 
         @Override
         public void showBattle(ImageInfoBean enemy) {
-            showBattleFragment(enemy);
+            EnemyProperty property = new EnemyProperty(enemy);
+            fragmentStartManager.startFragment(BattleDialog.class, BattleDialog.ARG_ENEMY, property);
         }
 
         @Override
         public void showShop(ShopBean shopBean) {
-            showShopFragment(shopBean);
+            fragmentStartManager.startFragment(ShopFragment.class, ShopFragment.ARG_SHOP_BEAN, shopBean);
         }
     };
 
@@ -474,17 +290,19 @@ public class GameActivity extends FragmentActivity
 
         @Override
         public void onReadRecord() {
-            showRecordFragment(RecordFragment.MODE_READ);
+            fragmentStartManager.startFragment(RecordFragment.class,
+                    RecordFragment.ARG_START_MODE, RecordFragment.MODE_READ);
         }
 
         @Override
         public void onSaveRecord() {
-            showRecordFragment(RecordFragment.MODE_SAVE);
+            fragmentStartManager.startFragment(RecordFragment.class,
+                    RecordFragment.ARG_START_MODE, RecordFragment.MODE_SAVE);
         }
 
         @Override
         public void onSetting() {
-            showSettingFragment();
+            fragmentStartManager.startFragment(SettingFragment.class);
         }
 
     };
@@ -523,18 +341,18 @@ public class GameActivity extends FragmentActivity
             = new HeroInfoView.OnFunctionClickListener() {
         @Override
         public void onEnemyProperty() {
-            showEnemyPropertyFragment();
+            fragmentStartManager.startFragment(EnemyPropertyFragment.class);
         }
 
         @Override
         public void onJumpFloor() {
-            showFlyFragment();
+            fragmentStartManager.startFragment(FlyFragment.class);
         }
 
         @Override
         public void onShopShortcut() {
             if (GameHistory.haveShop()) {
-                showShopShortcutFragment();
+                fragmentStartManager.startFragment(ShopShortcutFragment.class);
             } else {
                 MessageToast.showText(R.string.no_shop_shortcut);
             }
@@ -551,8 +369,8 @@ public class GameActivity extends FragmentActivity
         }
     };
 
-    private ShopLayout.OnAttributeChangeListener onAttributeChangeListener
-            = new ShopLayout.OnAttributeChangeListener() {
+    private ShopFragment.OnAttributeChangeListener onAttributeChangeListener
+            = new ShopFragment.OnAttributeChangeListener() {
         @Override
         public void onAttributeChange() {
             heroInfoView.refreshInfo();

@@ -4,12 +4,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
 
 import com.github.cyanflxy.magictower.R;
 
-public class ProgressFragmentDialog extends DialogFragment {
+public class ProgressFragmentDialog extends BaseDialogFragment {
 
     public static final String TAG = "ProgressFragmentDialog";
 

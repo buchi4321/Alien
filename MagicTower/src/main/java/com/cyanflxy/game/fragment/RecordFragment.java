@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cyanflxy.game.activity.FragmentStartManager;
 import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.dialog.CommInputDialog;
 import com.cyanflxy.game.dialog.ProgressFragmentDialog;
@@ -30,26 +31,16 @@ public class RecordFragment extends BaseFragment
         implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener {
 
-    public static final String TAG = "RecordFragment";
-
-    private static final String ARG_START_MODE = "start_mode";
+    public static final String ARG_START_MODE = "start_mode";
     public static final int MODE_READ = 0;
     public static final int MODE_SAVE = 1;
 
     private static final String SAVE_MENU_POSITION = "menu_position";
     private static final String SAVE_RECORD_LIST = "record_list";
 
-    public static RecordFragment newInstance(int mode) {
-        RecordFragment fragment = new RecordFragment();
+    private FragmentStartManager fragmentStartManager;
 
-        Bundle bundle = new Bundle();
-        bundle.putInt(ARG_START_MODE, mode);
-        fragment.setArguments(bundle);
-
-        return fragment;
-    }
-
-    public interface OnRecordItemSelected {
+    public interface OnRecordItemSelected extends OnFragmentFunctionListener {
         void onSelected(int mode, String record);
     }
 
@@ -64,20 +55,25 @@ public class RecordFragment extends BaseFragment
     private ListView listView;
     private View emptyView;
 
-    public void setRecordItemSelected(OnRecordItemSelected l) {
-        listener = l;
+    @Override
+    public void setOnFragmentFunctionListener(OnFragmentFunctionListener l) {
+        listener = (OnRecordItemSelected) l;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        fragmentStartManager = new FragmentStartManager(getFragmentManager());
+        fragmentStartManager.registerDialogFragment(RecordItemMenuDialog.class, onMenuClickListener);
+        fragmentStartManager.registerDialogFragment(CommInputDialog.class, onInputFinishListener);
+        fragmentStartManager.resetListener();
+
         listAdapter = new RecordAdapter();
 
         mode = getArguments().getInt(ARG_START_MODE);
         imageManager = GameContext.getInstance().getImageResourceManager();
 
-        resetFragmentCallback();
 
         if (savedInstanceState != null) {
             onItemMenuPosition = savedInstanceState.getInt(SAVE_MENU_POSITION);
@@ -136,22 +132,6 @@ public class RecordFragment extends BaseFragment
 
         }
     };
-
-
-    private void resetFragmentCallback() {
-        FragmentManager fm = getFragmentManager();
-
-        RecordItemMenuDialog itemMenuDialog = (RecordItemMenuDialog) fm.findFragmentByTag(RecordItemMenuDialog.TAG);
-        if (itemMenuDialog != null) {
-            itemMenuDialog.setOnMenuClickListener(onMenuClickListener);
-        }
-
-        CommInputDialog inputDialog = (CommInputDialog) fm.findFragmentByTag(CommInputDialog.TAG);
-        if (inputDialog != null) {
-            inputDialog.setOnInputFinishListener(onInputFinishListener);
-        }
-
-    }
 
     @Nullable
     @Override
@@ -212,15 +192,12 @@ public class RecordFragment extends BaseFragment
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         GameRecord record = viewHolder.gameRecord;
-        if (record.hero == null || record.id == 0) {
+        if (record.hero == null || record.id == GameHistory.AUTO_SAVE_ID) {
             return true;
         }
 
         onItemMenuPosition = position;
-
-        RecordItemMenuDialog dialog = new RecordItemMenuDialog();
-        dialog.setOnMenuClickListener(onMenuClickListener);
-        dialog.show(getFragmentManager(), RecordItemMenuDialog.TAG);
+        fragmentStartManager.startFragment(RecordItemMenuDialog.class);
 
         return true;
     }
@@ -244,9 +221,9 @@ public class RecordFragment extends BaseFragment
         public void onRename() {
             GameRecord record = getCurrentMenuRecord();
 
-            CommInputDialog dialog = CommInputDialog.newInstance(getString(R.string.input_name), record.displayName);
-            dialog.setOnInputFinishListener(onInputFinishListener);
-            dialog.show(getFragmentManager(), CommInputDialog.TAG);
+            fragmentStartManager.startFragment(CommInputDialog.class,
+                    CommInputDialog.ARG_DIALOG_TITLE, getString(R.string.input_name),
+                    CommInputDialog.ARG_DEFAULT_CONTENT, record.displayName);
         }
     };
 

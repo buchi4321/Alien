@@ -5,16 +5,28 @@ import android.view.View;
 
 public class BaseFragment extends Fragment {
 
-    public static <T extends BaseFragment> String getFragmentTag(Class<T> clazz) {
+    public interface OnFragmentCloseListener {
+
+        void popFragment();
+
+    }
+
+    public static String getFragmentTag(Class<? extends Fragment> clazz) {
         return clazz.getSimpleName();
     }
 
-    protected void closeFragment() {
-        ((OnFragmentCloseListener) getActivity()).popFragment();
+    public interface OnFragmentFunctionListener {
+    }
+
+    public void setOnFragmentFunctionListener(OnFragmentFunctionListener l) {
     }
 
     public boolean onBackPress() {
         return false;
+    }
+
+    protected void closeFragment() {
+        ((OnFragmentCloseListener) getActivity()).popFragment();
     }
 
     protected View.OnClickListener onCloseListener
@@ -24,4 +36,5 @@ public class BaseFragment extends Fragment {
             closeFragment();
         }
     };
+
 }

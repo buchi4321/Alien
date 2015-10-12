@@ -11,15 +11,14 @@ import android.view.ViewGroup.LayoutParams;
 
 import com.cyanflxy.game.bean.ShopBean;
 import com.cyanflxy.game.data.GameSharedPref;
+import com.cyanflxy.game.fragment.ShopFragment.OnAttributeChangeListener;
 import com.cyanflxy.game.record.GameHistory;
 import com.cyanflxy.game.widget.PageIndicatorView;
 import com.cyanflxy.game.widget.ShopLayout;
-import com.cyanflxy.game.widget.ShopLayout.OnAttributeChangeListener;
+import com.cyanflxy.game.widget.ShopLayout.onButtonClickListener;
 import com.github.cyanflxy.magictower.R;
 
 public class ShopShortcutFragment extends BaseFragment {
-
-    public static final String TAG = "ShopShortcutFragment";
 
     private ShopBean[] shops;
     private OnAttributeChangeListener listener;
@@ -27,8 +26,9 @@ public class ShopShortcutFragment extends BaseFragment {
     private ViewPager viewPager;
     private PageIndicatorView indicatorView;
 
-    public void setOnAttributeChangeListener(OnAttributeChangeListener l) {
-        listener = l;
+    @Override
+    public void setOnFragmentFunctionListener(OnFragmentFunctionListener l) {
+        listener = (OnAttributeChangeListener) l;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ShopShortcutFragment extends BaseFragment {
             ShopLayout shopLayout = new ShopLayout(getActivity());
             shopLayout.setShopBean(shops[position]);
             shopLayout.setOnCloseListener(onCloseListener);
-            shopLayout.setOnAttributeChangeListener(listener);
+            shopLayout.setOnButtonClickListener(onButtonClickListener);
 
             LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             container.addView(shopLayout, params);
@@ -122,4 +122,13 @@ public class ShopShortcutFragment extends BaseFragment {
         }
     }
 
+    private ShopLayout.onButtonClickListener onButtonClickListener
+            = new onButtonClickListener() {
+        @Override
+        public void onAttributeChange() {
+            if(listener != null){
+                listener.onAttributeChange();
+            }
+        }
+    };
 }

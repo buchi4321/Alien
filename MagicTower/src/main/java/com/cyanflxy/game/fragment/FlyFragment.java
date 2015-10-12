@@ -12,16 +12,15 @@ import com.github.cyanflxy.magictower.R;
 
 public class FlyFragment extends BaseFragment {
 
-    public static final String TAG = "FlyFragment";
-
-    public interface OnMapSelectListener {
+    public interface OnMapSelectListener extends OnFragmentFunctionListener {
         void onMapSelect(int mapFloor);
     }
 
     private OnMapSelectListener listener;
 
-    public void setOnMapSelectListener(OnMapSelectListener l) {
-        listener = l;
+    @Override
+    public void setOnFragmentFunctionListener(OnFragmentFunctionListener l) {
+        listener = (OnMapSelectListener) l;
     }
 
     @Nullable

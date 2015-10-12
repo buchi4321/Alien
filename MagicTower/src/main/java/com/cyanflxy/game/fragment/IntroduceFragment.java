@@ -2,7 +2,6 @@ package com.cyanflxy.game.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +13,10 @@ import com.github.cyanflxy.magictower.R;
 public class IntroduceFragment extends BaseFragment implements
         View.OnClickListener, AnimateTextView.OnTextAnimationListener {
 
-    public static final String TAG = "IntroduceFragment";
-
     public static final String ARG_INFO_STRING = "info_string";
     public static final String ARG_BTN_STRING = "btn_string";
 
     private static final String SAVE_TEXT_PROGRESS = "text_progress";
-
-    public static Fragment newInstance(String infoString, String btnString) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ARG_INFO_STRING, infoString);
-        bundle.putString(ARG_BTN_STRING, btnString);
-
-        Fragment fragment = new IntroduceFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     private String infoString;
     private String btnString;

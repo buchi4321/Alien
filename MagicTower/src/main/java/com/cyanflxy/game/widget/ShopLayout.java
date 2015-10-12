@@ -14,7 +14,7 @@ import com.github.cyanflxy.magictower.R;
 
 public class ShopLayout extends LinearLayout {
 
-    public interface OnAttributeChangeListener {
+    public interface onButtonClickListener {
         void onAttributeChange();
     }
 
@@ -22,7 +22,7 @@ public class ShopLayout extends LinearLayout {
     private Button[] buttons;
     private View closeButton;
 
-    private OnAttributeChangeListener listener;
+    private onButtonClickListener listener;
 
     public ShopLayout(Context context) {
         this(context, null);
@@ -63,7 +63,7 @@ public class ShopLayout extends LinearLayout {
         closeButton.setOnClickListener(listener);
     }
 
-    public void setOnAttributeChangeListener(OnAttributeChangeListener l) {
+    public void setOnButtonClickListener(onButtonClickListener l) {
         listener = l;
     }
 

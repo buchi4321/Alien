@@ -3,17 +3,16 @@ package com.github.cyanflxy.magictower;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.cyanflxy.common.Utils;
+import com.cyanflxy.game.activity.FragmentStartManager;
 import com.cyanflxy.game.activity.GameActivity;
 import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.dialog.NewGameDialog;
-import com.cyanflxy.game.fragment.OnFragmentCloseListener;
+import com.cyanflxy.game.fragment.BaseFragment;
 import com.cyanflxy.game.fragment.RecordFragment;
 import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.record.GameHistory;
@@ -21,11 +20,13 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.analytics.game.UMGameAgent;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener,
-        OnFragmentCloseListener {
+        BaseFragment.OnFragmentCloseListener {
 
     private static final long BACK_TIME = 1000;
 
     private long lastBackPressed;
+
+    private FragmentStartManager fragmentStartManager;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -41,27 +42,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         findViewById(R.id.setting).setOnClickListener(this);
         findViewById(R.id.exit).setOnClickListener(this);
 
-        resetFragmentCallback();
+        fragmentStartManager = new FragmentStartManager(getSupportFragmentManager());
+        fragmentStartManager.registerFragment(RecordFragment.class, R.id.full_fragment_content, onRecordItemSelected);
+        fragmentStartManager.registerFragment(SettingFragment.class, R.id.full_fragment_content, null);
+        fragmentStartManager.registerDialogFragment(NewGameDialog.class, onNewGameListener);
+
+        fragmentStartManager.resetListener();
 
         UMGameAgent.setDebugMode(BuildConfig.DEBUG);
         //noinspection deprecation
         MobclickAgent.updateOnlineConfig(this);
         UMGameAgent.init(this);
-    }
-
-    private void resetFragmentCallback() {
-        FragmentManager fm = getSupportFragmentManager();
-
-        NewGameDialog dialog = (NewGameDialog) fm.findFragmentByTag(NewGameDialog.TAG);
-        if (dialog != null) {
-            dialog.setOnOkClickListener(onNewGameListener);
-        }
-
-        RecordFragment recordFragment = (RecordFragment) fm.findFragmentByTag(RecordFragment.TAG);
-        if (recordFragment != null) {
-            recordFragment.setRecordItemSelected(onRecordItemSelected);
-        }
-
     }
 
     @Override
@@ -103,10 +94,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 newGame();
                 break;
             case R.id.read_record:
-                showRecordFragment();
+                fragmentStartManager.startFragment(RecordFragment.class,
+                        RecordFragment.ARG_START_MODE, RecordFragment.MODE_READ);
                 break;
             case R.id.setting:
-                showSettingFragment();
+                fragmentStartManager.startFragment(SettingFragment.class);
                 break;
             case R.id.exit:
                 finish();
@@ -118,12 +110,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     private void newGame() {
         if (GameHistory.haveAutoSave()) {
-
-            final NewGameDialog dialog = NewGameDialog.newInstance(getString(R.string.new_game_tip));
-            dialog.setOnOkClickListener(onNewGameListener);
-
-            dialog.show(getSupportFragmentManager(), NewGameDialog.TAG);
-
+            fragmentStartManager.startFragment(NewGameDialog.class,
+                    NewGameDialog.ARG_CONTENT_STRING, getString(R.string.new_game_tip));
         } else {
             startGame();
         }
@@ -134,31 +122,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         finish();
     }
 
-    private void showRecordFragment() {
-        String tag = RecordFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        RecordFragment fragment = (RecordFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment = RecordFragment.newInstance(RecordFragment.MODE_READ);
-            fragment.setRecordItemSelected(onRecordItemSelected);
-
-            ft.add(R.id.full_fragment_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
-
     @Override
     public void popFragment() {
         getSupportFragmentManager().popBackStackImmediate();
     }
 
-    private View.OnClickListener onNewGameListener = new View.OnClickListener() {
+    private NewGameDialog.OnOkClickListener onNewGameListener
+            = new NewGameDialog.OnOkClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick() {
             getSupportFragmentManager().popBackStackImmediate();
 
             if (GameHistory.deleteAutoSave()) {
@@ -184,19 +156,4 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     };
 
-    private void showSettingFragment() {
-        String tag = SettingFragment.TAG;
-
-        FragmentManager fm = getSupportFragmentManager();
-        SettingFragment fragment = (SettingFragment) fm.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment = new SettingFragment();
-
-            ft.add(R.id.full_fragment_content, fragment, tag);
-            ft.addToBackStack(null);
-            ft.commit();
-        }
-    }
 }

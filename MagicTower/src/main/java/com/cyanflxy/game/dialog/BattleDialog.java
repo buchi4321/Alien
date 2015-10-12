@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.cyanflxy.game.bean.EnemyProperty;
 import com.cyanflxy.game.bean.HeroBean;
-import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.widget.BattleView;
@@ -21,32 +19,23 @@ import com.github.cyanflxy.magictower.R;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
-public class BattleDialog extends DialogFragment {
+public class BattleDialog extends BaseDialogFragment {
 
-    public static final String TAG = "BattleDialog";
+    public static final String ARG_ENEMY = "enemy";
 
-    private static final String ARG_ENEMY = "enemy";
-
-    public static BattleDialog newInstance(ImageInfoBean enemy) {
-        BattleDialog dialog = new BattleDialog();
-
-        EnemyProperty property = new EnemyProperty(enemy);
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ARG_ENEMY, property);
-        dialog.setArguments(bundle);
-
-        return dialog;
-    }
-
-    public interface OnBattleEndListener {
+    public interface OnBattleEndListener extends OnDialogFragmentFunctionListener {
         void onBattleEnd();
     }
 
     private HeroBean hero;
     private EnemyProperty enemy;
     private BattleView battleView;
-    private OnBattleEndListener onBattleEndListener;
+    private OnBattleEndListener listener;
+
+    @Override
+    public void setOnDialogFragmentFunctionListener(OnDialogFragmentFunctionListener l) {
+        listener = (OnBattleEndListener) l;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,13 +47,7 @@ public class BattleDialog extends DialogFragment {
         battleView.setImageManager(gameContext.getImageResourceManager());
 
         hero = gameContext.getHero();
-
-        if (savedInstanceState == null) {
-            enemy = (EnemyProperty) getArguments().getSerializable(ARG_ENEMY);
-        } else {
-            enemy = (EnemyProperty) savedInstanceState.getSerializable(ARG_ENEMY);
-        }
-
+        enemy = (EnemyProperty) savedInstanceState.getSerializable(ARG_ENEMY);
         battleView.setInfo(hero, enemy);
 
         Handler handler = new BattleHandler(this);
@@ -93,16 +76,6 @@ public class BattleDialog extends DialogFragment {
         return dialog;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(ARG_ENEMY, enemy);
-        super.onSaveInstanceState(outState);
-    }
-
-    public void setOnBattleEndListener(OnBattleEndListener l) {
-        onBattleEndListener = l;
-    }
-
     private void onBattleEnd() {
         try {
             dismiss();
@@ -110,8 +83,8 @@ public class BattleDialog extends DialogFragment {
             e.printStackTrace();
         }
 
-        if (onBattleEndListener != null) {
-            onBattleEndListener.onBattleEnd();
+        if (listener != null) {
+            listener.onBattleEnd();
         }
     }
 

@@ -24,6 +24,9 @@ import java.util.Set;
 import static com.github.cyanflxy.magictower.AppApplication.baseContext;
 
 public class GameHistory {
+
+    public static final int AUTO_SAVE_ID = Integer.MAX_VALUE;
+
     public static final String AUTO_SAVE = "auto";
     public static final String SAVE_RECORD = "record_";//带编号
 
@@ -81,7 +84,7 @@ public class GameHistory {
     public static GameRecord getAutoSaveRecord() {
         if (haveAutoSave()) {
             GameRecord record = getGameRecord(AUTO_SAVE);
-            record.id = Integer.MAX_VALUE;
+            record.id =AUTO_SAVE_ID;
             record.displayName = baseContext.getString(R.string.auto_save);
             return record;
         } else {

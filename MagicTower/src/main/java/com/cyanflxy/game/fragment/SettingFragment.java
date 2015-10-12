@@ -18,8 +18,6 @@ import com.github.cyanflxy.magictower.R;
 
 public class SettingFragment extends BaseFragment {
 
-    public static final String TAG = "SettingFragment";
-
     private int orientation;
 
     // 屏幕亮度

@@ -4,18 +4,15 @@ package com.cyanflxy.game.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.github.cyanflxy.magictower.R;
 
-public class RecordItemMenuDialog extends DialogFragment implements View.OnClickListener {
+public class RecordItemMenuDialog extends BaseDialogFragment implements View.OnClickListener {
 
-    public static final String TAG = "RecordItemMenuDialog";
-
-    public interface OnMenuClickListener {
+    public interface OnMenuClickListener extends OnDialogFragmentFunctionListener{
         void onDelete();
 
         void onRename();
@@ -23,8 +20,9 @@ public class RecordItemMenuDialog extends DialogFragment implements View.OnClick
 
     private OnMenuClickListener listener;
 
-    public void setOnMenuClickListener(OnMenuClickListener l) {
-        listener = l;
+    @Override
+    public void setOnDialogFragmentFunctionListener(OnDialogFragmentFunctionListener l) {
+        listener = (OnMenuClickListener) l;
     }
 
     @NonNull

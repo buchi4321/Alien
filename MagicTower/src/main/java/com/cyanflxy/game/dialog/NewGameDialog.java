@@ -4,29 +4,25 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.TextView;
 
 import com.github.cyanflxy.magictower.R;
 
-public class NewGameDialog extends DialogFragment implements View.OnClickListener {
+public class NewGameDialog extends BaseDialogFragment implements View.OnClickListener {
 
-    public static final String TAG = "NewGameDialog";
+    public interface OnOkClickListener extends OnDialogFragmentFunctionListener{
+        void onClick();
+    }
 
-    private static final String ARG_CONTENT_STRING = "content_string";
+    public static final String ARG_CONTENT_STRING = "content_string";
 
     private String contentText;
-    private View.OnClickListener onOkClick;
+    private OnOkClickListener listener;
 
-    public static NewGameDialog newInstance(String contentText) {
-        NewGameDialog dialog = new NewGameDialog();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(ARG_CONTENT_STRING, contentText);
-        dialog.setArguments(bundle);
-
-        return dialog;
+    @Override
+    public void setOnDialogFragmentFunctionListener(OnDialogFragmentFunctionListener l) {
+        listener = (OnOkClickListener) l;
     }
 
     @Override
@@ -50,16 +46,12 @@ public class NewGameDialog extends DialogFragment implements View.OnClickListene
         return d;
     }
 
-    public void setOnOkClickListener(View.OnClickListener l) {
-        onOkClick = l;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ok:
-                if (onOkClick != null) {
-                    onOkClick.onClick(v);
+                if (listener != null) {
+                    listener.onClick();
                 }
                 break;
             case R.id.cancel:

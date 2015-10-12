@@ -26,8 +26,6 @@ import java.util.Set;
 
 public class EnemyPropertyFragment extends BaseFragment {
 
-    public static final String TAG = "EnemyPropertyFragment";
-
     private GameContext gameContext;
     private ImageResourceManager imageManager;
 

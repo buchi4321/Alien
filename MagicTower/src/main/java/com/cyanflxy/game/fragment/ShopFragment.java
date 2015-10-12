@@ -8,30 +8,21 @@ import android.view.ViewGroup;
 
 import com.cyanflxy.game.bean.ShopBean;
 import com.cyanflxy.game.widget.ShopLayout;
-import com.cyanflxy.game.widget.ShopLayout.OnAttributeChangeListener;
 
 public class ShopFragment extends BaseFragment {
 
-    public static final String TAG = "ShopFragment";
+    public static final String ARG_SHOP_BEAN = "shop_bean";
 
-    public static ShopFragment newInstance(ShopBean shop) {
-        ShopFragment fragment = new ShopFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ARG_SHOP_BEAN, shop);
-
-        fragment.setArguments(bundle);
-
-        return fragment;
+    public interface OnAttributeChangeListener extends OnFragmentFunctionListener {
+        void onAttributeChange();
     }
-
-    private static final String ARG_SHOP_BEAN = "shop_bean";
 
     private ShopBean shopBean;
     private OnAttributeChangeListener listener;
 
-    public void setOnAttributeChangeListener(OnAttributeChangeListener l) {
-        listener = l;
+    @Override
+    public void setOnFragmentFunctionListener(OnFragmentFunctionListener l) {
+        listener = (OnAttributeChangeListener) l;
     }
 
     @Override
@@ -48,7 +39,14 @@ public class ShopFragment extends BaseFragment {
 
         shopLayout.setOnCloseListener(onCloseListener);
         shopLayout.setShopBean(shopBean);
-        shopLayout.setOnAttributeChangeListener(listener);
+        shopLayout.setOnButtonClickListener(new ShopLayout.onButtonClickListener() {
+            @Override
+            public void onAttributeChange() {
+                if (listener != null) {
+                    listener.onAttributeChange();
+                }
+            }
+        });
 
         return shopLayout;
     }

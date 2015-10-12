@@ -11,24 +11,12 @@ import android.widget.TextView;
 
 import com.github.cyanflxy.magictower.R;
 
-public class CommInputDialog extends DialogFragment implements View.OnClickListener {
-
-    public static final String TAG = "CommInputDialog";
+public class CommInputDialog extends BaseDialogFragment implements View.OnClickListener {
 
     public static final String ARG_DIALOG_TITLE = "title";
     public static final String ARG_DEFAULT_CONTENT = "default_content";
 
-    public static CommInputDialog newInstance(String title, String content) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ARG_DIALOG_TITLE, title);
-        bundle.putString(ARG_DEFAULT_CONTENT, content);
-
-        CommInputDialog dialog = new CommInputDialog();
-        dialog.setArguments(bundle);
-        return dialog;
-    }
-
-    public interface OnInputFinishListener {
+    public interface OnInputFinishListener extends OnDialogFragmentFunctionListener {
         void onInputFinish(DialogFragment dialogFragment, String result);
     }
 
@@ -38,8 +26,9 @@ public class CommInputDialog extends DialogFragment implements View.OnClickListe
 
     private EditText inputText;
 
-    public void setOnInputFinishListener(OnInputFinishListener l) {
-        listener = l;
+    @Override
+    public void setOnDialogFragmentFunctionListener(OnDialogFragmentFunctionListener l) {
+        listener = (OnInputFinishListener) l;
     }
 
     @Override

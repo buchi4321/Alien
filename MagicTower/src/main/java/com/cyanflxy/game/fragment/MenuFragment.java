@@ -10,9 +10,7 @@ import com.github.cyanflxy.magictower.R;
 
 public class MenuFragment extends BaseFragment implements View.OnClickListener {
 
-    public static final String TAG = "MenuFragment";
-
-    public interface OnMenuClickListener {
+    public interface OnMenuClickListener extends OnFragmentFunctionListener {
         void onMainMenu();
 
         void onReadRecord();
@@ -25,8 +23,9 @@ public class MenuFragment extends BaseFragment implements View.OnClickListener {
 
     private OnMenuClickListener listener;
 
-    public void setOnMenuClickListener(OnMenuClickListener l) {
-        listener = l;
+    @Override
+    public void setOnFragmentFunctionListener(OnFragmentFunctionListener l) {
+        listener = (OnMenuClickListener) l;
     }
 
     @Nullable
