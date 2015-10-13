@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 
+import com.github.cyanflxy.magictower.BuildConfig;
+
 import static com.github.cyanflxy.magictower.AppApplication.baseContext;
 
 public class GameSharedPref {
@@ -104,6 +106,9 @@ public class GameSharedPref {
     private static final String MAP_INVISIBLE = "map_invisible";
 
     public static boolean isMapInvisible() {
+        if (!BuildConfig.DEBUG) {
+            return false;
+        }
         return sp.getBoolean(MAP_INVISIBLE, false);
     }
 
@@ -117,6 +122,9 @@ public class GameSharedPref {
     private static final String SHOP_SHORTCUT = "shop_shortcut";
 
     public static boolean isOpenShopShortcut() {
+        if (!BuildConfig.DEBUG) {
+            return false;
+        }
         return sp.getBoolean(SHOP_SHORTCUT, false);
     }
 
@@ -130,6 +138,9 @@ public class GameSharedPref {
     private static final String OPEN_ALL_FUNCTION = "open_all_function";
 
     public static boolean isOpenAllFunction() {
+        if (!BuildConfig.DEBUG) {
+            return false;
+        }
         return sp.getBoolean(OPEN_ALL_FUNCTION, false);
     }
 
@@ -143,6 +154,9 @@ public class GameSharedPref {
     private static final String SHOW_FIGHT_VIEW = "show_fight_view";
 
     public static boolean isShowFightView() {
+        if (!BuildConfig.DEBUG) {
+            return true;
+        }
         return sp.getBoolean(SHOW_FIGHT_VIEW, true);
     }
 
@@ -152,6 +166,7 @@ public class GameSharedPref {
         ed.apply();
     }
 
+    // 屏幕方向
     private static final String SCREEN_ORIENTATION = "screen_orientation";
 
     public static int getScreenOrientation() {
@@ -164,6 +179,7 @@ public class GameSharedPref {
         ed.apply();
     }
 
+    // 商店快捷上次的index
     private static final String LAST_SHOP_INDEX = "last_shop_index";
 
     public static int getLastShopIndex() {

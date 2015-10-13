@@ -1,1 +1,394 @@
-{"downPosition":{"direction":"down","x":5,"y":4},"floorImage":"floor","mapData":[{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":"stair_up"},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"red_devil_king"},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":"red_devil_king"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"prison"},{"element":"star"},{"element":"star"},{"element":"dark_ghost_devil_king"},{"element":"star"},{"element":"star"},{"element":"prison"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"sword_5"},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":"shield_5"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":"stair_down"}],"upPosition":{"direction":"left","x":9,"y":10},"mapHeight":11,"mapWidth":11,"mapFloor":19}
+{
+    "downPosition": {
+        "direction": "down",
+        "x": 5,
+        "y": 4
+    },
+    "floorImage": "floor",
+    "mapData": [
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "stair_up"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "red_devil_king"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "red_devil_king"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "prison","action":"true"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "dark_ghost_devil_king",
+            "dialogBefore":{
+                "dialogues":[
+                    {"speaker":"dark_ghost_devil_king","sentence":"你居然来到这里了！"},
+                    {"speaker":"hero","sentence":"哼，大魔王，你的死期到了！"},
+                    {"speaker":"dark_ghost_devil_king","sentence":"哈哈，你真有意思，别以为蝶仙那家伙给了你力量，你就可以打败我，想打败我你还早着呢。"},
+                    {"speaker":"hero","sentence":"废话少说，去死吧。"}
+                ]
+            },
+            "dialogAfter":{
+                "dialogues":[
+                    {"speaker":"dark_ghost_devil_king","sentence":"看不出来，你还有两下子。有本事的话来21楼。在那你就可以见识到我真正的实力了。"}
+                ]
+            }
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "prison","action":"true"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "sword_5"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "shield_5"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "stair_down"
+        }
+    ],
+    "upPosition": {
+        "direction": "left",
+        "x": 9,
+        "y": 10
+    },
+    "mapHeight": 11,
+    "mapWidth": 11,
+    "mapFloor": 19
+}

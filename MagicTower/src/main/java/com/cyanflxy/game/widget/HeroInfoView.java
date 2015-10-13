@@ -186,7 +186,7 @@ public abstract class HeroInfoView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (imageManager == null) {
+        if (imageManager == null || imageManager.isDestroy()) {
             return;
         }
 

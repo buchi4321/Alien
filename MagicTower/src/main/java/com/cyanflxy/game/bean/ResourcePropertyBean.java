@@ -1,7 +1,8 @@
 package com.cyanflxy.game.bean;
 
-public class ResourcePropertyBean extends BeanParent{
+public class ResourcePropertyBean extends BeanParent {
 
+    // 怪物属性
     public String name;
     public int hp;
     public int damage;
@@ -9,7 +10,10 @@ public class ResourcePropertyBean extends BeanParent{
     public int exp;
     public int money;
     public String lifeDrain;
+
+    // 物品属性
     public String action;
-    public String info;
+    public String message;
+    public String dialogue;
 
 }

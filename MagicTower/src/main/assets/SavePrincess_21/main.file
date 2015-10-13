@@ -33,5 +33,6 @@
     "isFinish":false,
 
     "maps":[  "map/0.file","map/1.file","map/2.file","map/3.file","map/4.file","map/5.file","map/6.file","map/7.file","map/8.file","map/9.file","map/10.file",
-            "map/11.file","map/12.file","map/13.file","map/14.file","map/15.file","map/16.file","map/17.file","map/18.file","map/19.file","map/20.file","map/21.file"]
+            "map/11.file","map/12.file","map/13.file","map/14.file","map/15.file","map/16.file","map/17.file","map/18.file","map/19.file","map/20.file","map/21.file"],
+    "mapOpen":[true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]
 }

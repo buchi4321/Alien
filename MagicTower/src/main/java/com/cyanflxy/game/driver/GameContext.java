@@ -20,8 +20,6 @@ import com.cyanflxy.game.widget.FightResultToast;
 import com.cyanflxy.game.widget.MessageToast;
 import com.github.cyanflxy.magictower.R;
 
-import static com.github.cyanflxy.magictower.AppApplication.baseContext;
-
 public class GameContext {
 
     private static GameContext instance;
@@ -64,8 +62,8 @@ public class GameContext {
         gameData.hero.yellowKey = 10;
         gameData.hero.blueKey = 10;
         gameData.hero.redKey = 10;
-        gameData.hero.damage = 2500;
-        gameData.hero.defense = 2000;
+        gameData.hero.damage = 5500;
+        gameData.hero.defense = 5000;
     }
 
     public void setGameListener(OnGameProcessListener l) {
@@ -79,6 +77,9 @@ public class GameContext {
     }
 
     public boolean autoSave() {
+        if (gameData.isFinish) {
+            return true;
+        }
         return GameHistory.autoSave(gameData) &&
                 GameHistory.autoSave(currentMap);
     }
@@ -193,22 +194,13 @@ public class GameContext {
         ImageInfoBean info = imageResourceManager.getImage(element.element);
         boolean canMove = canMoveTo(element, info);
 
-        if (info == null) {
-            return canMove;
-        }
-
         if (!Utils.isArrayEmpty(element.dialog)) {
             getDialogue(element.dialog);
-            if (gameListener != null) {
-                gameListener.showDialogue();
-            }
+            gameListener.showDialogue();
         } else if (element.shop != null) {
             GameHistory.saveShop(element.shop);
-            if (gameListener != null) {
-                gameListener.showShop(element.shop);
-            }
-        } else {
-
+            gameListener.showShop(element.shop);
+        } else if (info != null) {
             switch (info.type) {
                 case enemy:
                     battleEnemy(element, info);
@@ -223,7 +215,6 @@ public class GameContext {
                     gotoFloor(gameData.hero.floor - 1);
                     break;
                 case stairUp:
-                    // 18层向上的楼梯需要条件
                     gotoFloor(gameData.hero.floor + 1);
                     break;
                 default:
@@ -232,6 +223,12 @@ public class GameContext {
         }
 
         return canMove;
+    }
+
+    public void onDialogueEnd() {
+        if (currentBattleElement != null && currentBattleEnemyInfo != null) {
+            battleEnemy(currentBattleElement, currentBattleEnemyInfo);
+        }
     }
 
     private void battleEnemy(MapElementBean element, ImageInfoBean info) {
@@ -243,7 +240,19 @@ public class GameContext {
 
         currentBattleElement = element;
         currentBattleEnemyInfo = info;
-        if (gameListener != null && GameSharedPref.isShowFightView()) {
+
+        if (element.dialogBefore != null) {
+            currentDialogue = element.dialogBefore;
+            element.dialogBefore = null;
+
+            gameListener.showDialogue();
+            return;
+        }
+
+        currentDialogue = element.dialogAfter;
+        element.dialogAfter = null;
+
+        if (GameSharedPref.isShowFightView()) {
             gameListener.showBattle(info);
         } else {
             gameData.hero.hp -= calculateHPDamage(info.property);
@@ -286,6 +295,13 @@ public class GameContext {
         gameData.hero.exp += exp;
 
         FightResultToast.show(money, exp);
+
+        currentBattleElement = null;
+        currentBattleEnemyInfo = null;
+
+        if (currentDialogue != null && GameSharedPref.isShowFightView()) {
+            gameListener.showDialogue();
+        }
     }
 
     private void getGoods(MapElementBean element, ImageInfoBean info) {
@@ -298,11 +314,12 @@ public class GameContext {
             SentenceParser.parseSentence(this, property.action);
         }
 
-        String name = property.name;
-        if (!TextUtils.isEmpty(property.info)) {
-            name += "，" + property.info;
+        if (!TextUtils.isEmpty(property.dialogue)) {
+            currentDialogue = new DialogueBean(element.element, property.dialogue);
+            gameListener.showDialogue();
+        } else if (!TextUtils.isEmpty(property.message)) {
+            MessageToast.showText(property.message);
         }
-        MessageToast.showText(baseContext.getString(R.string.get_goods, name));
 
         element.clear();
     }
@@ -311,21 +328,28 @@ public class GameContext {
         String doorName = info.name;
         HeroBean hero = gameData.hero;
         boolean open = false;
+        boolean keyZero = false;
 
         if (TextUtils.equals(doorName, "yellow_door")) {
             if (hero.yellowKey > 0) {
                 hero.yellowKey--;
                 open = true;
+            } else {
+                keyZero = true;
             }
         } else if (TextUtils.equals(doorName, "blue_door")) {
             if (hero.blueKey > 0) {
                 hero.blueKey--;
                 open = true;
+            } else {
+                keyZero = true;
             }
         } else if (TextUtils.equals(doorName, "red_door")) {
             if (hero.redKey > 0) {
                 hero.redKey--;
                 open = true;
+            } else {
+                keyZero = true;
             }
         } else {
             if (!TextUtils.isEmpty(element.action)) {
@@ -335,14 +359,14 @@ public class GameContext {
 
         if (open) {
             element.clear();
-            if (gameListener != null) {
-                gameListener.openDoor(x, y, doorName);
-            }
+            gameListener.openDoor(x, y, doorName);
+        } else if (keyZero) {
+            MessageToast.showText(R.string.no_key);
         }
     }
 
     public boolean jumpFloor(int floor) {
-        if (GameSharedPref.isMapInvisible() || GameReader.haveReachMap(gameData.maps[floor])) {
+        if (GameSharedPref.isMapInvisible() || gameData.mapOpen[floor]) {
             gotoFloor(floor);
             return true;
         } else {
@@ -368,10 +392,9 @@ public class GameContext {
             gameData.hero.maxFloor = floor;
         }
 
-        if (gameListener != null) {
-            gameListener.changeFloor(floor);
-        }
+        gameListener.changeFloor(floor);
 
+        gameData.mapOpen[gameData.hero.floor] = true;
         autoSave();
     }
 

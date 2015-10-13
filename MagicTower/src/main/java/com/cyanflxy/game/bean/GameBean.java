@@ -11,5 +11,6 @@ public class GameBean extends BeanParent {
     public boolean isFinish;
 
     public String[] maps;
+    public boolean[] mapOpen;
 
 }

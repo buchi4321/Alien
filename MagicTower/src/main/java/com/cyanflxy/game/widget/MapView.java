@@ -103,7 +103,7 @@ public class MapView extends View {
 
         long start = System.currentTimeMillis();
 
-        if (gameContext == null) {
+        if (gameContext == null || imageResourceManager == null || imageResourceManager.isDestroy()) {
             return;
         }
 

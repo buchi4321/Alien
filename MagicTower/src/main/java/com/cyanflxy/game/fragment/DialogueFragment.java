@@ -14,9 +14,14 @@ import com.cyanflxy.game.driver.ImageResourceManager;
 import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.widget.AnimateTextView;
 import com.cyanflxy.game.widget.HeadView;
+import com.cyanflxy.game.widget.MessageToast;
 import com.github.cyanflxy.magictower.R;
 
 public class DialogueFragment extends BaseFragment implements View.OnClickListener {
+
+    public interface OnDialogueEndListener extends OnFragmentFunctionListener {
+        void onDialogueEnd();
+    }
 
     private static final String SAVE_CURRENT_INDEX = "current_index";
     private static final String SAVE_TEXT_PROGRESS = "text_progress";
@@ -28,6 +33,13 @@ public class DialogueFragment extends BaseFragment implements View.OnClickListen
 
     private HeadView headView;
     private AnimateTextView animateTextView;
+
+    private OnDialogueEndListener listener;
+
+    @Override
+    public void setOnFragmentFunctionListener(OnFragmentFunctionListener l) {
+        listener = (OnDialogueEndListener) l;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +123,14 @@ public class DialogueFragment extends BaseFragment implements View.OnClickListen
     private void endDialogue() {
         if (!TextUtils.isEmpty(dialogue.action)) {
             SentenceParser.parseSentence(GameContext.getInstance(), dialogue.action);
+        }
+
+        if (!TextUtils.isEmpty(dialogue.message)) {
+            MessageToast.showText(dialogue.message);
+        }
+
+        if (listener != null) {
+            listener.onDialogueEnd();
         }
     }
 }

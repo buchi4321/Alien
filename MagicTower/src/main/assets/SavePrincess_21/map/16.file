@@ -192,7 +192,15 @@
             "element": "wall"
         },
         {
-            "element": "red_devil_king"
+            "element": "red_devil_king",
+            "dialogBefore":{
+                "dialogues":[
+                    {"speaker":"red_devil_king","sentence":"停止吧，愚蠢的人类！"},
+                    {"speaker":"hero","sentence":"该停止的是你，快说，公主关在哪里？"},
+                    {"speaker":"red_devil_king","sentence":"等你打赢我再说吧。"}
+                ]
+            }
+
         },
         {
             "element": "wall"

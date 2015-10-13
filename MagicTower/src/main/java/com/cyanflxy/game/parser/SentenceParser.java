@@ -24,9 +24,9 @@ import com.cyanflxy.game.driver.GameContext;
  * <pre>
  *     hero.cross&&hero.help
  * </pre>
- *
+ * <p/>
  * 关键字：
- *      null，true，false， maps（指定其他层地图）
+ * null，true，false， maps（指定其他层地图）
  */
 public class SentenceParser {
 
@@ -36,7 +36,9 @@ public class SentenceParser {
         GrammarElement[] grammarElements = grammar.getGrammarTrees();
 
         for (GrammarElement e : grammarElements) {
-            e.getValue(gameContext);
+            if (e != null) {
+                e.getValue(gameContext);
+            }
         }
 
     }
@@ -62,8 +64,8 @@ public class SentenceParser {
     public static int parseLifeDrain(int heroHP, String lifeDrainSentence) {
         if (lifeDrainSentence.endsWith("%")) {
             int len = lifeDrainSentence.length();
-            int percent = Integer.valueOf(lifeDrainSentence.substring(0, len - 1));
-            return heroHP * percent / 100;
+            float percent = Float.valueOf(lifeDrainSentence.substring(0, len - 1));
+            return (int) (heroHP * percent / 100);
         } else {
             return Integer.valueOf(lifeDrainSentence);
         }

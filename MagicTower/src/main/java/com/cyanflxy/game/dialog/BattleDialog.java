@@ -47,7 +47,7 @@ public class BattleDialog extends BaseDialogFragment {
         battleView.setImageManager(gameContext.getImageResourceManager());
 
         hero = gameContext.getHero();
-        enemy = (EnemyProperty) savedInstanceState.getSerializable(ARG_ENEMY);
+        enemy = (EnemyProperty) getArguments().getSerializable(ARG_ENEMY);
         battleView.setInfo(hero, enemy);
 
         Handler handler = new BattleHandler(this);
@@ -140,8 +140,10 @@ public class BattleDialog extends BaseDialogFragment {
                 break;
                 case MSG_HIT_HERO: {
                     int damage = enemy.damage - hero.defense;
-                    hero.hp -= damage;
-                    dialog.battleView.invalidate();
+                    if (damage > 0) {
+                        hero.hp -= damage;
+                        dialog.battleView.invalidate();
+                    }
                     sendEmptyMessageDelayed(MSG_HIT_ENEMY, BATTLE_INTERVAL);
                 }
                 break;

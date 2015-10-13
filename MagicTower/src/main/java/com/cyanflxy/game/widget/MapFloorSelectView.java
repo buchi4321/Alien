@@ -11,7 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.cyanflxy.common.Utils;
-import com.cyanflxy.game.record.GameReader;
+import com.cyanflxy.game.bean.GameBean;
+import com.cyanflxy.game.driver.GameContext;
 import com.github.cyanflxy.magictower.R;
 
 public class MapFloorSelectView extends View {
@@ -47,6 +48,8 @@ public class MapFloorSelectView extends View {
     private String[] mapNames;
     private OnMapSelectListener listener;
 
+    private GameBean gameData;
+
     public MapFloorSelectView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -78,6 +81,7 @@ public class MapFloorSelectView extends View {
         focusPaint.setStyle(Paint.Style.STROKE);
         focusPaint.setStrokeWidth(Utils.dip2px(2.5f));
         focusPaint.setColor(buttonColorSelected);
+
     }
 
     public void setOnMapSelectListener(OnMapSelectListener l) {
@@ -90,6 +94,7 @@ public class MapFloorSelectView extends View {
 
     public void setMap(String[] map) {
         mapNames = map;
+        gameData = GameContext.getInstance().getGameData();
         requestLayout();
     }
 
@@ -127,7 +132,7 @@ public class MapFloorSelectView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (mapNames == null) {
+        if (mapNames == null || gameData == null) {
             return;
         }
 
@@ -144,7 +149,7 @@ public class MapFloorSelectView extends View {
 
                 if (focusFloor == floorNumber) {
                     buttonPaint.setColor(buttonColorPress);
-                } else if (!GameReader.haveReachMap(mapNames[floorNumber])) {
+                } else if (!gameData.mapOpen[floorNumber]) {
                     buttonPaint.setColor(buttonColorDisable);
                 } else {
                     buttonPaint.setColor(buttonColorNormal);

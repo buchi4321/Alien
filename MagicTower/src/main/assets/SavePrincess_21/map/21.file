@@ -5,6 +5,7 @@
         "y": 6
     },
     "floorImage": "floor",
+    "cannotFly":true,
     "mapData": [
         {
             "element": "star"
@@ -88,7 +89,13 @@
             "element": "star"
         },
         {
-            "element": "dark_ghost_devil_king"
+            "element": "dark_ghost_devil_king_upgrade",
+            "dialogAfter":{
+                "dialogues":[
+                    {"speaker":"dark_ghost_devil_king","sentence":"啊，怎么可能，我怎么可能会被你打败呢！不，不要这样......。"}
+                ],
+                "action":"gameData.isFinish=true"
+            }
         },
         {
             "element": "star"
@@ -283,13 +290,13 @@
             "element": "star"
         },
         {
-            "element": "prison"
+            "element": "prison", "action":"false"
         },
         {
             "element": "stair_down"
         },
         {
-            "element": "prison"
+            "element": "prison", "action":"false"
         },
         {
             "element": "star"

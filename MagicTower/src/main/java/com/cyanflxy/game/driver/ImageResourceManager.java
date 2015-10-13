@@ -76,7 +76,7 @@ public class ImageResourceManager {
 
         for (ImageInfoBean image : imageInfo.image) {
             String name = image.name;
-            if ("mage1".equals(name)) {
+            if ("merge".equals(name)) {
                 continue;
             }
 
@@ -126,6 +126,10 @@ public class ImageResourceManager {
         return heroMoveStep;
     }
 
+    public boolean isDestroy() {
+        return imageInfo == null;
+    }
+
     public void destroy() {
         for (Integer k : bitmapCache.keySet()) {
             bitmapCache.get(k).recycle();
@@ -135,5 +139,6 @@ public class ImageResourceManager {
 
         imageInfo = null;
         imageBitmap.recycle();
+        imageInfoMap.clear();
     }
 }

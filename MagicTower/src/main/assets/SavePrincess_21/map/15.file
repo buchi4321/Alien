@@ -1,1 +1,435 @@
-{"downPosition":{"direction":"right","x":7,"y":0},"floorImage":"floor","mapData":[{"element":""},{"element":""},{"element":""},{"element":""},{"element":"stair_down"},{"element":"star"},{"element":"stair_up"},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"wall"},{"element":"wall"},{"element":"blue_old"},{"element":"wall"},{"element":"red_old"},{"element":"wall"},{"element":"wall"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"wall"},{"element":"wall"},{"element":"blue_jewel"},{"element":"wall"},{"element":"blue_jewel"},{"element":"wall"},{"element":"wall"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"wall"},{"element":"wall"},{"element":"red_jewel"},{"element":"wall"},{"element":"red_jewel"},{"element":"wall"},{"element":"wall"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"yellow_door"},{"element":"wall"},{"element":"yellow_door"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"red_door"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""}],"upPosition":{"direction":"left","x":3,"y":0},"mapHeight":11,"mapWidth":11,"mapFloor":15}
+{
+    "downPosition": {
+        "direction": "right",
+        "x": 7,
+        "y": 0
+    },
+    "floorImage": "floor",
+    "mapData": [
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "stair_down"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "stair_up"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_old",
+            "dialog":[
+                {
+                    "condition":"gameData.hero.exp>=500",
+                    "conditionResult":[
+                            {
+                                "dialogues":[
+                                    {"speaker":"blue_old","sentence":"你好，勇敢的孩子，你终于来到这里了。我将给你一个非常好的宝物，它可以使你的攻击力提高120点，但这必须用你的500点经验交换，你考虑一下吧。"},
+                                    {"speaker":"hero","sentence":"好吧，那就把剑给我吧。"},
+                                    {"speaker":"blue_old","sentence":"那好吧，这把剑就给你了。"}
+                                ],
+                                "action":"gameData.hero.exp-=500; gameData.hero.damage+=120;currentMap.mapData[37].element=null",
+                                "message":"获得圣光剑，攻击力+120！",
+                                "end":true
+                            },
+                            {
+                                "dialogues":[
+                                    {"speaker":"blue_old","sentence":"你好，勇敢的孩子，你终于来到这里了。我将给你一个非常好的宝物，它可以使你的攻击力提高120点，但这必须用你的500点经验交换，你考虑一下吧。"},
+                                    {"speaker":"hero","sentence":"额，我还没那么多经验。"},
+                                    {"speaker":"blue_old","sentence":"那多打点怪，有足够的经验值再过来吧。"}
+                                ],
+                                "end":false
+                            }
+                    ]
+                }
+            ]
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_old",
+            "dialog":[
+                {
+                    "condition":"gameData.hero.money>=800",
+                    "conditionResult":[
+                            {
+                                "dialogues":[
+                                    {"speaker":"red_old","sentence":"啊哈，欢迎你的到来，我这里有一件对你来说非常好的宝物，只要你出得起钱，我就卖给你。"},
+                                    {"speaker":"hero","sentence":"什么宝物，要多少钱？"},
+                                    {"speaker":"red_old","sentence":"这座魔塔里最好的盾牌，防御值可以增加120，而你只要出800个金币就可以买下。怎么样，有800个金币吗？"},
+                                    {"speaker":"hero","sentence":"有！我买了。"},
+                                    {"speaker":"red_old","sentence":"好，给你。"}
+                                ],
+                                "action":"gameData.hero.money-=800; gameData.hero.defense+=120;currentMap.mapData[39].element=null",
+                                "message":"获得星光盾，防御力+120！",
+                                "end":true
+                            },
+                            {
+                                "dialogues":[
+                                    {"speaker":"red_old","sentence":"啊哈，欢迎你的到来，我这里有一件对你来说非常好的宝物，只要你出得起钱，我就卖给你。"},
+                                    {"speaker":"hero","sentence":"什么宝物，要多少钱？"},
+                                    {"speaker":"red_old","sentence":"这座魔塔里最好的盾牌，防御值可以增加120，而你只要出800个金币就可以买下。怎么样，有800个金币吗？"},
+                                    {"speaker":"hero","sentence":"现在还没有......"},
+                                    {"speaker":"red_old","sentence":"那等你有了的时候再来找我吧。"}
+                                ],
+                                "end":false
+                            }
+                    ]
+                }
+            ]
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_jewel"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "yellow_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "red_door"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        }
+    ],
+    "upPosition": {
+        "direction": "left",
+        "x": 3,
+        "y": 0
+    },
+    "mapHeight": 11,
+    "mapWidth": 11,
+    "mapFloor": 15
+}

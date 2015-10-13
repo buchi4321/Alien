@@ -1,1 +1,416 @@
-{"downPosition":{"direction":"left","x":9,"y":10},"floorImage":"floor","mapData":[{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"wall"},{"element":"princess"},{"element":"wall"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"wall"},{"element":"prison"},{"element":"wall"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"wall"},{"element":"red_door"},{"element":"wall"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"red_door"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"ghost_man"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"ghost_man"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"star"},{"element":"stair_down"},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":""},{"element":"stair_up"}],"upPosition":{"direction":"right","x":1,"y":10},"mapHeight":11,"mapWidth":11,"mapFloor":18}
+{
+    "downPosition": {
+        "direction": "left",
+        "x": 9,
+        "y": 10
+    },
+    "floorImage": "floor",
+    "mapData": [
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "princess",
+            "dialog":[
+                {
+                    "dialogues":[
+                        {"speaker":"princess","sentence":"......"},
+                        {"speaker":"hero","sentence":"公主，你得救了！"},
+                        {"speaker":"princess","sentence":"啊，你是来救我的吗？"},
+                        {"speaker":"hero","sentence":"是的，我奉国王的命令来救你的。请你快随我出去吧。"},
+                        {"speaker":"princess","sentence":"不，我还不想走。"},
+                        {"speaker":"hero","sentence":"为什么，这里面到处是恶魔。"},
+                        {"speaker":"princess","sentence":"正因为这里到处是恶魔，所以才不可以这样就出去，我要看着那个魔王被杀死。英雄，你如果可以杀死他，我就跟你出去。"},
+                        {"speaker":"hero","sentence":"大魔王？我刚才已经杀了一个了。"},
+                        {"speaker":"princess","sentence":"大魔王在这座塔的最顶层，你杀死的可能是一个小队长之类的恶魔。"},
+                        {"speaker":"hero","sentence":"好，那你等着，我杀了那个恶魔再来这里找你。"},
+                        {"speaker":"princess","sentence":"大魔王比你刚才杀的那个厉害多了，而且还会变身，变身后攻击和防御都会提升一半以上，你要小心！"}
+                    ],
+                    "action":"currentMap.mapData[120].dialog=null",
+                    "end":true
+                },
+                {
+                    "dialogues":[{"speaker":"princess","sentence":"快去杀死大魔王啊！"}],
+                    "end":false
+                }
+            ]
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "prison", "action":"true"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star_t"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star_t",
+            "dialog":[
+                {
+                    "dialogues":[{"speaker":"hero","sentence":这里似乎有条路......"}],
+                    "end":false
+                }
+            ]
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "stair_down"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "stair_up",
+            "dialog":[
+                {
+                    "dialogues":[{"speaker":"hero","sentence":"救了公主才能下去！"}],
+                    "end":false
+                }
+            ]
+        }
+    ],
+    "upPosition": {
+        "direction": "right",
+        "x": 1,
+        "y": 10
+    },
+    "mapHeight": 11,
+    "mapWidth": 11,
+    "mapFloor": 18
+}

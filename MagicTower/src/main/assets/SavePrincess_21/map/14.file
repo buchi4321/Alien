@@ -1,1 +1,381 @@
-{"downPosition":{"direction":"right","x":5,"y":1},"floorImage":"floor","mapData":[{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"blue_hp"},{"element":"ghost_warrior"},{"element":"yellow_big_key"},{"element":"stair_up"},{"element":""},{"element":""},{"element":""},{"element":"blue_hp"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"cross_bottle"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"prison"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"red_hp"},{"element":"wall"},{"element":"wall"},{"element":"ghost_soldier"},{"element":"wall"},{"element":"wall"},{"element":"red_hp"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"dark_captain"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"ghost_soldier"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":""},{"element":"star"},{"element":"star"},{"element":"wall"},{"element":"blue_door"},{"element":"wall"},{"element":"star"},{"element":"star"},{"element":""},{"element":"wall"},{"element":"wall"},{"element":"dark_guard"},{"element":"senior_guard"},{"element":"dark_guard"},{"element":"blue_door"},{"element":""},{"element":"blue_door"},{"element":"dark_guard"},{"element":"senior_guard"},{"element":"dark_guard"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"stair_down"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"},{"element":"wall"}],"upPosition":{"direction":"up","x":5,"y":9},"mapHeight":11,"mapWidth":11,"mapFloor":14}
+{
+    "downPosition": {
+        "direction": "right",
+        "x": 5,
+        "y": 1
+    },
+    "floorImage": "floor",
+    "mapData": [
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": "ghost_warrior"
+        },
+        {
+            "element": "yellow_big_key"
+        },
+        {
+            "element": "stair_up"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "blue_hp"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "cross_bottle"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "prison","action":"true"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "ghost_soldier"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "red_hp"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "dark_captain"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "ghost_soldier"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": "star"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "dark_guard"
+        },
+        {
+            "element": "senior_guard"
+        },
+        {
+            "element": "dark_guard"
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": ""
+        },
+        {
+            "element": "blue_door"
+        },
+        {
+            "element": "dark_guard"
+        },
+        {
+            "element": "senior_guard"
+        },
+        {
+            "element": "dark_guard"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "stair_down"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        },
+        {
+            "element": "wall"
+        }
+    ],
+    "upPosition": {
+        "direction": "up",
+        "x": 5,
+        "y": 9
+    },
+    "mapHeight": 11,
+    "mapWidth": 11,
+    "mapFloor": 14
+}

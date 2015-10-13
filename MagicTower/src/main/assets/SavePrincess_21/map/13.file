@@ -184,7 +184,7 @@
             "element": "dark_captain"
         },
         {
-            "element": "prison"
+            "element": "prison", "action":"currentMap.mapData[48].element!=\"ghost_soldier\"&&currentMap.mapData[58].element!=\"dark_captain\"&&currentMap.mapData[68].element!=\"ghost_soldier\""
         },
         {
             "element": "wall"
@@ -214,7 +214,7 @@
             "element": "ghost_soldier"
         },
         {
-            "element": "prison"
+            "element": "prison", "action":"currentMap.mapData[48].element!=\"ghost_soldier\"&&currentMap.mapData[58].element!=\"dark_captain\"&&currentMap.mapData[68].element!=\"ghost_soldier\""
         },
         {
             "element": "blue_old",

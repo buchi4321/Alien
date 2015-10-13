@@ -145,7 +145,7 @@
                                         {"speaker":"hero","sentence":"仙子，我找到你的十字架了！"},
                                         {"speaker":"angel","sentence":"你做的很好，现在我就开始授与你更强的力量！妈咪妈咪轰~"}
                                     ],
-                                    "action":"gameData.hero.hp*=1.334; gameData.hero.damage*=1.334; gameData.hero.defense*=1.334;",
+                                    "action":"gameData.hero.hp*=1.333334; gameData.hero.damage*=1.333334; gameData.hero.defense*=1.333334;",
                                     "end":true
                                 },
                                 {

@@ -52,7 +52,7 @@ public class GameActivity extends FragmentActivity
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         gameContext = GameContext.getInstance();
-//        gameContext.setTestData();
+        gameContext.setGameListener(gameProcessListener);
 
         Utils.setBrightness(this, GameSharedPref.getScreenLight());
         //noinspection ResourceType
@@ -86,7 +86,7 @@ public class GameActivity extends FragmentActivity
         fragmentStartManager.registerFragment(MenuFragment.class, R.id.full_fragment_content, onMenuClickListener);
         fragmentStartManager.registerFragment(RecordFragment.class, R.id.full_fragment_content, onRecordItemSelected);
         fragmentStartManager.registerFragment(SettingFragment.class, R.id.full_fragment_content, null);
-        fragmentStartManager.registerFragment(DialogueFragment.class, R.id.bottom_half_content, null);
+        fragmentStartManager.registerFragment(DialogueFragment.class, R.id.bottom_half_content, onDialogueEndListener);
         fragmentStartManager.registerFragment(EnemyPropertyFragment.class, R.id.full_fragment_content, null);
         fragmentStartManager.registerFragment(FlyFragment.class, R.id.full_fragment_content, onMapSelectListener);
         fragmentStartManager.registerFragment(ShopFragment.class, R.id.shop_content, onAttributeChangeListener);
@@ -100,8 +100,6 @@ public class GameActivity extends FragmentActivity
     }
 
     private void loadGameContext() {
-        gameContext.setGameListener(gameProcessListener);
-
         mapView.setGameContext(gameContext);
 
         heroInfoView.setGameContext(gameContext);
@@ -167,7 +165,11 @@ public class GameActivity extends FragmentActivity
         heroInfoView.refreshInfo();
 
         if (gameContext.isFinish()) {// 游戏结束，退出游戏
-            endGame();
+            if (TextUtils.isEmpty(gameContext.getFinishString())) {
+                endGame();
+            } else {
+                showFinishFragment();
+            }
         }
     }
 
@@ -346,7 +348,11 @@ public class GameActivity extends FragmentActivity
 
         @Override
         public void onJumpFloor() {
-            fragmentStartManager.startFragment(FlyFragment.class);
+            if (gameContext.getCurrentMap().cannotFly) {
+                MessageToast.showText(R.string.cannot_fly);
+            } else {
+                fragmentStartManager.startFragment(FlyFragment.class);
+            }
         }
 
         @Override
@@ -374,6 +380,14 @@ public class GameActivity extends FragmentActivity
         @Override
         public void onAttributeChange() {
             heroInfoView.refreshInfo();
+        }
+    };
+
+    private DialogueFragment.OnDialogueEndListener onDialogueEndListener
+            = new DialogueFragment.OnDialogueEndListener() {
+        @Override
+        public void onDialogueEnd() {
+            gameContext.onDialogueEnd();
         }
     };
 }

@@ -259,13 +259,13 @@
             "element": "wall"
         },
         {
-            "element": "prison"
+            "element": "prison", "action":"true"
         },
         {
             "element": "wall"
         },
         {
-            "element": "prison"
+            "element": "prison", "action":"true"
         },
         {
             "element": "wall"
@@ -325,13 +325,41 @@
             "element": "wall"
         },
         {
-            "element": ""
+            "element": "blue_old",
+            "dialog":[
+                     {
+                         "dialogues":[
+                             {"speaker":"blue_old","sentence":"......"},
+                             {"speaker":"hero","sentence":"您已经得救了！"},
+                             {"speaker":"blue_old","sentence":"我的孩子，真是太感谢你了！这个地方又脏又破，真得是呆不下去了。"},
+                             {"speaker":"hero","sentence":"快走吧，我还得去救公主。"},
+                             {"speaker":"blue_old","sentence":"哦，你是来救公主的。为了表示感谢，这个东西就给你吧，这还是我年轻时用过的，拿着它去解救公主吧。"}
+                         ],
+                         "action":"gameData.hero.damage+=70;currentMap.mapData[106].element=null",
+                         "message":"获得青锋剑，攻击力+70",
+                         "end":true
+                     }
+             ]
         },
         {
             "element": "wall"
         },
         {
-            "element": ""
+            "element": "red_old",
+            "dialog":[
+                     {
+                         "dialogues":[
+                             {"speaker":"red_old","sentence":"哇，你是来救我的吗？"},
+                             {"speaker":"hero","sentence":"没错！"},
+                             {"speaker":"red_old","sentence":"我是个商人，不知道为什么被抓到这里来了。"},
+                             {"speaker":"hero","sentence":"快走吧，你已经自由了。"},
+                             {"speaker":"red_old","sentence":"哦，对对对，我终于自由了！这东西给你吧，本来我准备卖钱的。相信对你会很有帮助。"}
+                         ],
+                         "action":"gameData.hero.defense+=85;currentMap.mapData[108].element=null",
+                         "message":"获得黄金盾，防御力+85",
+                         "end":true
+                     }
+             ]
         },
         {
             "element": "wall"
@@ -358,13 +386,13 @@
             "element": "wall"
         },
         {
-            "element": "blue_old"
+            "element": "wall"
         },
         {
             "element": "wall"
         },
         {
-            "element": "red_old"
+            "element": "wall"
         },
         {
             "element": "wall"

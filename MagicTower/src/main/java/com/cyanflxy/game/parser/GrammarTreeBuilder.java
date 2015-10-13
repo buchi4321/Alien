@@ -6,8 +6,11 @@ import com.cyanflxy.game.parser.GrammarElement.AssignmentElement;
 import com.cyanflxy.game.parser.GrammarElement.CompareElement;
 import com.cyanflxy.game.parser.GrammarElement.FieldElement;
 import com.cyanflxy.game.parser.GrammarElement.FieldGetterElement;
+import com.cyanflxy.game.parser.GrammarElement.LogicAndElement;
+import com.cyanflxy.game.parser.GrammarElement.LogicOrElement;
 import com.cyanflxy.game.parser.GrammarElement.NumberElement;
 import com.cyanflxy.game.parser.GrammarElement.OperatorElement;
+import com.cyanflxy.game.parser.GrammarElement.StringElement;
 
 public class GrammarTreeBuilder {
 
@@ -47,8 +50,14 @@ public class GrammarTreeBuilder {
         OperatorElement oe = (OperatorElement) getNextElement();
 
         if (oe == null) {
-            leftTree.setRight(left);
-            return leftTree;
+            if (leftTree == null) {
+                //noinspection ConstantConditions - 谁丫说这里的left一定是null的？！
+                return left;
+            } else {
+                //noinspection ConstantConditions
+                leftTree.setRight(left);
+                return leftTree;
+            }
         }
 
         if (leftTree == null) {
@@ -88,6 +97,8 @@ public class GrammarTreeBuilder {
             return buildFieldElement();
         } else if (Character.isDigit(current)) {
             return buildValueElement();
+        } else if (current == '"') {
+            return buildStringElement();
         }
 
         OperatorElement op = null;
@@ -118,8 +129,14 @@ public class GrammarTreeBuilder {
                 }
                 break;
             case '=':
-                op = new AssignmentElement();
-                sentenceIndex++;
+                if (next == '=') {
+                    op = new CompareElement();
+                    op.setContent("==");
+                    sentenceIndex += 2;
+                } else {
+                    op = new AssignmentElement();
+                    sentenceIndex++;
+                }
                 break;
             case '>':
             case '<':
@@ -130,6 +147,31 @@ public class GrammarTreeBuilder {
                 } else {
                     op.setContent("" + current);
                     sentenceIndex++;
+                }
+                break;
+            case '!':
+                if (next == '=') {
+                    op = new CompareElement();
+                    op.setContent("!=");
+                    sentenceIndex += 2;
+                } else {
+                    throw new RuntimeException("语法不支持");
+                }
+                break;
+            case '&':
+                if (next == '&') {
+                    op = new LogicAndElement();
+                    sentenceIndex += 2;
+                } else {
+                    throw new RuntimeException("语法不支持");
+                }
+                break;
+            case '|':
+                if (next == '|') {
+                    op = new LogicOrElement();
+                    sentenceIndex += 2;
+                } else {
+                    throw new RuntimeException("语法不支持");
                 }
                 break;
         }
@@ -182,5 +224,26 @@ public class GrammarTreeBuilder {
         e.setNumberValue(Float.valueOf(sb.toString()));
 
         return e;
+    }
+
+    private StringElement buildStringElement() {
+        StringBuilder sb = new StringBuilder();
+        sentenceIndex++;
+
+        while (true) {
+            char next = currentSentence.charAt(sentenceIndex);
+            sentenceIndex++;
+
+            if (next == '"') {
+                break;
+            } else {
+                sb.append(next);
+            }
+        }
+
+        StringElement element = new StringElement();
+        element.content = sb.toString();
+
+        return element;
     }
 }

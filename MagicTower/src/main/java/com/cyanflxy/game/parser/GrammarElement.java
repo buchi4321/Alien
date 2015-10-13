@@ -35,7 +35,9 @@ public abstract class GrammarElement {
 
     public abstract Object getValue(GameContext gameContext);
 
-    public abstract void setValue(GameContext gameContext, char op, Object value);
+    public void setValue(GameContext gameContext, char op, Object value){
+        throw new RuntimeException("语法不正确");
+    }
 
     public void checkSave() {
         if (left != null) {
@@ -198,6 +200,8 @@ public abstract class GrammarElement {
         public void checkSave() {
             if (mapBean != null) {
                 GameHistory.autoSave(mapBean);
+            } else {
+                super.checkSave();
             }
         }
     }
@@ -224,11 +228,6 @@ public abstract class GrammarElement {
 
             return null;
         }
-
-        @Override
-        public void setValue(GameContext gameContext, char op, Object value) {
-            throw new RuntimeException("语法不正确");
-        }
     }
 
     public static class CompareElement extends OperatorElement {
@@ -244,30 +243,90 @@ public abstract class GrammarElement {
             Object rightValue = right.getValue(gameContext);
 
             if (!(leftValue instanceof Number) || !(rightValue instanceof Number)) {
-                throw new RuntimeException("语法不正确");
+
+                if (leftValue instanceof String && rightValue instanceof String) {
+                    // 字符串比较
+                    String left = (String) leftValue;
+                    String right = (String) rightValue;
+
+                    switch (content) {
+                        case "==":
+                            return TextUtils.equals(left, right);
+                        case "!=":
+                            return !TextUtils.equals(left, right);
+                        default:
+                            throw new RuntimeException("语法不正确");
+                    }
+
+                } else {
+                    throw new RuntimeException("语法不正确");
+                }
+
             }
 
             float leftNumber = ((Number) leftValue).floatValue();
             float rightNumber = ((Number) rightValue).floatValue();
 
-            if (content.equals(">")) {
-                return leftNumber > rightNumber;
-            } else if (content.equals(">=")) {
-                return leftNumber >= rightNumber;
-            } else if (content.equals("<")) {
-                return leftNumber < rightNumber;
-            } else if (content.equals("<=")) {
-                return leftNumber <= rightNumber;
+            switch (content) {
+                case ">":
+                    return leftNumber > rightNumber;
+                case ">=":
+                    return leftNumber >= rightNumber;
+                case "<":
+                    return leftNumber < rightNumber;
+                case "<=":
+                    return leftNumber <= rightNumber;
+                case "!=":
+                    return leftNumber != rightNumber;
+                case "==":
+                    return leftNumber == rightNumber;
+                default:
+                    throw new RuntimeException("语法不正确");
             }
 
-            return null;
+        }
+    }
+
+    public static class LogicAndElement extends OperatorElement {
+
+        @Override
+        public int getPriority() {
+            return 11;
         }
 
         @Override
-        public void setValue(GameContext gameContext, char op, Object value) {
-            throw new RuntimeException("语法不正确");
+        public Object getValue(GameContext gameContext) {
+            Object leftValue = left.getValue(gameContext);
+            Object rightValue = right.getValue(gameContext);
+
+            if (!(leftValue instanceof Boolean) || !(rightValue instanceof Boolean)) {
+                throw new RuntimeException("语法不正确");
+            }
+
+            return (Boolean) leftValue && (Boolean) rightValue;
         }
     }
+
+    public static class LogicOrElement extends OperatorElement {
+
+        @Override
+        public int getPriority() {
+            return 12;
+        }
+
+        @Override
+        public Object getValue(GameContext gameContext) {
+            Object leftValue = left.getValue(gameContext);
+            Object rightValue = right.getValue(gameContext);
+
+            if (!(leftValue instanceof Boolean) || !(rightValue instanceof Boolean)) {
+                throw new RuntimeException("语法不正确");
+            }
+
+            return (Boolean) leftValue || (Boolean) rightValue;
+        }
+    }
+
 
     /**
      * 算数操作符
@@ -290,11 +349,6 @@ public abstract class GrammarElement {
             Object rightValue = right.getValue(gameContext);
 
             return newValue(leftValue, rightValue, content.charAt(0));
-        }
-
-        @Override
-        public void setValue(GameContext gameContext, char op, Object value) {
-            throw new RuntimeException("语法不正确");
         }
     }
 
@@ -350,9 +404,16 @@ public abstract class GrammarElement {
             return value;
         }
 
+    }
+
+    /**
+     * 字符串
+     */
+    public static class StringElement extends GrammarElement{
+
         @Override
-        public void setValue(GameContext gameContext, char op, Object value) {
-            throw new RuntimeException("语法不正确");
+        public Object getValue(GameContext gameContext) {
+            return content;
         }
     }
 

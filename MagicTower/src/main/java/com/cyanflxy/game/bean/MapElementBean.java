@@ -8,6 +8,9 @@ public class MapElementBean {
     public DialogueBean[] dialog;
     public ShopBean shop;
 
+    public DialogueBean dialogBefore;
+    public DialogueBean dialogAfter;
+
     public void clear() {
         element = null;
         action = null;

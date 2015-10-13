@@ -38,11 +38,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         try {
-            Bitmap bitmap = changeColor();
+            Bitmap bitmap = drawPicture();
 
             ImageView imageView = (ImageView) findViewById(R.id.image);
             imageView.setImageBitmap(bitmap);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -336,6 +336,7 @@ public class MainActivity extends Activity {
             nextLine();
 
             drawItem4();
+            drawFlow("star_t.png");
             nextLine();
 
             saveBitmap(bitmap, "resource.png");

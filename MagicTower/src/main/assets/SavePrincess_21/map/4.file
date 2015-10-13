@@ -22,7 +22,49 @@
             "element": ""
         },
         {
-            "element": "thief"
+            "element": "thief",
+            "dialog":[
+                    {
+                        "dialogues":[
+                            {"speaker":"thief","sentence":"你，你是怎么进来的？？？......"},
+                            {"speaker":"hero","sentence":"呵呵，看来你被关这里很久了，现在你得救了！"},
+                            {"speaker":"thief","sentence":"啊，那太好了，我又可以在这里寻宝了。哦，我还没有自我介绍，我叫杰克，是这附近有名的小偷，什么金银财宝我都偷过。"},
+                            {"speaker":"hero","sentence":"......那你怎么被关起来了？"},
+                            {"speaker":"thief","sentence":"额，这次运气背了点。你救了我，我帮你做一件事情吧。"},
+                            {"speaker":"hero","sentence":"快走吧，外面还有很多怪物，我可顾不上你。"},
+                            {"speaker":"thief","sentence":"不，不，不会有事的，快说吧，叫我做什么？"},
+                            {"speaker":"hero","sentence":"你会开门吗？"},
+                            {"speaker":"thief","sentence":"那当然！"},
+                            {"speaker":"hero","sentence":"那就请你帮我打开第二层的那扇绿色的门吧。"},
+                            {"speaker":"thief","sentence":"那太简单了，还有，如果你能帮我找到一把镶了红宝石的榔头的话，我还能帮你打开18层的密道。"},
+                            {"speaker":"hero","sentence":"镶了红宝石的榔头？好吧，我会留意的。"},
+                            {"speaker":"thief","sentence":"非常感谢，我马上帮你开第二层的门。如果找到铁榔头，还来这里找我！"}
+                        ],
+                        "action":"maps[2].mapData[67].element=null",
+                        "end":true
+                    },
+                    {
+                        "condition":"gameData.hero.hoe",
+                        "conditionResult":[
+                                {
+                                    "dialogues":[
+                                        {"speaker":"thief","sentence":"你又来了？？......"},
+                                        {"speaker":"hero","sentence":"哈，快看我找到了什么！"},
+                                        {"speaker":"thief","sentence":"太好了，这个东西果然在这里。好吧，我这就帮你修通18层的路面。"}
+                                    ],
+                                    "action":"currentMap.mapData[5].element=null; maps[18].mapData[93].element=null; maps[18].mapData[104].element=null;maps[18].mapData[104].dialog=null;",
+                                    "end":true
+                                },
+                                {
+                                    "dialogues":[
+                                        {"speaker":"thief","sentence":"找到锄头了吗？"}
+                                    ],
+                                    "end":false
+                                }
+                        ]
+                    }
+
+            ]
         },
         {
             "element": ""
@@ -88,7 +130,7 @@
             "element": "wall"
         },
         {
-            "element": "prison"
+            "element": "prison", "action":"true"
         },
         {
             "element": "wall"

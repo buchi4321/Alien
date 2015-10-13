@@ -58,11 +58,6 @@ public class GameReader {
         return bean;
     }
 
-    public static boolean haveReachMap(String mapName) {
-        String recordFile = DATA_PATH + File.separator + AUTO_SAVE + File.separator + mapName;
-        return new File(recordFile).exists();
-    }
-
     public static String getAssetsFileName(String src) {
         return GAME_NAME + File.separator + src;
     }
