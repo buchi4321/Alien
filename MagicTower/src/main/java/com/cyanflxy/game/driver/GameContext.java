@@ -16,6 +16,7 @@ import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.parser.SentenceParser;
 import com.cyanflxy.game.record.GameHistory;
 import com.cyanflxy.game.record.GameReader;
+import com.cyanflxy.game.sound.SoundUtil;
 import com.cyanflxy.game.widget.FightResultToast;
 import com.cyanflxy.game.widget.MessageToast;
 import com.github.cyanflxy.magictower.R;
@@ -101,7 +102,7 @@ public class GameContext {
 
     public void readRecord(String record) {
         if (!TextUtils.equals(record, GameHistory.AUTO_SAVE)) {
-            GameHistory.deleteRecord(GameHistory.AUTO_SAVE);
+            GameHistory.deleteAutoSave();
             GameHistory.copyRecord(record, GameHistory.AUTO_SAVE);
         }
 
@@ -234,6 +235,7 @@ public class GameContext {
     private void battleEnemy(MapElementBean element, ImageInfoBean info) {
         if (gameData.hero.damage <= info.property.defense
                 || gameData.hero.hp <= calculateHPDamage(info.property)) {
+            SoundUtil.fail();
             MessageToast.showText(R.string.fight_fail);
             return;
         }
@@ -322,6 +324,8 @@ public class GameContext {
         }
 
         element.clear();
+
+        SoundUtil.getGood();
     }
 
     private void openDoor(MapElementBean element, ImageInfoBean info, int x, int y) {
@@ -358,9 +362,11 @@ public class GameContext {
         }
 
         if (open) {
+            SoundUtil.openDoor();
             element.clear();
             gameListener.openDoor(x, y, doorName);
         } else if (keyZero) {
+            SoundUtil.fail();
             MessageToast.showText(R.string.no_key);
         }
     }
@@ -457,5 +463,9 @@ public class GameContext {
 
     public DialogueBean getCurrentDialogue() {
         return currentDialogue;
+    }
+
+    public String getCurrentMusic() {
+        return GameReader.getAssetsFileName(currentMap.bgMusic);
     }
 }

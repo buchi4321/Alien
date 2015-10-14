@@ -1,4 +1,5 @@
 {
+    "bgMusic":"music/sound_19.mp3",
     "downPosition": {
         "direction": "up",
         "x": 5,

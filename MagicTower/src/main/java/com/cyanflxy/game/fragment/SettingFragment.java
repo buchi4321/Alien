@@ -1,5 +1,6 @@
 package com.cyanflxy.game.fragment;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.SeekBar;
 
 import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.data.GameSharedPref;
+import com.cyanflxy.game.sound.BGMusicService;
 import com.cyanflxy.game.widget.SettingCheckBox;
 import com.github.cyanflxy.magictower.BuildConfig;
 import com.github.cyanflxy.magictower.R;
@@ -111,7 +113,7 @@ public class SettingFragment extends BaseFragment {
 
         // 必须在这里刷新状态，否则横竖屏切换的时候，checkbox状态会丢失，不知为何。
         lightSeekBar.setProgress(GameSharedPref.getScreenLight());
-        volumeSeekBar.setProgress(GameSharedPref.getGameVolume());
+        volumeSeekBar.setProgress((int) (GameSharedPref.getGameVolume() * volumeSeekBar.getMax()));
 
         bgMusic.setChecked(GameSharedPref.isPlayBackgroundMusic());
         gameSound.setChecked(GameSharedPref.isPlayGameSound());
@@ -156,7 +158,10 @@ public class SettingFragment extends BaseFragment {
             = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+            Intent service = new Intent(getContext(), BGMusicService.class);
+            service.putExtra(BGMusicService.MUSIC_VOLUME, progress * 1.0f / seekBar.getMax());
+            service.putExtra(BGMusicService.MUSIC_CMD, BGMusicService.CMD_CHANGE_VOLUME);
+            getContext().startService(service);
         }
 
         @Override
@@ -166,7 +171,7 @@ public class SettingFragment extends BaseFragment {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            GameSharedPref.setGameVolume(seekBar.getProgress());
+            GameSharedPref.setGameVolume(seekBar.getProgress() * 1.0f / seekBar.getMax());
         }
     };
 
@@ -207,6 +212,9 @@ public class SettingFragment extends BaseFragment {
             switch (buttonView.getId()) {
                 case R.id.background_music:
                     GameSharedPref.setPlayBackgroundMusic(isChecked);
+                    Intent service = new Intent(getContext(), BGMusicService.class);
+                    service.putExtra(BGMusicService.MUSIC_CMD, BGMusicService.CMD_CHECK_STATE);
+                    getActivity().startService(service);
                     break;
                 case R.id.game_sound:
                     GameSharedPref.setPlayGameSound(isChecked);

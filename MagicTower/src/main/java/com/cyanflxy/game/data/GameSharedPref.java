@@ -53,13 +53,13 @@ public class GameSharedPref {
     // 游戏音量
     private static final String GAME_VOLUME = "game_volume";
 
-    public static int getGameVolume() {
-        return sp.getInt(GAME_VOLUME, 70);
+    public static float getGameVolume() {
+        return sp.getFloat(GAME_VOLUME, 0.7f);
     }
 
-    public static void setGameVolume(int volume) {
+    public static void setGameVolume(float volume) {
         SharedPreferences.Editor ed = sp.edit();
-        ed.putInt(GAME_VOLUME, volume);
+        ed.putFloat(GAME_VOLUME, volume);
         ed.apply();
     }
 

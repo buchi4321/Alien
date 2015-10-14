@@ -14,4 +14,6 @@ public class MapBean extends BeanParent {
     public MapElementBean[] mapData;
 
     public boolean cannotFly;
+
+    public String bgMusic;
 }

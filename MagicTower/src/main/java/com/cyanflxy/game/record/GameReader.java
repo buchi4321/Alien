@@ -19,6 +19,7 @@ public class GameReader {
 
     public static final String GAME_NAME = "SavePrincess_21";
     public static final String GAME_START_FILE = "main.file";
+    public static final String GAME_MAIN_MUSIC = "music/sound_main.mp3";
 
     public static String DATA_PATH;
     public static final String AUTO_SAVE = GameHistory.AUTO_SAVE;
@@ -28,6 +29,10 @@ public class GameReader {
     static {
         DATA_PATH = Environment.getExternalStorageDirectory() + "/CyanFlxy/Alien/" + GAME_NAME;
         new File(DATA_PATH).mkdirs();
+    }
+
+    public static String getMainMusic() {
+        return GAME_NAME + File.separator + GAME_MAIN_MUSIC;
     }
 
     public static GameBean getGameMainData() {

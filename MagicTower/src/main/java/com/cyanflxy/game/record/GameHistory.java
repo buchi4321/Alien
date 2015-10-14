@@ -47,7 +47,13 @@ public class GameHistory {
     }
 
     public static boolean deleteRecord(String recordName) {
-        return FileUtils.deleteFolder(new File(GameReader.DATA_PATH, recordName));
+        File folder = new File(GameReader.DATA_PATH, recordName);
+        File renameFolder = new File(GameReader.DATA_PATH, "" + System.currentTimeMillis());
+        if (!folder.renameTo(renameFolder)) {
+            return false;
+        }
+
+        return FileUtils.deleteFolder(renameFolder);
     }
 
     public static boolean autoSave(BeanParent bean) {
@@ -84,7 +90,7 @@ public class GameHistory {
     public static GameRecord getAutoSaveRecord() {
         if (haveAutoSave()) {
             GameRecord record = getGameRecord(AUTO_SAVE);
-            record.id =AUTO_SAVE_ID;
+            record.id = AUTO_SAVE_ID;
             record.displayName = baseContext.getString(R.string.auto_save);
             return record;
         } else {

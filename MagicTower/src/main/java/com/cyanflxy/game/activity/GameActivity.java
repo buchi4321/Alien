@@ -28,6 +28,7 @@ import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.fragment.ShopFragment;
 import com.cyanflxy.game.fragment.ShopShortcutFragment;
 import com.cyanflxy.game.record.GameHistory;
+import com.cyanflxy.game.sound.BGMusicService;
 import com.cyanflxy.game.widget.GameControllerView;
 import com.cyanflxy.game.widget.HeroInfoView;
 import com.cyanflxy.game.widget.MapView;
@@ -121,12 +122,18 @@ public class GameActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         UMGameAgent.onResume(this);
+
+        playBGMusic();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         UMGameAgent.onPause(this);
+
+        Intent service = new Intent(this, BGMusicService.class);
+        service.putExtra(BGMusicService.MUSIC_CMD, BGMusicService.CMD_PAUSE);
+        startService(service);
     }
 
     @Override
@@ -141,6 +148,13 @@ public class GameActivity extends FragmentActivity
         }
 
         fragmentStartManager.startFragment(MenuFragment.class);
+    }
+
+    private void playBGMusic() {
+        Intent service = new Intent(this, BGMusicService.class);
+        service.putExtra(BGMusicService.MUSIC_FILE, gameContext.getCurrentMusic());
+        service.putExtra(BGMusicService.MUSIC_CMD, BGMusicService.CMD_SET_SOURCE);
+        startService(service);
     }
 
     private BaseFragment getCurrentTopFragment() {
@@ -268,6 +282,7 @@ public class GameActivity extends FragmentActivity
         @Override
         public void changeFloor(int floor) {
             mapView.changeFloor();
+            playBGMusic();
         }
 
         @Override

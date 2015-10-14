@@ -13,6 +13,7 @@ import com.cyanflxy.game.bean.EnemyProperty;
 import com.cyanflxy.game.bean.HeroBean;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.parser.SentenceParser;
+import com.cyanflxy.game.sound.SoundUtil;
 import com.cyanflxy.game.widget.BattleView;
 import com.github.cyanflxy.magictower.R;
 
@@ -127,9 +128,12 @@ public class BattleDialog extends BaseDialogFragment {
                 case MSG_HIT_ENEMY: {
                     int damage = hero.damage - enemy.defense;
                     enemy.hp -= damage;
-                    if (enemy.hp < 0) {
+                    if (enemy.hp <= 0) {
                         enemy.hp = 0;
+                    } else {
+                        SoundUtil.fight();
                     }
+
                     dialog.battleView.invalidate();
                     if (enemy.hp > 0) {
                         sendEmptyMessageDelayed(MSG_HIT_HERO, BATTLE_INTERVAL);

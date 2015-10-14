@@ -16,6 +16,8 @@ import com.cyanflxy.game.fragment.BaseFragment;
 import com.cyanflxy.game.fragment.RecordFragment;
 import com.cyanflxy.game.fragment.SettingFragment;
 import com.cyanflxy.game.record.GameHistory;
+import com.cyanflxy.game.record.GameReader;
+import com.cyanflxy.game.sound.BGMusicService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.analytics.game.UMGameAgent;
 
@@ -59,12 +61,21 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         UMGameAgent.onResume(this);
+
+        Intent service = new Intent(this, BGMusicService.class);
+        service.putExtra(BGMusicService.MUSIC_FILE, GameReader.getMainMusic());
+        service.putExtra(BGMusicService.MUSIC_CMD, BGMusicService.CMD_SET_SOURCE);
+        startService(service);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         UMGameAgent.onPause(this);
+
+        Intent service = new Intent(this, BGMusicService.class);
+        service.putExtra(BGMusicService.MUSIC_CMD, BGMusicService.CMD_PAUSE);
+        startService(service);
     }
 
     @Override
@@ -101,6 +112,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 fragmentStartManager.startFragment(SettingFragment.class);
                 break;
             case R.id.exit:
+                stopService(new Intent(this, BGMusicService.class));
                 finish();
                 break;
             default:
@@ -131,7 +143,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             = new NewGameDialog.OnOkClickListener() {
         @Override
         public void onClick() {
-            getSupportFragmentManager().popBackStackImmediate();
+            popFragment();
 
             if (GameHistory.deleteAutoSave()) {
                 startGame();
@@ -148,7 +160,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             popFragment();
 
             if (!TextUtils.equals(record, GameHistory.AUTO_SAVE)) {
-                GameHistory.deleteRecord(GameHistory.AUTO_SAVE);
+                GameHistory.deleteAutoSave();
                 GameHistory.copyRecord(record, GameHistory.AUTO_SAVE);
             }
 

@@ -1,4 +1,5 @@
 {
+    "bgMusic":"music/sound_1.mp3",
     "floorImage": "floor",
 
     "upPosition":{"x":5,"y":9, "direction":"up"},

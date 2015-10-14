@@ -1,4 +1,5 @@
 {
+    "bgMusic":"music/sound_0.mp3",
     "mapFloor":0,
     "mapWidth":11,
     "mapHeight":11,

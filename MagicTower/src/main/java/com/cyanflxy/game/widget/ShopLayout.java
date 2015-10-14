@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.cyanflxy.game.bean.ShopBean;
 import com.cyanflxy.game.driver.GameContext;
 import com.cyanflxy.game.parser.SentenceParser;
+import com.cyanflxy.game.sound.SoundUtil;
 import com.github.cyanflxy.magictower.R;
 
 public class ShopLayout extends LinearLayout {
@@ -76,10 +77,13 @@ public class ShopLayout extends LinearLayout {
             if (object instanceof ShopBean.ShopOption) {
                 ShopBean.ShopOption option = (ShopBean.ShopOption) object;
                 if (SentenceParser.parseCondition(gameContext, option.condition)) {
+                    SoundUtil.buySuccess();
                     SentenceParser.parseSentence(gameContext, option.action);
                     if (listener != null) {
                         listener.onAttributeChange();
                     }
+                } else {
+                    SoundUtil.buyError();
                 }
             }
         }

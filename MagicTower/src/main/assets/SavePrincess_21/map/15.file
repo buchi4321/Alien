@@ -1,4 +1,5 @@
 {
+    "bgMusic":"music/sound_15.mp3",
     "downPosition": {
         "direction": "right",
         "x": 7,
