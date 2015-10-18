@@ -78,6 +78,7 @@ public class SettingFragment extends BaseFragment {
         // 自动寻路
         autoWay = (SettingCheckBox) view.findViewById(R.id.auto_find_way);
         autoWay.setOnCheckedChangeListener(onCheckedChangeListener);
+        autoWay.setVisibility(View.INVISIBLE);
 
         // 屏幕方向
         orientationGroup = (RadioGroup) view.findViewById(R.id.orientation_group);
