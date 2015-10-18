@@ -126,7 +126,7 @@
         {"ids":[371], "name":"green_key", "type":"goods"},
         {"ids":[372], "name":"gray_big_key", "type":"goods"},
         {"ids":[373], "name":"blue_big_key", "type":"goods"},
-        {"ids":[374], "name":"yellow_big_key", "type":"goods"},
+        {"ids":[374], "name":"yellow_big_key", "type":"goods","property":{"message":"获得钥匙盒，各种钥匙+1", "action":"gameData.hero.yellowKey+=1;gameData.hero.blueKey+=1;gameData.hero.redKey+=1"}},
         {"ids":[375], "name":"white_simple_key", "type":"goods"},
         {"ids":[376], "name":"yellow_simple_key", "type":"goods"},
         {"ids":[377], "name":"blue_simple_key", "type":"goods"},

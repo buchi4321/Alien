@@ -50,8 +50,11 @@ public class BGMusicService extends Service {
                 String file = intent.getStringExtra(MUSIC_FILE);
                 if (!TextUtils.equals(musicFile, file)) {
                     musicFile = file;
-                    stopMusic();
-                    startMusic();
+
+                    if (GameSharedPref.isPlayBackgroundMusic()) {
+                        stopMusic();
+                        startMusic();
+                    }
                 }
                 break;
             case CMD_PAUSE:

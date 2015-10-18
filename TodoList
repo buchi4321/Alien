@@ -1,15 +1,13 @@
 自动寻路 - 在操作蒙板之后添加
+操作蒙板 - 我要专家级别的操作控制器
+添加介绍
 
 优化与bug：
     优化地图绘制器的速度, 地图View，能否区域刷新，仅刷新需要动画的部分。
     home键返回后，GameActivity上是否仍然一直在绘制？
-    操作蒙板 - 我要专家级别的操作控制器
-    Fragment最佳实践：在onCreate中调用setRetainInstance(true); 屏幕旋转时保持Fragment实例，但是会重新加载View
-        为什么dialog在这种情况下，旋转屏幕会消失？
     检查warning
-    检查不用的资源
+    检查不用的资源 unused resources
     使用性能分析工具分析性能 - traceview
     怎么在shape中实现虚线 - 怪物图鉴
 
-添加介绍
 添加apk文件
