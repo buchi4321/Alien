@@ -72,7 +72,6 @@ public class MapView extends View {
         imageRect = new RectF();
 
         animateHandler = new AnimateHandler(this);
-        animateHandler.sendEmptyMessage(MSG_MAP_ANIMATION);
 
         heroPositionLock = new ReentrantLock();
         heroMoveStepLock = new ReentrantLock();
@@ -174,8 +173,6 @@ public class MapView extends View {
         HeroPositionBean p = gameContext.getHeroPosition();
         currentPosition = p.copy();
 
-        heroMove = new HeroMoveThread(p);
-        threadPool.execute(heroMove);
     }
 
     public void newMap() {
@@ -249,6 +246,22 @@ public class MapView extends View {
         heroSteps.add(p.copy());
     }
 
+    public void onResume() {
+        heroMove = new HeroMoveThread(currentPosition);
+        threadPool.execute(heroMove);
+        animateHandler.sendEmptyMessage(MSG_MAP_ANIMATION);
+    }
+
+    public void onPause() {
+        if (heroMove != null) {
+            Thread thread = heroMove.getThread();
+            if (thread != null) {
+                thread.interrupt();
+            }
+        }
+        animateHandler.removeMessages(MSG_MAP_ANIMATION);
+    }
+
     public void onDestroy() {
         threadPool.shutdownNow();
 
@@ -267,6 +280,7 @@ public class MapView extends View {
     private class HeroMoveThread implements Runnable {
 
         private HeroPositionBean lastPosition;
+        private Thread thisThread;
 
         public HeroMoveThread(HeroPositionBean lastPosition) {
             heroSteps = new ArrayBlockingQueue<>(1);
@@ -277,8 +291,13 @@ public class MapView extends View {
             lastPosition = position.copy();
         }
 
+        public Thread getThread() {
+            return thisThread;
+        }
+
         @Override
         public void run() {
+            thisThread = Thread.currentThread();
             HeroPositionBean p;
 
             while (true) {

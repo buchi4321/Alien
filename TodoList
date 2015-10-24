@@ -1,9 +1,6 @@
 操作蒙板 - 我要专家级别的操作控制器
-添加介绍
 
 优化与bug：
-    优化地图绘制器的速度, 地图View，能否区域刷新，仅刷新需要动画的部分。
-    home键返回后，GameActivity上是否仍然一直在绘制？
     检查warning
     检查不用的资源 unused resources
     使用性能分析工具分析性能 - traceview

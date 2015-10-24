@@ -48,6 +48,10 @@ public class GameHistory {
 
     public static boolean deleteRecord(String recordName) {
         File folder = new File(GameReader.DATA_PATH, recordName);
+        if (!folder.exists()) {
+            return true;
+        }
+
         File renameFolder = new File(GameReader.DATA_PATH, "" + System.currentTimeMillis());
         if (!folder.renameTo(renameFolder)) {
             return false;

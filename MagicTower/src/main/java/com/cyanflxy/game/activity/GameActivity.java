@@ -122,12 +122,14 @@ public class GameActivity extends FragmentActivity
         UMGameAgent.onResume(this);
 
         playBGMusic();
+        mapView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         UMGameAgent.onPause(this);
+        mapView.onPause();
 
         Intent service = new Intent(this, BGMusicService.class);
         service.putExtra(BGMusicService.MUSIC_CMD, BGMusicService.CMD_PAUSE);
