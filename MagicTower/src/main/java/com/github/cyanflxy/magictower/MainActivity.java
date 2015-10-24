@@ -33,7 +33,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        Utils.setBrightness(this, GameSharedPref.getScreenLight());
         //noinspection ResourceType
         setRequestedOrientation(GameSharedPref.getScreenOrientation());
 

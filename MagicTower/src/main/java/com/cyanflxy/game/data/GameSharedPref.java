@@ -37,32 +37,6 @@ public class GameSharedPref {
         ed.apply();
     }
 
-    // 屏幕亮度
-    private static final String SCREEN_LIGHT = "screen_light";
-
-    public static int getScreenLight() {
-        return sp.getInt(SCREEN_LIGHT, 90);
-    }
-
-    public static void setScreenLight(int light) {
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putInt(SCREEN_LIGHT, light);
-        ed.apply();
-    }
-
-    // 游戏音量
-    private static final String GAME_VOLUME = "game_volume";
-
-    public static float getGameVolume() {
-        return sp.getFloat(GAME_VOLUME, 0.7f);
-    }
-
-    public static void setGameVolume(float volume) {
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putFloat(GAME_VOLUME, volume);
-        ed.apply();
-    }
-
     // 背景音乐
     private static final String BACKGROUND_MUSIC = "background_music";
 

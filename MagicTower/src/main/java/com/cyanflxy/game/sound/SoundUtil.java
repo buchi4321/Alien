@@ -37,8 +37,6 @@ public class SoundUtil {
             return;
         }
 
-        float v = GameSharedPref.getGameVolume();
-
         final MediaPlayer player = MediaPlayer.create(AppApplication.baseContext, id);
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -57,7 +55,6 @@ public class SoundUtil {
             }
         });
 
-        player.setVolume(v, v);
         player.start();
     }
 }

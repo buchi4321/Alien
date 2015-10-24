@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.bean.EnemyProperty;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.ShopBean;
@@ -55,7 +54,6 @@ public class GameActivity extends FragmentActivity
         gameContext = GameContext.getInstance();
         gameContext.setGameListener(gameProcessListener);
 
-        Utils.setBrightness(this, GameSharedPref.getScreenLight());
         //noinspection ResourceType
         setRequestedOrientation(GameSharedPref.getScreenOrientation());
 

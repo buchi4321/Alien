@@ -18,70 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/screen_light"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/comm_text_size"/>
-
-            <SeekBar
-                android:id="@+id/screen_light_seek"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:max="100"
-                android:maxHeight="7dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:progress="70"
-                android:progressDrawable="@drawable/seek_bar_background"
-                android:thumb="@drawable/seek_bar_thumb"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginStart="20dp"
-                android:text="@string/game_volume"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/comm_text_size"/>
-
-            <SeekBar
-                android:id="@+id/game_volume_seek"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:max="100"
-                android:maxHeight="7dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:progress="30"
-                android:progressDrawable="@drawable/seek_bar_background"
-                android:thumb="@drawable/seek_bar_thumb"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:gravity="center"
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
@@ -165,14 +103,6 @@
                 android:paddingTop="10dp"
                 app:text="@string/game_sound"/>
 
-            <com.cyanflxy.game.widget.SettingCheckBox
-                android:id="@+id/auto_find_way"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                app:text="@string/auto_find_way"/>
         </LinearLayout>
 
         <LinearLayout

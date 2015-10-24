@@ -36,9 +36,7 @@ public class BGMusicService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        float v = GameSharedPref.getGameVolume();
         mediaPlayer = new MediaPlayer();
-        mediaPlayer.setVolume(v, v);
     }
 
     @Override
@@ -48,6 +46,7 @@ public class BGMusicService extends Service {
         switch (cmd) {
             case CMD_SET_SOURCE:
                 String file = intent.getStringExtra(MUSIC_FILE);
+
                 if (!TextUtils.equals(musicFile, file)) {
                     musicFile = file;
 
@@ -55,6 +54,8 @@ public class BGMusicService extends Service {
                         stopMusic();
                         startMusic();
                     }
+                } else if (GameSharedPref.isPlayBackgroundMusic() && !mediaPlayer.isPlaying()) {
+                    startMusic();
                 }
                 break;
             case CMD_PAUSE:

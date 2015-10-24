@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
 
-import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.data.GameSharedPref;
 import com.cyanflxy.game.sound.BGMusicService;
 import com.cyanflxy.game.widget.SettingCheckBox;
@@ -22,17 +20,12 @@ public class SettingFragment extends BaseFragment {
 
     private int orientation;
 
-    // 屏幕亮度
-    private SeekBar lightSeekBar;
-    // 游戏音量
-    private SeekBar volumeSeekBar;
 
     // 背景音乐
     private SettingCheckBox bgMusic;
     // 游戏音效
     private SettingCheckBox gameSound;
-    // 自动寻路
-    private SettingCheckBox autoWay;
+
     // 商店快捷
     private SettingCheckBox shopShortcut;
     // 开启所有功能
@@ -59,14 +52,6 @@ public class SettingFragment extends BaseFragment {
             }
         });
 
-        // 屏幕亮度
-        lightSeekBar = (SeekBar) view.findViewById(R.id.screen_light_seek);
-        lightSeekBar.setOnSeekBarChangeListener(lightSeekListener);
-
-        // 游戏音量
-        volumeSeekBar = (SeekBar) view.findViewById(R.id.game_volume_seek);
-        volumeSeekBar.setOnSeekBarChangeListener(volumeSeekListener);
-
         // 背景音乐
         bgMusic = (SettingCheckBox) view.findViewById(R.id.background_music);
         bgMusic.setOnCheckedChangeListener(onCheckedChangeListener);
@@ -74,11 +59,6 @@ public class SettingFragment extends BaseFragment {
         // 游戏音效
         gameSound = (SettingCheckBox) view.findViewById(R.id.game_sound);
         gameSound.setOnCheckedChangeListener(onCheckedChangeListener);
-
-        // 自动寻路
-        autoWay = (SettingCheckBox) view.findViewById(R.id.auto_find_way);
-        autoWay.setOnCheckedChangeListener(onCheckedChangeListener);
-        autoWay.setVisibility(View.INVISIBLE);
 
         // 屏幕方向
         orientationGroup = (RadioGroup) view.findViewById(R.id.orientation_group);
@@ -113,12 +93,9 @@ public class SettingFragment extends BaseFragment {
         super.onResume();
 
         // 必须在这里刷新状态，否则横竖屏切换的时候，checkbox状态会丢失，不知为何。
-        lightSeekBar.setProgress(GameSharedPref.getScreenLight());
-        volumeSeekBar.setProgress((int) (GameSharedPref.getGameVolume() * volumeSeekBar.getMax()));
 
         bgMusic.setChecked(GameSharedPref.isPlayBackgroundMusic());
         gameSound.setChecked(GameSharedPref.isPlayGameSound());
-        autoWay.setChecked(GameSharedPref.isAutoFindWay());
         shopShortcut.setChecked(GameSharedPref.isOpenShopShortcut());
         openAllFunction.setChecked(GameSharedPref.isOpenAllFunction());
         showFightView.setChecked(GameSharedPref.isShowFightView());
@@ -136,45 +113,6 @@ public class SettingFragment extends BaseFragment {
                 break;
         }
     }
-
-    private SeekBar.OnSeekBarChangeListener lightSeekListener
-            = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            Utils.setBrightness(getActivity(), progress);
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            GameSharedPref.setScreenLight(seekBar.getProgress());
-        }
-    };
-
-    private SeekBar.OnSeekBarChangeListener volumeSeekListener
-            = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            Intent service = new Intent(getContext(), BGMusicService.class);
-            service.putExtra(BGMusicService.MUSIC_VOLUME, progress * 1.0f / seekBar.getMax());
-            service.putExtra(BGMusicService.MUSIC_CMD, BGMusicService.CMD_CHANGE_VOLUME);
-            getContext().startService(service);
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            GameSharedPref.setGameVolume(seekBar.getProgress() * 1.0f / seekBar.getMax());
-        }
-    };
 
     private RadioGroup.OnCheckedChangeListener orientationChangeListener
             = new RadioGroup.OnCheckedChangeListener() {
@@ -219,9 +157,6 @@ public class SettingFragment extends BaseFragment {
                     break;
                 case R.id.game_sound:
                     GameSharedPref.setPlayGameSound(isChecked);
-                    break;
-                case R.id.auto_find_way:
-                    GameSharedPref.setAutoFindWay(isChecked);
                     break;
                 case R.id.shop_shortcut:
                     GameSharedPref.setOpenShopShortcut(isChecked);
