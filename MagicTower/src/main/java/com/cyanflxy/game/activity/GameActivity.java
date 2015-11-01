@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cyanflxy.game.bean.Direction;
 import com.cyanflxy.game.bean.EnemyProperty;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.ShopBean;
@@ -218,49 +219,17 @@ public class GameActivity extends FragmentActivity
     // 方向控制器回调
     private GameControllerView.MotionListener directionMotionListener
             = new GameControllerView.MotionListener() {
+
         @Override
-        public void onLeft() {
+        public void move(Direction d) {
             if (getCurrentTopFragment() != null) {
                 return;
             }
 
-            gameContext.moveLeft();
-            onMoveAction();
-        }
-
-        @Override
-        public void onRight() {
-            if (getCurrentTopFragment() != null) {
-                return;
-            }
-
-            gameContext.moveRight();
-            onMoveAction();
-        }
-
-        @Override
-        public void onUp() {
-            if (getCurrentTopFragment() != null) {
-                return;
-            }
-
-            gameContext.moveUP();
-            onMoveAction();
-        }
-
-        @Override
-        public void onDown() {
-            if (getCurrentTopFragment() != null) {
-                return;
-            }
-
-            gameContext.moveDown();
-            onMoveAction();
-        }
-
-        private void onMoveAction() {
+            gameContext.move(d);
             mapView.checkMove();
             heroInfoView.refreshInfo();
+
         }
 
     };

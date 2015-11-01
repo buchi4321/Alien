@@ -2,6 +2,8 @@ package com.cyanflxy.game.widget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,10 @@ import android.view.Window;
 import android.widget.FrameLayout;
 
 import com.cyanflxy.common.Utils;
+import com.cyanflxy.game.bean.Direction;
+
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -28,28 +34,31 @@ public class GameControllerView extends FrameLayout implements View.OnTouchListe
     }
 
     public interface MotionListener {
-        void onLeft();
-
-        void onRight();
-
-        void onUp();
-
-        void onDown();
+        void move(Direction d);
     }
 
-    private static final int EFFECTIVE_MOTION_DP = 50;
+    private static final int ACTION_INTERVAL = 500;
 
-    private final float EFFECTIVE_MOTION;
+    private static final int EFFECTIVE_MOTION_DP = 50;
     private static final float DIRECTION_PROPORTION = 2;// 方向确认比例
+
+    private final float effectiveDistance;
+    private boolean isInterval;
+
+    private float lastActionX;
+    private float lastActionY;
+    private Direction lastDirection;
 
     private float touchX;
     private float touchY;
 
     private MotionListener listener;
+    private LocalHandler handler;
 
     public GameControllerView(Context context) {
         super(context);
-        EFFECTIVE_MOTION = Utils.dip2px(EFFECTIVE_MOTION_DP);
+        effectiveDistance = Utils.dip2px(EFFECTIVE_MOTION_DP);
+        handler = new LocalHandler(this);
 
         setOnTouchListener(this);
     }
@@ -57,6 +66,7 @@ public class GameControllerView extends FrameLayout implements View.OnTouchListe
     public void setListener(MotionListener listener) {
         this.listener = listener;
     }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -66,52 +76,99 @@ public class GameControllerView extends FrameLayout implements View.OnTouchListe
 
     private void onTouch(MotionEvent ev) {
         int action = ev.getAction();
+        touchX = ev.getX();
+        touchY = ev.getY();
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                touchX = ev.getX();
-                touchY = ev.getY();
+                lastActionX = touchX;
+                lastActionY = touchY;
+                isInterval = false;
+                lastDirection = null;
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (!isInterval) {
+                    checkMotion();
+                }
                 break;
             case MotionEvent.ACTION_UP:
-                checkMotion(ev.getX(), ev.getY());
+                handler.stop();
+                lastDirection = null;
                 break;
         }
 
     }
 
-    private void checkMotion(float x, float y) {
-        if (listener == null) {
+    private void checkMotion() {
+        isInterval = false;
+        float dx = touchX - lastActionX;
+        float dy = touchY - lastActionY;
+        float distance = (float) Math.hypot(dx, dy);
+        if (distance < effectiveDistance) {
+            //继续上次的移动方向
+            if (lastDirection != null) {
+                onMoveConfirm(lastDirection, true);
+            }
             return;
         }
 
-        float dx = x - touchX;
-        float dy = y - touchY;
-
-        float absX = Math.abs(dx);
-        float absY = Math.abs(dy);
-
-        if (absX < EFFECTIVE_MOTION && absY < EFFECTIVE_MOTION) {
-            return;
-        }
-
-        float proportion = absX / absY;
+        float proportion = Math.abs(dx) / Math.abs(dy);
 
         if (proportion > DIRECTION_PROPORTION) {
 
             if (dx > 0) {
-                listener.onRight();
+                onMoveConfirm(Direction.right, false);
             } else {
-                listener.onLeft();
+                onMoveConfirm(Direction.left, false);
             }
 
         } else if (proportion < 1 / DIRECTION_PROPORTION) {
+
             if (dy > 0) {
-                listener.onDown();
+                onMoveConfirm(Direction.down, false);
             } else {
-                listener.onUp();
+                onMoveConfirm(Direction.up, false);
             }
+        }
+    }
+
+    private void onMoveConfirm(Direction d, boolean isLast) {
+        if (listener != null) {
+            listener.move(d);
+        }
+
+        if (!isLast) {
+            lastActionX = touchX;
+            lastActionY = touchY;
+            lastDirection = d;
+        }
+
+        isInterval = true;
+        handler.sendEmptyMessageDelayed(0, ACTION_INTERVAL);
+    }
+
+    private static class LocalHandler extends Handler {
+
+        private Reference<GameControllerView> controllerReference;
+
+        public LocalHandler(GameControllerView controllerView) {
+            controllerReference = new WeakReference<>(controllerView);
+        }
+
+        public void stop() {
+            if (hasMessages(0)) {
+                removeMessages(0);
+            }
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            GameControllerView view = controllerReference.get();
+            if (view == null) {
+                return;
+            }
+
+            view.checkMotion();
         }
     }
 

@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.cyanflxy.game.bean.Direction;
 import com.cyanflxy.game.bean.HeroPositionBean;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.MapBean;
@@ -233,7 +234,7 @@ public class MapView extends View {
         }
     }
 
-    private Bitmap getHeroBitmap(HeroPositionBean.Direction d, int phase) {
+    private Bitmap getHeroBitmap(Direction d, int phase) {
         String name = d.name();
         ImageInfoBean info = imageResourceManager.getImage(name);
         int index = phase % info.getIdLength();

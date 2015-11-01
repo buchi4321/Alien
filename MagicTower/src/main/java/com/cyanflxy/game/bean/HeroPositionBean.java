@@ -9,10 +9,6 @@ public class HeroPositionBean extends BeanParent implements Cloneable, Serializa
     public int y;
     public Direction direction;
 
-    public enum Direction {
-        left, right, up, down
-    }
-
     public HeroPositionBean copy() {
 
         HeroPositionBean p = new HeroPositionBean();

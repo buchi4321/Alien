@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.cyanflxy.common.FileUtils;
-import com.cyanflxy.game.bean.HeroPositionBean.Direction;
+import com.cyanflxy.game.bean.Direction;
 import com.cyanflxy.game.bean.ImageInfoBean;
 import com.cyanflxy.game.bean.ImageResourceBean;
 import com.cyanflxy.game.record.GameReader;

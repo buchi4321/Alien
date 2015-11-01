@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.cyanflxy.common.Utils;
 import com.cyanflxy.game.bean.DialogueBean;
+import com.cyanflxy.game.bean.Direction;
 import com.cyanflxy.game.bean.GameBean;
 import com.cyanflxy.game.bean.HeroBean;
 import com.cyanflxy.game.bean.HeroPositionBean;
@@ -150,12 +151,42 @@ public class GameContext {
         return gameData.hero.position;
     }
 
+    public void move(Direction d) {
+        HeroPositionBean p = getHeroPosition();
+
+        int x = p.x;
+        int y = p.y;
+
+        switch (d) {
+            case left:
+                x--;
+                break;
+            case right:
+                x++;
+                break;
+            case up:
+                y--;
+                break;
+            case down:
+                y++;
+                break;
+        }
+
+        if (moveTo(x, y)) {
+            p.x = x;
+            p.y = y;
+        }
+
+        p.direction = d;
+    }
+
+
     public void moveUP() {
         HeroPositionBean p = getHeroPosition();
         if (moveTo(p.x, p.y - 1)) {
             p.y--;
         }
-        p.direction = HeroPositionBean.Direction.up;
+        p.direction = Direction.up;
     }
 
     public void moveDown() {
@@ -163,7 +194,7 @@ public class GameContext {
         if (moveTo(p.x, p.y + 1)) {
             p.y++;
         }
-        p.direction = HeroPositionBean.Direction.down;
+        p.direction = Direction.down;
     }
 
     public void moveLeft() {
@@ -171,7 +202,7 @@ public class GameContext {
         if (moveTo(p.x - 1, p.y)) {
             p.x--;
         }
-        p.direction = HeroPositionBean.Direction.left;
+        p.direction = Direction.left;
     }
 
     public void moveRight() {
@@ -179,7 +210,7 @@ public class GameContext {
         if (moveTo(p.x + 1, p.y)) {
             p.x++;
         }
-        p.direction = HeroPositionBean.Direction.right;
+        p.direction = Direction.right;
     }
 
     private boolean moveTo(int x, int y) {
