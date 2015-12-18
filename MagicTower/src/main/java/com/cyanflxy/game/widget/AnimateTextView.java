@@ -1,5 +1,7 @@
 package com.cyanflxy.game.widget;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,18 +9,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import com.github.cyanflxy.magictower.R;
-
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
 
 public class AnimateTextView extends View {
 
@@ -48,14 +46,13 @@ public class AnimateTextView extends View {
     private RectF cursorRect = new RectF();
 
     // 滑动手势
-    private float touchX;
     private float touchY;
     private float lastY;
     private float drawTop;
     private float maxTop;
     private boolean showTouchTop;
 
-    private Handler animateHandler;
+    private ObjectAnimator animator;
     private OnTextAnimationListener listener;
     private OnClickListener onClickListener;
 
@@ -87,12 +84,10 @@ public class AnimateTextView extends View {
     @Override
     public boolean dispatchTouchEvent(@NonNull MotionEvent event) {
         int action = event.getAction();
-        float x = event.getX();
         float y = event.getY();
 
         if (action == MotionEvent.ACTION_DOWN) {
             if (isAnimationEnd()) {
-                touchX = x;
                 touchY = y;
                 lastY = drawTop;
             }
@@ -135,9 +130,11 @@ public class AnimateTextView extends View {
         drawPaint.getTextBounds(infoString, 0, infoString.length(), wordRect);
         wordHeight = wordRect.height();
 
-        drawPaint.getTextBounds(infoString, 0, 1, wordRect);
+        drawPaint.getTextBounds("字", 0, 1, wordRect);
         wordWidth = wordRect.width();
-        int lastWordWidth = wordWidth;
+
+        drawPaint.getTextBounds(infoString, 0, 1, wordRect);
+        int lastWordWidth = wordRect.width();
 
         int currentLeft = PARAGRAPH_FIRST_SPACE;
         int currentBottom = wordHeight;
@@ -236,22 +233,69 @@ public class AnimateTextView extends View {
     }
 
     public void startAnimation(int progress) {
-        if (animateHandler != null && animateHandler.hasMessages(0)) {
+
+        if (animator != null && animator.isRunning()) {
             return;
         }
 
-        if (animateHandler == null) {
-            animateHandler = new AnimateHandler(this);
+        int end = infoString.length();
+        if (progress >= end) {
+            return;
         }
 
-        currentStringLen = progress;
-        animateHandler.sendEmptyMessageDelayed(0, ANIMATE_DURATION);
-        invalidate();
+        int duration = (end - progress) * ANIMATE_DURATION;
+
+        animator = ObjectAnimator.ofInt(this, "currentStringLen", progress, end);
+        animator.setDuration(duration);
+        animator.setInterpolator(new LinearInterpolator());
+
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                animation.removeAllListeners();
+                sendAnimatorEndMessage();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                animation.removeAllListeners();
+                sendAnimatorEndMessage();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+
+            private void sendAnimatorEndMessage() {
+                if (listener != null) {
+                    listener.onAnimationEnd();
+                }
+            }
+        });
+
+        animator.start();
     }
 
     public void stopAnimation() {
-        if (animateHandler != null && animateHandler.hasMessages(0)) {
-            animateHandler.removeMessages(0);
+        if (animator != null && animator.isRunning()) {
+            animator.cancel();
+        }
+    }
+
+    // 属性动画
+    @SuppressWarnings("unused")
+    public void setCurrentStringLen(int len) {
+        currentStringLen = len;
+        invalidate();
+
+        if (currentStringLen >= infoString.length()) {
+            endAnimation();
         }
     }
 
@@ -264,41 +308,12 @@ public class AnimateTextView extends View {
     }
 
     public void endAnimation() {
-        if (animateHandler != null && animateHandler.hasMessages(0)) {
-            animateHandler.removeMessages(0);
+        if (animator != null && animator.isRunning()) {
+            animator.cancel();
+            currentStringLen = infoString.length();
+            invalidate();
         }
 
-        currentStringLen = infoString.length();
-        invalidate();
-
-        if (listener != null) {
-            listener.onAnimationEnd();
-        }
     }
 
-    private static class AnimateHandler extends Handler {
-
-        private Reference<AnimateTextView> viewRef;
-
-        public AnimateHandler(AnimateTextView textView) {
-            viewRef = new WeakReference<>(textView);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            AnimateTextView view = viewRef.get();
-            if (view == null || TextUtils.isEmpty(view.infoString)) {
-                return;
-            }
-
-            view.currentStringLen++;
-            if (view.currentStringLen <= view.infoString.length()) {
-                view.invalidate();
-
-                sendEmptyMessageDelayed(0, ANIMATE_DURATION);
-            } else {
-                view.endAnimation();
-            }
-        }
-    }
 }
